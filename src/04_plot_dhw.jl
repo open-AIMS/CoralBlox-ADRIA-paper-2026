@@ -14,16 +14,23 @@ for g in cb_calib_groups
     ax = Axis(
         fig_dhw[row, col],
         limits=(nothing, (0, max_dhw)),
-        xticks=(collect(1:2:15), string.(x_tsteps)[1:2:15]),
+        xticks=(collect(1:4:15), string.(x_tsteps)[1:4:15]),
         xticklabelsvisible=row == 3 ? true : false,
+        xminorticksvisible=true,
+        xminorticks=(collect(1:1:15)),
         xlabelvisible=row == 3 ? true : false,
         titlesize=9pt,
         xticklabelsize=9pt,
         yticklabelsize=9pt,
         yticklabelsvisible=col == 1 ? true : false,
+        yticks=0:4:14,
+        yminorticksvisible=true,
+        yminorticks=0:1:14,
         ylabelvisible=col == 1 ? true : false,
-        xticklabelrotation=π / 4,
+        # xticklabelrotation=π / 4,
         title="Reef group $g",
+        xgridvisible=false,
+        ygridvisible=false
     )
     data = @views loc_dhw[locs=loc_ids .∈ Ref(dom_gpkg[dom_gpkg.CB_CALIB_GROUPS.==g, :GBRMPA_ID])]
 

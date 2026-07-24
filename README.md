@@ -2,3 +2,5 @@
 
 Define the variable `CALIB_PATH = <path_to_CoralBlox_calibration_repo>` before running the
 scripts.
+
+CALIB_PATH="C:/AIMS/Code/CoralBlox-params-calibration"

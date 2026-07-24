@@ -1,5 +1,8 @@
+include(joinpath(CALIB_PATH, "src/plot/plot.jl"))
+# plot_locs = vcat(reefs_sorted_by_srcc[end-4:end][[1,5]], reefs_sorted_by_srcc[1:2])
+plot_locs = vcat(reefs_sorted_by_rmse[end-1:end], reefs_sorted_by_rmse[1:2])
+
 single_reef_fig = begin
-    plot_locs = vcat(reefs_sorted_by_srcc[end-1:end], reefs_sorted_by_srcc[1:2])
     plot_locs_idx = [findfirst(VALIDATION_STORE.ltmp_unique_ids .== loc) for loc in plot_locs]
     plot_loc_names = [VALIDATION_STORE.domain_gpkg[VALIDATION_STORE.domain_gpkg.RME_UNIQUE_ID.==l, :cluster_id][1] for l in plot_locs]
     # VALIDATION_STORE.domain_gpkg[VALIDATION_STORE.domain_gpkg.RME_UNIQUE_ID.∈Ref(plot_locs), :cluster_id]
@@ -10,12 +13,12 @@ single_reef_fig = begin
 
     plot_labels = ["(A) ", "(B) ", "(C) ", "(D) "] .* plot_loc_names .* "\n"
 
-    print_metrics = plot_labels .* (
-        "SRCC: " .* model_srcc .*
-        " | Model RMSE: " .* model_rmse .*
-        " | Benchmark RMSE: " .* benchmark_rmse .* "/n")
+    # print_metrics
+    plot_labels = plot_labels .* (
+        "RMSE: " .* model_rmse .* " | " .*
+        "SRCC: " .* model_srcc)
+    @info plot_labels .* "μRMSE:" .* string.(benchmark_rmse)
     for pm in print_metrics
-        @info pm
     end
 
     plot_positions = [(1, 1), (1, 2), (2, 1), (2, 2)]
@@ -24,11 +27,12 @@ single_reef_fig = begin
     ltmp_disturbances = open_dataset(disturbances_path).layer
 
     # ** Plot comparison
-    fig = Figure(; size=(750, 750), fontsize=9pt)
+    fig = Figure(; size=(750, 650), fontsize=9pt)
     for (i, plot_idx) in enumerate(plot_locs_idx)
         # reef_idx = 1
         target_loc_data = dom.loc_data[dom.loc_data.RME_UNIQUE_ID.==plot_locs[i], :]
-        title = target_loc_data.cluster_id[1]
+        # title = target_loc_data.cluster_id[1]
+
         plot_location_comparison!(
             fig[plot_positions[i]...],
             rs_raw.raw,
@@ -51,23 +55,32 @@ single_reef_fig = begin
                 :yticklabelsvisible => plot_positions[i][2] == 1,
                 :xlabelvisible => plot_positions[i][1] == 2,
                 :ylabelvisible => plot_positions[i][2] == 1,
-                :model_vs_obs_yticks => (0:0.2:1, string.(0:20:100) .* "%"),
-                :model_vs_obs_limits => (nothing, (0.0, 0.5)),
+                :model_vs_obs_yticks => ([0, 0.5, 1.0], ["0%", "50%", "100%"]),
+                :model_vs_obs_yminorticksvisible => true,
+                :model_vs_obs_yminorticks => collect(0.0:0.1:1.0),
+                :model_vs_obs_limits => (nothing, (0.0, 1.0)),
                 :model_vs_obs_ylabel => "Relative coral cover",
                 :model_vs_obs_xticklabelsvisible => false,
                 :model_dist_xticklabelsvisible => false,
-                :model_dist_yticks => (0:2:10),
+                :model_dist_yticks => ([0, 5, 10]),
+                :model_dist_yminorticksvisible => true,
+                :model_dist_yminorticks => collect(0:1:10),
                 :model_dist_limits => (nothing, (0.0, 10)),
-                :benthic_yticks => (0:0.2:1, string.(0:20:100) .* "%"),
-                :benthic_limits => (nothing, (0.0, 0.6)),
+                :benthic_yticks => ([0, 0.5, 1.0], ["0%", "50%", "100%"]),
+                :benthic_yminorticksvisible => true,
+                :benthic_yminorticks => collect(0.0:0.1:1.0),
+                :benthic_limits => (nothing, (0.0, 1.0)),
                 :benthic_ylabel => "Coral composition",
-                :xticks => (2008:2022, string.(2008:2022)),
-                :xticklabelrotation => π / 3,
+                :xticks => (2008:4:2022, string.(2008:4:2022)),
+                :xminorticksvisible => true,
+                :xminorticks => collect(2008:2022),
                 :ylabelsize => 9pt,
                 :xlabelsize => 9pt,
                 :xticklabelsize => 9pt,
                 :yticklabelsize => 9pt,
-                :halign => :left
+                :halign => :left,
+                :xgridvisible => false,
+                :ygridvisible => false,
             ),
             fig_opts=Dict{Symbol,Any}(
                 :titlesize => 9pt,
@@ -79,8 +92,8 @@ single_reef_fig = begin
             observations=VALIDATION_STORE
         )
     end
-    rowsize!.(contents(fig.layout), Ref(2), Ref(Relative(2 / 10)))
-    rowsize!.(contents(fig.layout), Ref(3), Ref(Relative(3 / 10)))
+    rowsize!.(contents(fig.layout), Ref(2), Ref(Relative(2 / 9)))
+    rowsize!.(contents(fig.layout), Ref(3), Ref(Relative(3 / 9)))
     fig
 
     model_vs_obs_legend_els = [
@@ -107,7 +120,7 @@ single_reef_fig = begin
         ],
         ["Coral cover", "Disturbances", "Functional groups"];
         halign=:left, valign=:center, labelsize=9pt, titlesize=9pt, labelhalign=:left,
-        gridshalign=:left, titlehalign=:left
+        gridshalign=:left, titlehalign=:left, framevisible=false
     )
     fig
 end

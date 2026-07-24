@@ -35,6 +35,7 @@ GeoMakie.GO.simplify.(geometries, ratio=0.5)
 fig_base_number = 2
 for (idx_d, d) in enumerate(data)
     keys_sort = sortperm(collect(parse.(Int, getindex.(split.(string.(keys(d)), " "), 2))))
+
     fig_reef_groups = plot_regional_comparison(
         d,
         keys(d)[keys_sort];
@@ -43,9 +44,9 @@ for (idx_d, d) in enumerate(data)
             :titlesize => 11pt,
             :textlabelsize => 9pt,
             :textlabelbackground => "#ededeb",
-            :showtextlabel => true
+            :showtextlabel => false
         ),
-        fig_opts=Dict{Symbol,Any}(:size => (750, 750)),
+        fig_opts=Dict{Symbol,Any}(:size => (650, 600)),
         axis_opts=Dict{Symbol,Any}(
             :titlesize => 9pt,
             :xlabelsize => 9pt,
@@ -54,9 +55,12 @@ for (idx_d, d) in enumerate(data)
             :yticklabelsize => 9pt,
             :xticklabelrotation => 0,
             :xticks => xticks,
-            :yticks => ytick_labels
+            :yticks => ytick_labels,
+            :titlealign => :left,
+            :xgridvisible => false,
+            :ygridvisible => false
         ),
-        legend_opts=Dict{Symbol,Any}(:labelsize => 9pt)
+        legend_opts=Dict{Symbol,Any}(:labelsize => 9pt, :framevisible => false),
     )
 
     filename = "0$(fig_base_number+idx_d)_reef_groups_$(reef_group_type[idx_d])"

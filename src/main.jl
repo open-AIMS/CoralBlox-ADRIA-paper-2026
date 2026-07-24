@@ -17,13 +17,17 @@ inch = 96
 pt = 4 / 3
 cm = inch / 2.54
 
-fig_path::String = dirname(@__DIR__) .* "../figures"
+fig_path::String = dirname(@__DIR__) .* "/figures"
 
 # * Single reef scale: model vs observed
 # ** Sort reefs by SRCC
 validation_error_stats = collect_error_stats(rs_raw.raw; observations=VALIDATION_STORE)
 srcc_sortperm = sortperm(validation_error_stats.srcc)
 reefs_sorted_by_srcc = VALIDATION_STORE.ltmp_unique_ids[srcc_sortperm]
+
+# ** Sort reefs by RMSE
+rmse_sortperm = sortperm(validation_error_stats.rmse_model)
+reefs_sorted_by_rmse = VALIDATION_STORE.ltmp_unique_ids[rmse_sortperm]
 
 # ** Setup
 # * Metrics map

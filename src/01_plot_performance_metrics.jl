@@ -1,10 +1,22 @@
 metric_map_fig = begin
     fig = Figure(; size=(550, 650), fontsize=9pt)
 
-    markersize = 10
-    strokecolor = (:gray, 0.5)
+    markersize = 15
+    strokewidth = 0.7
+    strokecolor = (:black, 0.4)
     grid_color = RGBAf(0, 0, 0, 0.10)
-    rmse_colormap = :roma
+
+    min_x, max_x = extrema(c_lon)
+    min_x = floor(min_x)
+    max_x = ceil(max_x)
+
+    min_y, max_y = extrema(c_lat)
+    min_y = floor(min_y) - 1
+    max_y = ceil(max_y)
+
+    limits = ((min_x, max_x), (min_y, max_y))
+
+    rmse_colormap = :thermal # :roma
     srcc_colormap = :cool
 
     srcc_colorrange = (-1, 1)
@@ -34,11 +46,16 @@ metric_map_fig = begin
             :titlesize => 9pt,
             :xlabelsize => 9pt,
             :ylabelsize => 9pt,
+            :yticks => min_y:1:max_y,
             :yticklabelsize => 9pt,
             :xticklabelsize => 9pt,
             :xgridcolor => grid_color,
             :ygridcolor => grid_color,
-            :xticklabelsvisible => false),
+            :xgridvisible => false,
+            :ygridvisible => false,
+            :xticklabelsvisible => false,
+            :limits => limits
+        ),
         opts=Dict(
             :colorrange => (-0.2, 0.2),
             :colorbar_label => "",
@@ -46,12 +63,14 @@ metric_map_fig = begin
             :colorbar_ticks => rmse_colorbar_ticks,
             :markersize => markersize,
             :alpha => 0.8,
-            :strokewidth => 0.1,
+            :strokewidth => strokewidth,
             :strokecolor => strokecolor,
             :colormap => rmse_colormap,
             :colorbar_visible => false,
         )
     )
+
+    # ylims!(g11, (-24, -14))
 
     plot_metric_map!(
         g12,
@@ -68,8 +87,11 @@ metric_map_fig = begin
             :xticklabelsize => 9pt,
             :xgridcolor => grid_color,
             :ygridcolor => grid_color,
+            :xgridvisible => false,
+            :ygridvisible => false,
             :xticklabelsvisible => false,
-            :yticklabelsvisible => false
+            :yticklabelsvisible => false,
+            :limits => limits
         ),
         opts=Dict(
             :colorbar_label => "",
@@ -77,7 +99,7 @@ metric_map_fig = begin
             :colorbar_ticks => srcc_colorbar_ticks,
             :markersize => markersize,
             :alpha => 0.6,
-            :strokewidth => 0.1,
+            :strokewidth => strokewidth,
             :strokecolor => strokecolor,
             :colormap => srcc_colormap,
             :colorbar_visible => false,
@@ -99,7 +121,10 @@ metric_map_fig = begin
             :xticklabelsize => 9pt,
             :xgridcolor => grid_color,
             :ygridcolor => grid_color,
+            :xgridvisible => false,
+            :ygridvisible => false,
             :valign => :top,
+            :limits => limits
         ),
         opts=Dict(
             :colorrange => rmse_colorrange,
@@ -108,7 +133,7 @@ metric_map_fig = begin
             :colorbar_ticks => rmse_colorbar_ticks,
             :markersize => markersize,
             :alpha => 0.8,
-            :strokewidth => 0.1,
+            :strokewidth => strokewidth,
             :strokecolor => strokecolor,
             :colormap => rmse_colormap,
             :colorbar_visible => false,
@@ -130,8 +155,11 @@ metric_map_fig = begin
             :xticklabelsize => 9pt,
             :xgridcolor => grid_color,
             :ygridcolor => grid_color,
+            :xgridvisible => false,
+            :ygridvisible => false,
             :valign => :top,
-            :yticklabelsvisible => false
+            :yticklabelsvisible => false,
+            :limits => limits
         ),
         opts=Dict(
             :colormap => srcc_colormap,
@@ -140,11 +168,20 @@ metric_map_fig = begin
             :colorbar_ticks => srcc_colorbar_ticks,
             :markersize => markersize,
             :alpha => 0.6,
-            :strokewidth => 0.1,
+            :strokewidth => strokewidth,
             :strokecolor => strokecolor,
             :colorbar_visible => false,
         )
     )
+
+    # Plot compass and N
+    cx, cy = max_x - 0.5, max_y - 1.5  # center position
+    poly!(
+        content(g12[1, 1]),
+        Point2f[(cx - 0.20, cy), (cx, cy + 0.7), (cx + 0.20, cy), (cx, cy - 0.3)],
+        color=:black
+    )
+    text!(content(g12[1, 1]), cx, cy + 0.75; text="N", fontsize=15, align=(:center, :bottom), color=:black)
 
     lon_padding = (0, 0, 0, 25)
     lat_padding = (0, -20, 0, 0)
