@@ -1,6 +1,3 @@
-include("$CALIB_PATH/src/analysis/regional_analysis.jl")
-include("$CALIB_PATH/src/plot/regional_comparison.jl")
-
 # * Reef groups scale
 # * Spatial Grouping
 spatial_groups = unique(domain_gpkg.CB_CALIB_GROUPS)
@@ -8,12 +5,16 @@ spatial_group_masks = [domain_gpkg.CB_CALIB_GROUPS .== g for g in spatial_groups
 
 spatial_group_stats_calib = region_stats(
     Symbol.("Group " .* string.(spatial_groups)),
-    spatial_group_masks;
+    spatial_group_masks,
+    rs_raw.raw,
+    dom;
     observations=CALIBRATION_STORE
 )
 spatial_group_stats_valid = region_stats(
     Symbol.("Group " .* string.(spatial_groups)),
-    spatial_group_masks;
+    spatial_group_masks,
+    rs_raw.raw,
+    dom;
     observations=VALIDATION_STORE
 )
 

@@ -3,7 +3,7 @@ cb_calib_groups = sort(unique(dom_gpkg.CB_CALIB_GROUPS))
 
 loc_dhw = dom.dhw_scens[:, :, 1]
 max_dhw = ceil(maximum(loc_dhw))
-loc_ids = collect(loc_dhw.locs.val)
+loc_ids = collect(loc_dhw.locations.val)
 
 x_tsteps = collect(loc_dhw.timesteps.val)
 
@@ -32,7 +32,7 @@ for g in cb_calib_groups
         xgridvisible=false,
         ygridvisible=false
     )
-    data = @views loc_dhw[locs=loc_ids .∈ Ref(dom_gpkg[dom_gpkg.CB_CALIB_GROUPS.==g, :GBRMPA_ID])]
+    data = @views loc_dhw[locations=loc_ids .∈ Ref(dom_gpkg[dom_gpkg.CB_CALIB_GROUPS.==g, :GBRMPA_ID])]
 
     # lines!.(ax, x_tsteps, eachcol(data))
     series!(ax, read(data'), solid_color=(:orange, 0.05))

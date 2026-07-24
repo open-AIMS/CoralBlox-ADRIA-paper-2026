@@ -1,4 +1,3 @@
-include(joinpath(CALIB_PATH, "src/plot/plot.jl"))
 # plot_locs = vcat(reefs_sorted_by_srcc[end-4:end][[1,5]], reefs_sorted_by_srcc[1:2])
 plot_locs = vcat(reefs_sorted_by_rmse[end-1:end], reefs_sorted_by_rmse[1:2])
 
@@ -18,12 +17,10 @@ single_reef_fig = begin
         "RMSE: " .* model_rmse .* " | " .*
         "SRCC: " .* model_srcc)
     @info plot_labels .* "μRMSE:" .* string.(benchmark_rmse)
-    for pm in print_metrics
-    end
 
     plot_positions = [(1, 1), (1, 2), (2, 1), (2, 2)]
 
-    disturbances_path = "$CALIB_PATH/datasets/ltmp_data/disturbances.nc"
+    disturbances_path = joinpath(pkgdir(CoralBloxCalib), "datasets", "ltmp_data", "disturbances.nc")
     ltmp_disturbances = open_dataset(disturbances_path).layer
 
     # ** Plot comparison
@@ -40,6 +37,7 @@ single_reef_fig = begin
             dom.dhw_scens[scenarios=1],
             dom.cyclone_mortality_scens[scenarios=1],
             ltmp_disturbances;
+            dom=dom,
             opts=Dict{Symbol,Any}(
                 :show_ltmp_dist => false,
                 :show_model_dist => true,

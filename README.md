@@ -1,6 +1,5 @@
 # paper_plots_2026_coralblox
 
-Define the variable `CALIB_PATH = <path_to_CoralBlox_calibration_repo>` before running the
-scripts.
-
-CALIB_PATH="C:/AIMS/Code/CoralBlox-params-calibration"
+Depends on `CoralBloxCalib` (dev'd from the `CoralBlox-params-calibration` repo) and reads
+its `config.toml` for domain/dataset paths — see that repo's config for calibration output
+locations (`out_dir`, `results.dat`, etc.).
