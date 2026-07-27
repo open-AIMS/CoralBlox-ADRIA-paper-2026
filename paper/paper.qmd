@@ -1,0 +1,79 @@
+---
+title: "TODO: paper title"
+
+authors:
+  - name: TODO Author One
+    email: todo@aims.gov.au
+    affiliations:
+      - ref: aims
+    attributes:
+      corresponding: true
+
+affiliations:
+  - id: aims
+    name: Australian Institute of Marine Science, Townsville, Queensland, Australia
+
+abstract: |
+    TODO: abstract, migrated from the Word draft.
+
+keywords:
+  - TODO
+
+filters:
+  - _extensions/authors-block
+
+date: last-modified
+
+format:
+  docx:
+    number-sections: true
+
+bibliography: references.bib
+csl: science-advances.csl
+
+engine: julia
+exeflags: ["--project=."]
+
+crossref:
+  custom:
+  - kind: float
+    reference-prefix: SFigure
+    key: sfig
+  - kind: float
+    reference-prefix: STable
+    key: stbl
+
+editor:
+  markdown:
+    wrap: 92
+    canonical: true
+citeproc: true
+---
+
+# Introduction
+
+TODO: migrate from Word draft.
+
+# Methods
+
+TODO: migrate from Word draft.
+
+# Results
+
+TODO: migrate from Word draft. Reference generated figures directly, e.g.:
+
+<!--
+![Caption here.](../figures/02_performance_metrics.png){#fig-performance fig-align="center" width="14.8cm"}
+-->
+
+# Discussion
+
+TODO: migrate from Word draft.
+
+# Conclusion
+
+TODO: migrate from Word draft.
+
+# Acknowledgements
+
+TODO.
