@@ -33,6 +33,31 @@ or, while writing, for a live-reloading preview:
 quarto preview paper/paper.qmd
 ```
 
+### Word styling
+
+Output styling comes from `paper/reference.docx` (`reference-doc:` in `paper.qmd`), which sets
+Times New Roman 12 pt, Science Advances page margins, and continuous line numbering. It is
+generated — regenerate it with:
+
+```shell
+python paper/make-reference-doc.py
+```
+
+The journal's own `.docx` templates cannot be used directly here: they define none of the style
+names Pandoc writes to (`Title`, `Author`, `Heading 1`, ...), so the script patches Pandoc's
+default template instead. Edit `make-reference-doc.py`, not the `.docx`.
+
+### References
+
+`paper/references.bib` holds the 81 cited entries, filtered out of a larger Zotero library
+(`ADRIA-mod.bib`) during the migration from Word. It is now maintained directly — edit it by
+hand. Citation formatting comes from `science-advances.csl`, a local fork of `science.csl` with
+the in-text citation numbers de-italicised: *Science* uses `(1)` in italics, *Science Advances*
+does not.
+
+`paper/TO-FIX-zotero.md` lists corrections that were applied to the exported `.bib` but not to
+the Zotero library itself — only relevant if the library is ever re-exported over these files.
+
 `paper.qmd` uses Quarto's native Julia engine (`engine: julia`), executing code cells against
 this repo's own `Project.toml`/`Manifest.toml` (`exeflags: ["--project=."]`) — no extra Julia
 packages are required beyond what the plotting scripts already use. Quarto manages its own
