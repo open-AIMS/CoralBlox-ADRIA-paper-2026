@@ -2,13 +2,13 @@
 plot_locs = vcat(reefs_sorted_by_rmse[end-1:end], reefs_sorted_by_rmse[1:2])
 
 single_reef_fig = begin
-    plot_locs_idx = [findfirst(VALIDATION_STORE.ltmp_unique_ids .== loc) for loc in plot_locs]
-    plot_loc_names = [VALIDATION_STORE.domain_gpkg[VALIDATION_STORE.domain_gpkg.RME_UNIQUE_ID.==l, :cluster_id][1] for l in plot_locs]
-    # VALIDATION_STORE.domain_gpkg[VALIDATION_STORE.domain_gpkg.RME_UNIQUE_ID.∈Ref(plot_locs), :cluster_id]
+    plot_locs_idx = [findfirst(TEST_STORE.ltmp_unique_ids .== loc) for loc in plot_locs]
+    plot_loc_names = [TEST_STORE.domain_gpkg[TEST_STORE.domain_gpkg.RME_UNIQUE_ID.==l, :cluster_id][1] for l in plot_locs]
+    # TEST_STORE.domain_gpkg[TEST_STORE.domain_gpkg.RME_UNIQUE_ID.∈Ref(plot_locs), :cluster_id]
 
-    model_srcc = string.(round.(vcat(validation_error_stats.srcc[plot_locs_idx]); digits=2))
-    model_rmse = string.(round.(validation_error_stats.rmse_model[plot_locs_idx], digits=2))
-    benchmark_rmse = string.(round.(validation_error_stats.rmse_benchmark[plot_locs_idx], digits=2))
+    model_srcc = string.(round.(vcat(test_error_stats.srcc[plot_locs_idx]); digits=2))
+    model_rmse = string.(round.(test_error_stats.rmse_model[plot_locs_idx], digits=2))
+    benchmark_rmse = string.(round.(test_error_stats.rmse_benchmark[plot_locs_idx], digits=2))
 
     plot_labels = ["(A) ", "(B) ", "(C) ", "(D) "] .* plot_loc_names .* "\n"
 
@@ -87,7 +87,7 @@ single_reef_fig = begin
                 :titlevalign => :bottom,
                 :titlefont => :bold
             ),
-            observations=VALIDATION_STORE
+            observations=TEST_STORE
         )
     end
     rowsize!.(contents(fig.layout), Ref(2), Ref(Relative(2 / 9)))

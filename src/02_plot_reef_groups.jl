@@ -10,17 +10,17 @@ spatial_group_stats_calib = region_stats(
     dom;
     observations=CALIBRATION_STORE
 )
-spatial_group_stats_valid = region_stats(
+spatial_group_stats_test = region_stats(
     Symbol.("Group " .* string.(spatial_groups)),
     spatial_group_masks,
     rs_raw.raw,
     dom;
-    observations=VALIDATION_STORE
+    observations=TEST_STORE
 )
 
-# Plot just valid. or calib.
-data = [spatial_group_stats_calib, spatial_group_stats_valid]
-reef_group_type = ["calibration", "validation"]
+# Plot just test or calib.
+data = [spatial_group_stats_calib, spatial_group_stats_test]
+reef_group_type = ["calibration", "test"]
 
 xticks_labels = string.(START_YEAR:END_YEAR)
 year_labels = string.(Base.union(collect(START_YEAR:5:END_YEAR), [END_YEAR]))
