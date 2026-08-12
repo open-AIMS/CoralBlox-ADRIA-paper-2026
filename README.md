@@ -12,6 +12,7 @@ locations (`out_dir`, `results.dat`, etc.).
 paper_plots_2026_coralblox/
 ├─ src/        # numbered plotting scripts, run via main.jl
 ├─ figures/    # generated figures
+├─ outputs/    # generated non-figure data (e.g. calibration_scores_data.jl)
 ├─ paper/      # reproducible Quarto manuscript (paper.qmd), targeting Science Advances
 ├─ config.toml
 ├─ Project.toml
@@ -60,9 +61,12 @@ the Zotero library itself — only relevant if the library is ever re-exported o
 
 `paper.qmd` uses Quarto's native Julia engine (`engine: julia`), executing code cells against
 this repo's own `Project.toml`/`Manifest.toml` (`exeflags: ["--project=."]`). A hidden setup
-chunk at the top of the "Reproducing coral cover trajectories" section runs
-`src/outcomes/calibration_scores.jl`, which computes every hand-typed calibration/validation
-number quoted inline elsewhere in the document (Figure 2's caption, Table S1, Table S2), so
-those numbers stay in sync with the model/calibration outputs on every render. Quarto manages
-its own Julia notebook-runner environment separately and bootstraps it automatically the first
-time you render.
+chunk at the top of the "Reproducing coral cover trajectories" section `include`s
+`outputs/calibration_scores_data.jl`, a generated data file holding every hand-typed
+calibration/test number quoted inline elsewhere in the document (Figure 2's caption, Table S1,
+Table S2). That file is written by `src/outcomes/calibration_scores.jl`, which loads the domain
+and runs the model - run it manually (`julia --project=. src/outcomes/calibration_scores.jl`)
+whenever the calibration outputs change; `quarto render` only reads the frozen result, so it
+stays fast and doesn't re-run the model on every render. Quarto manages its own Julia
+notebook-runner environment separately and bootstraps it automatically the first time you
+render.
