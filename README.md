@@ -59,7 +59,10 @@ does not.
 the Zotero library itself — only relevant if the library is ever re-exported over these files.
 
 `paper.qmd` uses Quarto's native Julia engine (`engine: julia`), executing code cells against
-this repo's own `Project.toml`/`Manifest.toml` (`exeflags: ["--project=."]`) — no extra Julia
-packages are required beyond what the plotting scripts already use. Quarto manages its own
-Julia notebook-runner environment separately and bootstraps it automatically the first time
-you render.
+this repo's own `Project.toml`/`Manifest.toml` (`exeflags: ["--project=."]`). A hidden setup
+chunk at the top of the "Reproducing coral cover trajectories" section runs
+`src/outcomes/calibration_scores.jl`, which computes every hand-typed calibration/validation
+number quoted inline elsewhere in the document (Figure 2's caption, Table S1, Table S2), so
+those numbers stay in sync with the model/calibration outputs on every render. Quarto manages
+its own Julia notebook-runner environment separately and bootstraps it automatically the first
+time you render.

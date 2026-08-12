@@ -2,13 +2,13 @@
 
 julia_version = "1.11.9"
 manifest_format = "2.0"
-project_hash = "ba497c4a88dde07289b15e5a82ace54273dd4c70"
+project_hash = "666ef1272d91b6ec098d3a12dc68d9620e99d49f"
 
 [[deps.ADRIA]]
-deps = ["ADRIAIndicators", "ArchGDAL", "Bootstrap", "CSV", "Clustering", "Combinatorics", "CoralBlox", "CpuId", "DataFrames", "DataStructures", "Dates", "DimensionalData", "Distances", "Distributed", "Distributions", "FileIO", "GDAL_jll", "GeoDataFrames", "GeoFormatTypes", "GeoInterface", "Glob", "Graphs", "ImageIO", "Interpolations", "JMcDM", "JSON", "LERC_jll", "LinearAlgebra", "Logging", "ModelParameters", "NetCDF", "OnlineStats", "OrderedCollections", "Pkg", "PkgVersion", "PrecompileTools", "Printf", "ProgressMeter", "QuasiMonteCarlo", "Random", "Reexport", "RelocatableFolders", "Setfield", "SimpleWeightedGraphs", "SparseArrays", "SpecialFunctions", "StaticArrays", "Statistics", "StatsBase", "StatsFuns", "TOML", "YAXArrays", "Zarr"]
-git-tree-sha1 = "ec5a470161d3c7d14180235c97da219761aa7f94"
+deps = ["ADRIAIndicators", "ArchGDAL", "Bootstrap", "CSV", "Clustering", "Combinatorics", "CoralBlox", "CpuId", "DataFrames", "DataStructures", "Dates", "DimensionalData", "Distances", "Distributed", "Distributions", "FileIO", "Flatten", "GDAL_jll", "GeoDataFrames", "GeoFormatTypes", "GeoInterface", "Glob", "Graphs", "ImageIO", "Interpolations", "JMcDM", "JSON", "LERC_jll", "LinearAlgebra", "Logging", "ModelParameters", "NetCDF", "OnlineStats", "OrderedCollections", "Pkg", "PkgVersion", "PrecompileTools", "Printf", "ProgressMeter", "QuasiMonteCarlo", "Random", "Reexport", "RelocatableFolders", "Serialization", "Setfield", "SimpleWeightedGraphs", "SparseArrays", "SpecialFunctions", "StaticArrays", "Statistics", "StatsBase", "StatsFuns", "TOML", "YAXArrays", "Zarr"]
+git-tree-sha1 = "263b407c542f08235d13da68f824240d61e2aa97"
 uuid = "7dc409a7-fbe5-4c9d-b3e2-b0c19a6ba600"
-version = "0.17.0"
+version = "0.17.1"
 weakdeps = ["BlackBoxOptim"]
 
 [[deps.ADRIAIndicators]]
@@ -223,11 +223,14 @@ uuid = "d1d4a3ce-64b1-5f1a-9ba4-7e7e69966f35"
 version = "0.1.10"
 
 [[deps.BlackBoxOptim]]
-deps = ["Compat", "Distributed", "Distributions", "LinearAlgebra", "Printf", "Random", "Requires", "SpatialIndexing", "StatsBase"]
-git-tree-sha1 = "94e83c6f7e798a6a75cc47654a47862a4229587f"
+deps = ["Compat", "Distributed", "Distributions", "LinearAlgebra", "Printf", "Random", "Statistics", "StatsAPI", "StatsBase"]
+git-tree-sha1 = "4f2a1e153aaf86982be76754aa7c01fea4073e25"
 uuid = "a134a8b2-14d6-55f6-9291-3336d3ab0209"
-version = "0.6.9"
-weakdeps = ["HTTP", "Sockets"]
+version = "0.6.11"
+weakdeps = ["HTTP", "JSON", "Sockets"]
+
+    [deps.BlackBoxOptim.extensions]
+    BlackBoxOptimRealtimePlotServerExt = ["HTTP", "JSON", "Sockets"]
 
 [[deps.Blosc]]
 deps = ["Blosc_jll"]
@@ -516,10 +519,12 @@ weakdeps = ["Makie"]
     CoralBloxPlotExt = "Makie"
 
 [[deps.CoralBloxCalib]]
-deps = ["ADRIA", "BlackBoxOptim", "CSV", "CairoMakie", "ColorSchemes", "CoralBlox", "DataFrames", "DataStructures", "Dates", "DiskArrays", "GeoDataFrames", "GeoMakie", "GeometryBasics", "GraphMakie", "HDF5_jll", "Infiltrator", "MAT", "NetCDF", "Parquet", "ProgressMeter", "Random", "ReefMonitoring", "Revise", "Serialization", "Statistics", "StatsBase", "TOML", "TimeZones", "Typst_jll", "YAXArrays"]
-path = "C:/AIMS/Code/CoralBlox-params-calibration"
+deps = ["ADRIA", "BlackBoxOptim", "Bootstrap", "CSV", "CairoMakie", "ColorSchemes", "CoralBlox", "DataFrames", "DataStructures", "Dates", "DiskArrays", "GeoDataFrames", "GeoMakie", "GeometryBasics", "GraphMakie", "HDF5_jll", "Infiltrator", "MAT", "NetCDF", "Parquet", "ProgressMeter", "Random", "ReefMonitoring", "Revise", "Serialization", "Statistics", "StatsBase", "TOML", "TimeZones", "Typst_jll", "YAXArrays"]
+git-tree-sha1 = "eb4d442c5424b902a47c8e9e796265ca8e82e85d"
+repo-rev = "main"
+repo-url = "https://github.com/open-AIMS/CoralBlox-params-calibration"
 uuid = "1b083494-4cef-49eb-9786-fb478ff29e4a"
-version = "0.2.0"
+version = "0.4.0"
 
 [[deps.CoreMath]]
 deps = ["CoreMath_jll"]
@@ -1119,9 +1124,9 @@ version = "1.5.0"
 
 [[deps.GraphMakie]]
 deps = ["DataStructures", "GeometryBasics", "Graphs", "LinearAlgebra", "Makie", "NetworkLayout", "PolynomialRoots", "SimpleTraits", "StaticArrays"]
-git-tree-sha1 = "4e8d73567d30fe69cc2f48b541298f353a68756a"
+git-tree-sha1 = "c290ddd361912279fa13cd19452cb86e1eda3966"
 uuid = "1ecd5474-83a3-4783-bb4f-06765db800d2"
-version = "0.6.5"
+version = "0.6.6"
 
 [[deps.Graphics]]
 deps = ["Colors", "LinearAlgebra", "NaNMath"]
@@ -2294,7 +2299,7 @@ version = "3.54.0"
 
 [[deps.ReefMonitoring]]
 deps = ["ArchGDAL", "CSV", "DataFrames", "Dates", "GeoDataFrames", "HTTP", "JSON", "NetCDF", "ProgressMeter", "StringDistances", "YAXArrays"]
-git-tree-sha1 = "e42dc20e96c0b0592b63b4776ea7a43d573b704f"
+git-tree-sha1 = "f4d016df1e7780192107e034adf31807b6f7d298"
 repo-rev = "main"
 repo-url = "https://github.com/open-AIMS/ReefMonitoring-DataClient"
 uuid = "a3af5ec7-7e43-4bf4-9531-3ce64fba4f24"
@@ -2620,11 +2625,6 @@ version = "0.4.27"
     JuMP = "4076af6c-e467-56ae-b986-b466b2749572"
     MathOptInterface = "b8f27783-ece8-5eb3-8dc8-9495eed66fee"
     cuSPARSE = "b26da814-b3bc-49ef-b0ee-c816305aa060"
-
-[[deps.SpatialIndexing]]
-git-tree-sha1 = "84efe17c77e1f2156a7a0d8a7c163c1e1c7bdaed"
-uuid = "d4ead438-fe20-5cc5-a293-4fd39a41b74c"
-version = "0.1.6"
 
 [[deps.SpecialFunctions]]
 deps = ["IrrationalConstants", "LogExpFunctions", "OpenLibm_jll", "OpenSpecFun_jll"]
