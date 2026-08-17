@@ -126,21 +126,29 @@ CoralBlox is a coral ecosystem dynamics model designed to enable the rapid explo
 
 CoralBlox is a network-based meta-population model that is spatially structured but not spatially explicit over a reef environment. Any arbitrary area where corals may live is characterized by its physical properties (median depth, total spatial area, and coral habitable area) and can represent any nominal spatial scale (i.e. whole of reef or sub reef). Larval connectivity is represented through a transfer probability matrix that provides the likelihood of larvae moving between represented locations. Distinct ecological and environmental processes that align with ecological lifecycles are represented sequentially on an annual basis. These processes include growth, background mortality, reproduction and response to environmental disturbances owing to climatic events or biological threats (i.e. bleaching mortality, cyclone damage and predation by Crown-of-thorns Starfish (COTS) (Figure 1). Model parameterization enables representation of these ecological and environmental processes as functions of the functional groups and size classes (explained further in Materials and Methods). A single CoralBlox simulation's computational cost (3806 reefs over 15 years) is on the order of 10 -- 20 seconds on a standard laptop.
 
-![Figure 1. Ecological and environmental processes represented by CoralBlox within a timestep. (A) Sequence of five processes that take place, in that order, over a timestep in CoralBlox for each reef and each functional group. Coral mortality caused by COTS is not modelled but is represented via forcing data. (B) Illustration of the discretized size distributions before (yellow) and after (magenta and blue) a timestep. Each distribution is composed of chunks of discretized diameter distribution (*blocks*) of different heights and widths that, together, represent the diversity of coral diameters in the population. The horizontal movement and shrinkage of each block represent coral growth and mortality. The magenta block accounts for new coral entering the system due to reproduction.](media/image1.png){width="3.6051027996500435in" height="5.547169728783902in"}
+![**Figure 1. Ecological and environmental processes represented by CoralBlox within a timestep.** (A) Sequence of five processes that take place, in that order, over a timestep in CoralBlox for each reef and each functional group. Coral mortality caused by COTS is not modelled but is represented via forcing data. (B) Illustration of the discretized size distributions before (yellow) and after (magenta and blue) a timestep. Each distribution is composed of chunks of discretized diameter distribution (*blocks*) of different heights and widths that, together, represent the diversity of coral diameters in the population. The horizontal movement and shrinkage of each block represent coral growth and mortality. The magenta block accounts for new coral entering the system due to reproduction.](media/image1.png){width="3.6051027996500435in" height="5.547169728783902in"}
 
 ## Reproducing coral cover trajectories on the GBR: 2008-2024
 
-Figure 2 presents a spatial overview of the performance metrics used to assess the model: the difference between modelled and benchmark Root Mean Square Errors ($\Delta RMSE$) and the Spearman Rank Correlation Coefficient (SRCC). These were calculated individually for each reef in the calibration and test sets. Refer to the "Model calibration and validation" section of the Materials and Methods for further details.
+```{julia}
+#| echo: false
+#| output: false
+include("../outputs/calibration_scores_data.jl")
+ci_str(triple; digits::Int=2) =
+    "$(round(triple[1], digits=digits)) [$(round(triple[2], digits=digits)), $(round(triple[3], digits=digits))]"
+```
 
-Table S1 presents the spatial and heat-stress correlation coefficients (SRCC) with respect to each reef's performance metric. Positive spatial correlations both along and across the GBR indicate an increase in the performance metric southward and offshore, respectively. For heat-stress correlations, negative correlations indicate a decrease in the performance metrics with increasing DHW. Refer to the "Model calibration and validation" section of the Materials and Methods for further details on how these correlation metrics were calculated.
+Figure 2 presents a spatial overview of the performance metrics used to assess the model: the difference between modelled and benchmark Root Mean Square Errors ($\Delta RMSE$) and the Spearman Rank Correlation Coefficient (SRCC). These were calculated individually for each reef in the calibration and test sets. Refer to the "Model calibration and testing" section of the Materials and Methods for further details.
+
+Table S1 presents the spatial and heat-stress correlation coefficients (SRCC) with respect to each reef's performance metric. Positive spatial correlations both along and across the GBR indicate an increase in the performance metric southward and offshore, respectively. For heat-stress correlations, negative correlations indicate a decrease in the performance metrics with increasing DHW. Refer to the "Model calibration and testing" section of the Materials and Methods for further details on how these correlation metrics were calculated.
 
 Figures 3 and 4 present the mean relative cover from 2008 to 2022 across each *reef group* (Figure S1) for calibration and test data splits, respectively. The median RMSE and SRCC for each *reef group* is also indicated.
 
-![**Figure 2.** Model performance metrics for calibration and test reefs. Positive values are represented by stars and negative values by circles. First column: difference between historic average and model's RMSE ($\mathbf{\Delta RMSE}$) for each reef. Positive values indicate the model outperformed the benchmark. The model outperformed the benchmark at 46 of 73 reefs (for calibration) and 13 of 26 reefs (for test). Second column: Spearman's Rank Correlation Coefficient (SRCC) between model and observation for each reef. Bootstrapped median values with confidence intervals are: for calibration reefs $\mathbf{\Delta RMSE}$, -0.01\[-0.03, 0.0\], for test reefs $\mathbf{\Delta RMSE}$, 0.0\[-0.02, 0.02\], for calibration reefs $\mathbf{SRCC}$, 0.67\[0.62, 0.8\], and for test reefs SRCC, 0.58\[0.44, 0.74\].](../figures/02_performance_metrics.png){width="4.385416666666667in" height="5.226152668416448in"}
+![**Figure 2. Model performance metrics for calibration and test reefs.** Positive values are represented by stars and negative values by circles. First column: difference between historic average and model's RMSE ($\mathbf{\Delta RMSE}$) for each reef. Positive values indicate the model outperformed the benchmark. The model outperformed the benchmark at `{julia} scores["n_outperform_calib"]` of `{julia} scores["n_reefs_calib"]` reefs (for calibration) and `{julia} scores["n_outperform_test"]` of `{julia} scores["n_reefs_test"]` reefs (for test). Second column: Spearman's Rank Correlation Coefficient (SRCC) between model and observation for each reef. Bootstrapped median values with confidence intervals are: for calibration reefs $\mathbf{\Delta RMSE}$, `{julia} ci_str(scores["rmse_diff_calib_median"])`, for test reefs $\mathbf{\Delta RMSE}$, `{julia} ci_str(scores["rmse_diff_test_median"])`, for calibration reefs $\mathbf{SRCC}$, `{julia} ci_str(scores["srcc_calib_median"])`, and for test reefs SRCC, `{julia} ci_str(scores["srcc_test_median"])`.](../figures/02_performance_metrics.png){width="4.385416666666667in" height="5.226152668416448in"}
 
-![Figure 3. Observed versus modelled relative coral cover for calibration reefs aggregated by reef group. Shaded intervals show confidence intervals.](../figures/03_reef_groups_calibration.png){width="5.905511811023622in" height="5.4519116360454944in"}
+![**Figure 3. Observed versus modelled relative coral cover for calibration reefs aggregated by reef group.** Shaded intervals show confidence intervals.](../figures/03_reef_groups_calibration.png){width="5.905511811023622in" height="5.4519116360454944in"}
 
-![Figure 4. Observed versus modelled relative coral cover for test reefs aggregated by reef group. Shaded intervals show confidence intervals.](../figures/04_reef_groups_validation.png){width="5.9in"}
+![**Figure 4. Observed versus modelled relative coral cover for test reefs aggregated by reef group.** Shaded intervals show confidence intervals.](../figures/04_reef_groups_test.png){width="5.9in"}
 
 A comparison between modeled and observed relative coral cover for four selected test reefs is presented in Figure 5. The selected reefs (two with the lowest and two the highest RMSE values) show a range of distinct environmental and ecological behaviors, including low and high heat stress, presence or absence of mortality events caused by cyclone or Crown-of-thorns Starfish (COTS) outbreaks, low and high initial coral cover, and distinct initial benthic compositions. Cyclone and storm damage historical data and the lack of a COTS sub-model make validating model processes difficult at reefs significantly impacted by these disturbances. Estimates of mortality for these events are inferred directly from the LTMP to ensure trajectories are aligned.
 
@@ -148,9 +156,9 @@ A comparison between modeled and observed relative coral cover for four selected
 
 ## Depth drives coral survival in high heat stress scenarios
 
-We performed a variance-based global sensitivity analysis using Shapley effects [@godaSimpleAlgorithmGlobal2021; @owenSobolIndicesShapley2014] to determine how distinct ecological and environmental factors influence four metrics: change in coral cover, evenness (measure as the inverse of the Simpson's Index [@hillDiversityEvennessUnifying1973]), juvenile cover (measured as the coral cover for the first two smaller size classes) and shelter volume (measured in $m^{3}$ [@urbina-barretoQuantifyingShelterCapacity2021]) in over a single simulated timestep (Figure 6. Shapley effects). The implementation of these metrics is described in [@tanOpenAIMSADRIAIndicatorsjlInitial2025]. To produce each plot in Figure 6. Shapley effects, we performed 30 000 model runs. See Figure S3 for a convergence analysis. A synthetic (hypothetical) reef was used for this analysis, enabling parameterization of some of the reef's environmental and ecological features (namely, habitable area, depth, initial coral cover, and benthic composition). Refer to Table S11 for a full list of all factors included in this analysis (218 in total).
+We performed a variance-based global sensitivity analysis using Shapley effects [@godaSimpleAlgorithmGlobal2021; @owenSobolIndicesShapley2014] to determine how distinct ecological and environmental factors influence four metrics: change in coral cover, evenness (measure as the inverse of the Simpson's Index [@hillDiversityEvennessUnifying1973]), juvenile cover (measured as the coral cover for the first two smaller size classes) and shelter volume (measured in $m^{3}$ [@urbina-barretoQuantifyingShelterCapacity2021]) in over a single simulated timestep (Figure 6. Shapley effects). The implementation of these metrics is described in [@tanOpenAIMSADRIAIndicatorsjlInitial2025]. To produce each plot in Figure 6. Shapley effects, we performed 30 000 model runs. See Figure S4 for a convergence analysis. A synthetic (hypothetical) reef was used for this analysis, enabling parameterization of some of the reef's environmental and ecological features (namely, habitable area, depth, initial coral cover, and benthic composition). Refer to Table S11 for a full list of all factors included in this analysis (218 in total).
 
-![Figure 6. Shapley effects for distinct disturbance scenarios. Factors with a \* represent groups of parameters across distinct functional groups, size classes or reef groups. Initial proportion of each functional group -- tabular Acropora (%TA), corymbose Acropora %CA, corymbose non-Acropora (%CNA), small massive (%SM), and large massive (%LM) -- were included in the assessment. (A) DHW = 0: no heat stress scenarios. (B) 0 ≤ DHW ≤ 30: Broad-range heat stress scenarios. (C) 0 ≤ DHW ≤ 8: Low-value and narrow-range heat stress scenarios. (D) 8 ≤ DHW ≤ 16: Mid-value and narrow-range heat stress scenarios. (E) 16 ≤ DHW ≤ 30: High-value and narrow-range heat stress scenarios.](media/image6.png){width="6.251968503937008in" height="7.811023622047244in"}
+![**Figure 6. Shapley effects for distinct disturbance scenarios.** Factors with a \* represent groups of parameters across distinct functional groups, size classes or reef groups. Initial proportion of each functional group -- tabular Acropora (%TA), corymbose Acropora %CA, corymbose non-Acropora (%CNA), small massive (%SM), and large massive (%LM) -- were included in the assessment. (A) DHW = 0: no heat stress scenarios. (B) 0 ≤ DHW ≤ 30: Broad-range heat stress scenarios. (C) 0 ≤ DHW ≤ 8: Low-value and narrow-range heat stress scenarios. (D) 8 ≤ DHW ≤ 16: Mid-value and narrow-range heat stress scenarios. (E) 16 ≤ DHW ≤ 30: High-value and narrow-range heat stress scenarios.](media/image6.png){width="6.251968503937008in" height="7.811023622047244in"}
 
 We included a dummy factor -- known to have no effect on model outcomes -- to provide a statistical threshold [@khorashadizadehComparisonVariancebasedMomentindependent2017]. From the 218 factors included in the analysis, only the ones whose sensitivity indexes were higher than the dummy factor were included in from the analysis. Under no heat stress (Figure 6A), initial coral cover and benthic composition emerge as the most influential factors. In scenarios with a broad range of heat stress (Figure 6B), DHW becomes much more influential on model metric outcomes. The importance of DHWs and initial cover are overtaken by reef depth as reefs face increasing heat stress (Figure 6C**-**E).
 
@@ -158,7 +166,7 @@ We included a dummy factor -- known to have no effect on model outcomes -- to pr
 
 CoralBlox provides a computationally efficient modelling capability to support rapid screening of potential management approaches. By explicitly representing key ecological processes within a simplified but credible framework, CoralBlox enables stakeholders and reef managers to iteratively explore management options and quickly identify robust strategies under deep uncertainty. CoralBlox balances the need for credible representations of ecological interactions (at reef-regional scales) and computational efficiency to provide timely, actionable insight.
 
-The comprehensive approach taken to calibration and validation provides key insights to the development of coral ecosystem models and intervention management on the GBR. Model performance metrics increased southward and offshore and decreased with increasing DHW exposure. Furthermore, the model displayed highest sensitivity to DHW and depth (Figure 6). Together these findings indicate that the increased influence of bleaching events since 2016 increases uncertainty in model projections. This adds to mounting evidence that DHW alone cannot fully resolve coral bleaching mortality events [@mcclanahanReconsideringRescalingClimate2024] and that regional ecosystem models should account for factors such as cloud cover (i.e. light attenuation) [@cheungMovingTemperatureMetrics2025], turbidity [@sullyTurbidReefsModerate2020] and an array of other modifying variables [@mcclanahanEvaluatingCoralReef2025]. Indeed the decrease in model performance in inshore reefs is consistent with other GBR regional models and indicative of the mediating effect that water quality and turbidity play in bleaching mortality and recovery rates [@macneilWaterQualityMediates2019]. This suggests that future projections of the GBR [@bozecRapidlyClosingWindow2025; @condieLargescaleInterventionsMay2021] need to be interpreted carefully as ameliorating factors for the most sensitive components of these models (i.e. related to bleaching mortality) are not routinely incorporated. Importantly however, these results support recent findings indicating that management of deeper reefs may play a crucial role in in the future of the GBR with increased exposure to severe bleaching events [@grierImportanceDepthRefugia2026].
+The comprehensive approach taken to calibration and testing provides key insights to the development of coral ecosystem models and intervention management on the GBR. Model performance metrics increased southward and offshore and decreased with increasing DHW exposure. Furthermore, the model displayed highest sensitivity to DHW and depth (Figure 6). Together these findings indicate that the increased influence of bleaching events since 2016 increases uncertainty in model projections. This adds to mounting evidence that DHW alone cannot fully resolve coral bleaching mortality events [@mcclanahanReconsideringRescalingClimate2024] and that regional ecosystem models should account for factors such as cloud cover (i.e. light attenuation) [@cheungMovingTemperatureMetrics2025], turbidity [@sullyTurbidReefsModerate2020] and an array of other modifying variables [@mcclanahanEvaluatingCoralReef2025]. Indeed the decrease in model performance in inshore reefs is consistent with other GBR regional models and indicative of the mediating effect that water quality and turbidity play in bleaching mortality and recovery rates [@macneilWaterQualityMediates2019]. This suggests that future projections of the GBR [@bozecRapidlyClosingWindow2025; @condieLargescaleInterventionsMay2021] need to be interpreted carefully as ameliorating factors for the most sensitive components of these models (i.e. related to bleaching mortality) are not routinely incorporated. Importantly however, these results support recent findings indicating that management of deeper reefs may play a crucial role in in the future of the GBR with increased exposure to severe bleaching events [@grierImportanceDepthRefugia2026].
 
 Balancing model complexity with performance allows the simulation of thousands of potential management scenarios, enabling stakeholders to better explore intervention options and their implications. While the system is currently limited in its representation of non-heat related disturbances such as COTS outbreaks, validation against historical data shows that CoralBlox can effectively capture bleaching impacts and recovery dynamics in many reef contexts. As a complementary component of the Reef Restoration and Adaptation Program\'s modelling toolkit [@bozecRapidlyClosingWindow2025; @cresswellCapturingFinescaleCoral2024], CoralBlox provides the first computationally efficient platform to develop informed and timely interventions to enhance coral reef resilience in the face of increasing climate pressures.
 
@@ -172,7 +180,7 @@ Representation of natural adaptation mechanisms in CoralBlox also has several im
 
 The selection process relies on the univariate Breeders\' equation [@lushAnimalBreedingPlans1943; @lernerGeneticBasisSelection1958], which assumes that the trait being modelled is causal and entirely responsible for the organism\'s biological fitness [@morrisseyDangerApplyingBreeders2010]. The approach does not fully account for non-linear genomic interactions, epistasis, physico-chemical limits to adaptability or potential trade-offs between thermal tolerance and other fitness components. The model also assumes a stable genetic variance through fixed standard deviations of tolerance distributions, which may not reflect how genetic variance changes under strong selection pressures over time. Furthermore, the connectivity-based weighting system for inheritance represents a simplification of complex larval dispersal and settlement dynamics.
 
-Standing genetic variation and potential de novo mutations, represented in the model as the upper bound relative to the population mean, allow populations to evolve to higher thresholds of heat stress tolerance, up to a limit of +10DHW from the mean [@bozecRapidlyClosingWindow2025]. Despite early concerns around potentially biasing model results towards adaptation levels that are implausibly high, it is found that the represented populations do not adapt to that degree prior to population collapse. The approach does, however, lack strong empirical validation and could under or over-estimate a population\'s capacity to adapt to climate change. While these simplifications are necessary for computational efficiency, they represent areas where future work could enhance biological realism as our ability to accurately parameterise and predict coral adaptation improves.
+Standing genetic variation and potential de novo mutations, represented in the model as the upper bound relative to each population's initial mean, allow populations to evolve to higher thresholds of heat stress tolerance, up to a limit of +24 DHW from the initial mean [@bozecRapidlyClosingWindow2025]. Despite early concerns around potentially biasing model results towards adaptation levels that are implausibly high, it is found that the represented populations do not adapt to that degree prior to population collapse. The approach does, however, lack strong empirical validation and could under or over-estimate a population\'s capacity to adapt to climate change. While these simplifications are necessary for computational efficiency, they represent areas where future work could enhance biological realism as our ability to accurately parameterise and predict coral adaptation improves.
 
 The calibration process demonstrates that CoralBlox can produce credible ecosystem behavior and trajectories. It is acknowledged, however, that the present work is limited to a single "best fit", contingent on the initial state. The calibration itself is limited by incomplete representation of disturbances such as cyclone damage, which is currently handled via forcing data. Ensemble approaches will be adopted in the future to assist in identifying relevant and critical areas of parameter space [@neilCalibratingMulticonstraintEnsemble2025; @vollertUnlockingEnsembleEcosystem2024] and facilitate a Value-of-Information assessment. A multi-model ensemble approach could also be adopted in future to account for structural uncertainties and gain increased confidence in projections [@willcockModelEnsemblesEcosystem2023; @spenceEcoEnsembleGeneralFramework2023; @loftonImportanceMultimodelEnsemble2025].
 
@@ -198,25 +206,29 @@ CoralBlox represents five distinct coral functional groups, namely tabular *Acro
 
 For each one-year timestep ($t$), the coral cover for each location $l$, $l \in \left\{ 1,\ldots,L \right\} \subseteq \mathbb{Z}^{+}$, is independently updated. Locations are assumed to have a habitable area $H_{l}$, corresponding to the proportion of their total area where corals can live. The coral cover relative to the habitable area $H_{l}$ for functional group $g$ and size class $z$ is denoted by $C_{t;g,z,l} \in \lbrack 0,1\rbrack \subset \mathbb{R}^{+}$. The coral cover for a location $l$, summed up across all functional groups and size classes, is denoted by $C_{t;l} \in \lbrack 0,1\rbrack \subset \mathbb{R}^{+}$. Values of $C_{t;l} = 1$ indicate that the entire habitable area is taken up by coral. The available space at a location $l$ and timestep $t$ is:
 
-+----------------------------------------------------------------------------------------+----------------+
-|$$K_{t;l} = H_{l} - C_{t;l}$$                                                           | \(1\)          |
-+----------------------------------------------------------------------------------------+----------------+
+|  |  |
+|:---:|---:|
+| $$K_{t;l} = H_{l} - C_{t;l}$$ | (1) |
 
-Growth and mortality regional scale factors are included to represent regional dynamics. These are denoted as $\Xi_{g\mathcal{,l}}$, and $\Upsilon_{g\mathcal{,l}}$ for growth and mortality, respectively, and are calibrated with observations across twelve *reef groups*, $\mathcal{l =}1,\ldots,12$. These reef groups encompass the entire GBR and were built upon bioregions [@greatbarrierreefmarineparkauthoritygbrmpaGBRMPAMarineBioregions2025; @kerriganClassifyingBiodiversityGreat2010] defined by the Great Barrier Reef Marine Park Authority (GBRMPA), clustered together based on spatial proximity to ensure the minimum amount of data for calibration and test sets. Refer to the "Model calibration and validation" section in Materials and Methods for more details.
+: {tbl-colwidths="[90,10]"}
+
+Growth and mortality regional scale factors are included to represent regional dynamics. These are denoted as $\Xi_{g\mathcal{,l}}$, and $\Upsilon_{g\mathcal{,l}}$ for growth and mortality, respectively, and are calibrated with observations across twelve *reef groups*, $\mathcal{l =}1,\ldots,12$. These reef groups encompass the entire GBR and were built upon bioregions [@greatbarrierreefmarineparkauthoritygbrmpaGBRMPAMarineBioregions2025; @kerriganClassifyingBiodiversityGreat2010] defined by the Great Barrier Reef Marine Park Authority (GBRMPA), clustered together based on spatial proximity to ensure the minimum amount of data for calibration and test sets. Refer to the "Model calibration and testing" section in Materials and Methods for more details.
 
 The coral cover for each location is computed at the functional group and size class level and then summed. Coral cover $C_{t,l}$ for the location $l$ at the end of timestep $t$ is given by:
 
-+----------------------------------------------------------------------------------------+----------------+
-|$$C_{t;l} = \sum_{g = 1}^{G}{\left\lbrack C_{t;g,l}^{recruits} + \sum_{z = 1}^{Z}\left( | \(2\)          |
-|C_{t;\ g,z,l}^{growth} \cdot v_{g,z,l}^{background} \cdot v_{t;\ g,z,l}^{bleaching}     |                |
-|\cdot v_{t;\ g,z,l}^{cyclone/COTS} \right) \right\rbrack\ }$$                           |                |
-+----------------------------------------------------------------------------------------+----------------+
+|  |  |
+|:---:|---:|
+| $$C_{t;l} = \sum_{g = 1}^{G}{\left\lbrack C_{t;g,l}^{recruits} + \sum_{z = 1}^{Z}\left( C_{t;\ g,z,l}^{growth} \cdot v_{g,z,l}^{background} \cdot v_{t;\ g,z,l}^{bleaching} \cdot v_{t;\ g,z,l}^{cyclone/COTS} \right) \right\rbrack\ }$$ | (2) |
+
+: {tbl-colwidths="[90,10]"}
 
 where the recruits cover $C_{t;\ g,l}^{recruits}$ represents the increase in coral cover resulting from reproduction (see "Coral reproduction" section in Materials and Methods) and the growth cover $C_{t;\ g,z,l}^{growth}$ accounts for the coral cover after a growth event (see the "Coral growth" section in Materials and Methods). The survival rates $v$ can be written in terms of their respective mortality rates as $v = 1 - m$. The *background* mortality rate, $m_{g,z,l}^{background}$, account for the mortality under stable conditions adjusted by the regional scale factor:
 
-+----------------------------------------------------------------------------------------+----------------+
-|$$m_{g,z,l}^{background} = m_{g,z}^{*}\left( 1 - 0.5\Upsilon_{\mathcal{l}} \right)$$    | \(3\)          |
-+----------------------------------------------------------------------------------------+----------------+
+|  |  |
+|:---:|---:|
+| $$m_{g,z,l}^{background} = m_{g,z}^{*}\left( 1 - 0.5\Upsilon_{\mathcal{l}} \right)$$ | (3) |
+
+: {tbl-colwidths="[90,10]"}
 
 where $m_{g,z}^{*}$ is the base background mortality value. The bleaching mortality rates, $m_{t;g,z}^{bleaching}$, are derived from the observed relationships between heat stress and coral mortality (see section "Coral bleaching and mortality"). Although CoralBlox does not explicitly model cyclone or COTS related damage, the cyclone/COTS survival rates $\left( v_{t;\ g,z,l}^{cyclone/COTS} \right)$ were derived from LTMP historical data for the purpose of assessing how well coral dynamics are captured.
 
@@ -226,31 +238,35 @@ As mentioned, CoralBlox represents each functional group as discretized distribu
 
 To calculate the coral cover from this distribution of diameters, consider the area of a coral colony, approximated by the area of a circle with diameter $x$:
 
-+----------------------------------------------------------------------------------------+----------------+
-|$$\alpha(x) = \frac{\pi x^{2}}{4}$$                                                     | \(4\)          |
-+----------------------------------------------------------------------------------------+----------------+
+|  |  |
+|:---:|---:|
+| $$\alpha(x) = \frac{\pi x^{2}}{4}$$ | (4) |
+
+: {tbl-colwidths="[90,10]"}
 
 Given a diameter density function $\lambda(x)$, representing the number of corals per unit of size with diameter $x$, the area $C(x_{i},x_{f})$ covered by corals with diameter between $x_{i}$ and $x_{f}$ is given by:
 
-+----------------------------------------------------------------------------------------+----------------+
-|$$C\left( x_{i},x_{f} \right) = \int_{x_{i}}^{x_{f}}{\lambda(x)\frac{\pi x^{2}}{4}dx}$$ | \(5\)          |
-+----------------------------------------------------------------------------------------+----------------+
+|  |  |
+|:---:|---:|
+| $$C\left( x_{i},x_{f} \right) = \int_{x_{i}}^{x_{f}}{\lambda(x)\frac{\pi x^{2}}{4}dx}$$ | (5) |
+
+: {tbl-colwidths="[90,10]"}
 
 Since the diameter density of each coral block is constant, we can use Eq. (5) to calculate the area covered by the corals within each block:
 
-+----------------------------------------------------------------------------------------+----------------+
-|$$C_{g,z,b} = \lambda_{g,z,b}\frac{\pi}{12}\ ({\delta_{g,z,b}^{+}}^{3} -                | \(6\)          |
-|{\delta_{g,z,b}^{-}}^{3})$$                                                             |                |
-+----------------------------------------------------------------------------------------+----------------+
+|  |  |
+|:---:|---:|
+| $$C_{g,z,b} = \lambda_{g,z,b}\frac{\pi}{12}\ ({\delta_{g,z,b}^{+}}^{3} - {\delta_{g,z,b}^{-}}^{3})$$ | (6) |
+
+: {tbl-colwidths="[90,10]"}
 
 Each coral colony has a linear extension, $\gamma_{g,z}$, that represents change in diameter for each coral colony over a year. Linear extensions assume constant distinct values for corals within the same functional group $g$ and size class $z$. Since the coral cover for each location is spatially constrained by that location's habitable area, when the coral cover is high, competition for space takes place. Conversely, when coral cover is low, growth is unconstrained and faster. To address both effects, at each timestep we make use of spatial competition coefficients ($\kappa_{t;l}$), based on the location's available space $K_{t;l}$ and habitable area $H_{l}$ and on the linear extensions $\gamma_{g,z}$, and growth acceleration coefficients ($\zeta_{t;l})$, based on the location's available space $K_{t;l}$. Refer to section "Coral growth and mortality" in the Supplementary Materials for more details on how these growth coefficients are calculated. The actual growth rate used at each timestep is given by:
 
-+----------------------------------------------------------------------------------------+----------------+
-|$$\omega_{t;g,z,l} = \left\{ \begin{aligned}                                            | \(7\)          |
-|  {\gamma_{g,z}\zeta}_{t;l}\Xi_{\mathcal{l}},\ \  & {if\ C}_{t;l} < 0.5 \\              |                |
-|  \gamma_{g,z}\kappa_{t;l}\Xi_{\mathcal{l}},\ \  & {if\ C}_{t;l} \geq 0.5               |                |
-|  \end{aligned} \right.\ $$                                                             |                |
-+----------------------------------------------------------------------------------------+----------------+
+|  |  |
+|:---:|---:|
+| $$\omega_{t;g,z,l} = \left\{ \begin{aligned} {\gamma_{g,z}\zeta}_{t;l}\Xi_{\mathcal{l}},\ \  & {if\ C}_{t;l} < 0.5 \\ \gamma_{g,z}\kappa_{t;l}\Xi_{\mathcal{l}},\ \  & {if\ C}_{t;l} \geq 0.5 \end{aligned} \right.\ $$ | (7) |
+
+: {tbl-colwidths="[90,10]"}
 
 A growth event is represented as the displacement of each coral block in the diameter space, where the growth rates act as translational velocities. The growth rates are always smaller than their correspondent size class widths, $\omega_{g,z} \leq d_{g,z}^{+} - d_{g,z}^{-}$, for all $g$, $z$. Hence after a growth event, we have one of the three following situations for each *block*: (i) the entire *block* remains within size class $z$; (ii) the entire *block* has moved to size class $z + 1$; (iii) part of the *block* is within size class $z$ and part is within size class $z + 1$. In the latter case, once the growth event ends, the *block* is split into two, each belonging to only a single size class and having a distinct constant diameter density, where the diameter density of the new *block* that lies within size class $z + 1$ is calculated so that to conserve the number of coral colonies.
 
@@ -258,10 +274,11 @@ Settlers resulting from the reproduction process join the coral population in th
 
 After a growth event, the total cover $C_{t;g,z}^{growth}$, corresponding to corals belonging to the functional group $g$ and size class $z$, can be found by using Eq. (6 summed over all its *block**s***:
 
-+----------------------------------------------------------------------------------------+----------------+
-|$$C_{t;\ g,z}^{growth} = \ \sum_{b = 1\ }^{B_{gz}}{\lambda_{t;\ g,z,b}\frac{\pi}{12}\   | \(8\)          |
-|\left( {\delta_{g,z,b}^{+}}^{3} - {\delta_{g,z,b}^{-}}^{3} \right)}$$                   |                |
-+----------------------------------------------------------------------------------------+----------------+
+|  |  |
+|:---:|---:|
+| $$C_{t;\ g,z}^{growth} = \ \sum_{b = 1\ }^{B_{gz}}{\lambda_{t;\ g,z,b}\frac{\pi}{12}\ \left( {\delta_{g,z,b}^{+}}^{3} - {\delta_{g,z,b}^{-}}^{3} \right)}$$ | (8) |
+
+: {tbl-colwidths="[90,10]"}
 
 $B_{g,z}$ is the number of *blocks* within size class $z$ for functional group $g$ and $\lambda_{g,z,b}$, $\delta_{g,z,b}^{+}$ and $\delta_{g,z,b}^{-}$ are, respectively, the diameter densities, upper bounds and lower bounds for each coral block after the growth event has happened.
 
@@ -269,29 +286,37 @@ $B_{g,z}$ is the number of *blocks* within size class $z$ for functional group $
 
 Fecundity is first considered within the scope of different coral functional groups and size classes, without consideration of environmental factors. We define $\phi_{g,z}$ as the number of larvae produced per colony, which is then converted into the number of larvae per m^2^ for each size class and functional group. The number of larvae per colony is calculated as a function of colony area based on models derived from observational data [@hallReproductiveStrategiesModular1996]:
 
-+----------------------------------------------------------------------------------------+----------------+
-|$$\log\phi_{g,z} = (\log a_{g} + b_{g}\log{({\overline{\alpha}}_{g,z}))/0.1}$$          | \(9\)          |
-+----------------------------------------------------------------------------------------+----------------+
+|  |  |
+|:---:|---:|
+| $$\log\phi_{g,z} = (\log a_{g} + b_{g}\log{({\overline{\alpha}}_{g,z}))/0.1}$$ | (9) |
+
+: {tbl-colwidths="[90,10]"}
 
 Where $a_{g}$ and $b_{g}$ are fecundity parameters from [@hallReproductiveStrategiesModular1996] and ${\overline{\alpha}}_{g,z}$ is the mean colony area for the functional group $g$ and size class $z$. The number of larvae produced by each functional group and location, $\phi_{g,l}$, is then determined by multiplying the location coral area and the summation of all size classes:
 
-+----------------------------------------------------------------------------------------+----------------+
-|$$\phi_{g,l} = \sum_{z}^{}{\phi_{g,z}C_{t;g,l}}$$                                       | \(10\)         |
-+----------------------------------------------------------------------------------------+----------------+
+|  |  |
+|:---:|---:|
+| $$\phi_{g,l} = \sum_{z}^{}{\phi_{g,z}C_{t;g,l}}$$ | (10) |
+
+: {tbl-colwidths="[90,10]"}
 
 Spawning and recruitment processes represent the release of gametes by broadcast spawning corals into surrounding waters where they fertilize and form larvae, and the proportion of larvae that survive, settle and are recruited as juvenile coral polyps. Larvae may be carried off by currents and never settle, settle on the same site at which they were spawned, or travel to nearby sites depending on ocean currents and other factors, including larval development, mortality, competing organisms, habitat suitability and environmental factors [@aniConnectivityModellingIdentifies2024]. In this study, coral larval dispersal and settlement are represented using connectivity matrices derived from a connectivity model. This model comprises a particle tracking simulator, OceanParcels [@vansebillePhysicalOceanographyTransport2020], with velocity outputs from a high-resolution hydrodynamic model, RECOM [@RECOMEReefsResearch], an implementation of SHOC [@herzfeldAlternativeCoordinateSystem2006] as input. RECOM velocities are nested within a 1 km resolution hydrodynamic model of the GBR (version 2.0) of the eReefs hydrodynamic model [@neilCalibratingMulticonstraintEnsemble2025], also an implementation of SHOC [@vollertUnlockingEnsembleEcosystem2024]. Nesting RECOM within a lower-resolution model allows particles (virtual larvae) that travel outside RECOM boundaries and potentially re-enter RECOM domain to still be tracked. Details of the creation of the connectivity datasets can be found in [@bairos-novakCoralAdaptationClimate2021].
 
 Using these methods, connectivity matrices are generated for several days and years of spawning to reflect the innate stochasticity of the spawning process. The elements $P_{l',l}$ of a connectivity matrix represent the likelihood of larvae moving from location $l'$ to $l$ , where $l',l = 1,\ldots,L$. Note that, as larvae can also be carried outside of the domain or die, the rows of $P$ need not sum to 1. The number of potential settlers (or larval pool) $R$ at each location is then calculated by multiplying the connectivity matrix (averaged over the modelled days and years to capture variation) by the fecundity scope,
 
-+----------------------------------------------------------------------------------------+----------------+
-|$$R_{g,l} = \left\langle \phi_{g,l'} \right.\ ,\left. \ P_{l',l} \right\rangle$$        | \(11\)         |
-+----------------------------------------------------------------------------------------+----------------+
+|  |  |
+|:---:|---:|
+| $$R_{g,l} = \left\langle \phi_{g,l'} \right.\ ,\left. \ P_{l',l} \right\rangle$$ | (11) |
+
+: {tbl-colwidths="[90,10]"}
 
 The number of settlers recruited per functional group and location is then modelled following [@bozecCumulativeImpactsAustralias2022; @haddonModellingQuantitativeMethods2011], which treats recruitment as a stochastic process based on a Poisson distribution. A rate parameter $\Lambda_{g,l}$ is calculated as the settler density in settlers/m^2^, where $\Lambda_{g,l}$ itself is estimated using a Beverton-Holt function, following [@bozecCumulativeImpactsAustralias2022]:
 
-+----------------------------------------------------------------------------------------+----------------+
-|$$\Lambda_{g,l} = \frac{\Lambda_{1}R_{g,l}}{(\Lambda_{2} + R_{g,l})}K_{l}$$             | \(12\)         |
-+----------------------------------------------------------------------------------------+----------------+
+|  |  |
+|:---:|---:|
+| $$\Lambda_{g,l} = \frac{\Lambda_{1}R_{g,l}}{(\Lambda_{2} + R_{g,l})}K_{l}$$ | (12) |
+
+: {tbl-colwidths="[90,10]"}
 
 where $\Lambda_{1}$ is the maximum achievable density, $\Lambda_{2}$ is the larval stock required to produce 50% of the maximum settlement, and $K_{l}$ is the space available for coral cover at the location $l$.
 
@@ -299,37 +324,50 @@ where $\Lambda_{1}$ is the maximum achievable density, $\Lambda_{2}$ is the larv
 
 Susceptibility to coral bleaching is assessed independently for each location. The relationship between heat stress induced coral bleaching and mortality is based on maximum annual Degree Heating Weeks (DHW) values obtained from the National Oceanic and Atmospheric Administration (NOAA) and observations of coral mortality on the Great Barrier Reef [@hughest.p.kerryj.t.bairda.h.etal.GlobalWarmingTransforms2018].
 
-The coral population is conceptualized as having a truncated normal distribution of heat stress tolerance $F_{t;\ g,z,l}$ for each functional group $(g)$, size class ($z$) and location ($l$). This distribution indicates the proportion of the population that is susceptible to bleaching mortality at a given DHW value, prior to incorporating an ameliorating effect of depth. Denoting a truncated normal distribution $TN(\mu,\ \sigma,\ f_{-},\ f_{+})$, where $\mu$ and $\sigma$ are the mean and standard deviations of the underlying normal distribution, and $f_{-}$ and $f_{+}$ are the lower and upper truncation bounds, respectively, we can write $F_{t;\ g,z,l}$ as:
+The coral population is conceptualized as having a truncated normal distribution of heat stress tolerance $F_{t;\ g,z,l}$ for each functional group $(g)$, size class ($z$) and location ($l$). This distribution indicates the proportion of the population that is susceptible to bleaching mortality at a given DHW value. Denoting a truncated normal distribution $TN(\mu,\ \sigma,\ f^{-},\ f^{+})$, where $\mu$ and $\sigma$ are the mean and standard deviations of the underlying normal distribution, and $f^{-}$ and $f^{+}$ are the lower and upper truncation bounds, respectively, we can write $F_{t;\ g,z,l}$ as:
 
-+----------------------------------------------------------------------------------------+----------------+
-|$$F_{t;\ g,z,l} ≔ TN(\mu_{t;g,z,l},\ \sigma_{g},\ 4,\ \mu_{t;g,z,l} + 10)$$             | \(13\)         |
-+----------------------------------------------------------------------------------------+----------------+
+|  |  |
+|:---:|---:|
+| $$F_{t;\ g,z,l} ≔ TN(\mu_{t;g,z,l},\ \sigma_{g},\ f_{t;l}^{-},\ f_{g,z,l}^{+})$$ | (13) |
 
-The upper bound (+10 DHW from mean tolerance) is a simplification which avoids a hard limit to adaptive capacity. The lower bound represents a lack of bleaching at less than 4 DHWs [@heronWarmingTrendsBleaching2016; @vanhooidonkQuantifyingQualityCoral2009]. The distribution shape is informed by data from [@hughest.p.kerryj.t.bairda.h.etal.GlobalWarmingTransforms2018] and analyses on the heritability of coral traits [@bairos-novakCoralAdaptationClimate2021]. For each functional group, the standard deviations ($\sigma_{g}$) are assumed to be identical for all size classes and locations, and are fixed throughout the entire model run to represent stable genetic variance [@bairos-novakCoralAdaptationClimate2021]. Table S5 shows the values used for all $\sigma_{g}$. The mean values ($\mu_{t;g,z,l}$) are initially the same for all locations but vary between functional group and size class and then updated at each timestep to account for natural adaptation. Table S4 shows the initial values adopted for all $\mu_{t = 0;g,z,l}$.
+: {tbl-colwidths="[90,10]"}
 
-At each timestep, the proportion of the population affected by bleaching for each functional group, size class and location, denoted by $\beta_{t;g,z,l}$, is estimated based on $F_{t;g,z,l}$. The affected population is adjusted with a depth coefficient ($\eta_{l}$) that is a function of that location's depth ($h_{l}$), as in [@bairdDeclineBleachingSuggests2018]:
+The upper bound ($f_{g,z,l}^{+}$) is a hard ceiling fixed at 24 DHW-weeks above each population's initial mean tolerance ($\mu_{t = 0;g,z,l}$). The lower bound ($f_{t;l}^{-}$) is not a fixed value but carries a one-timestep memory of each location's own bleaching history:
 
-+----------------------------------------------------------------------------------------+----------------+
-|$$\eta_{l} = \min\left( \max\left( e^{- 0.07551\  \cdot \ \left( h_{l} - 2 \right)},\ 0 | \(14\)         |
-|\right),\ 1 \right)$$                                                                   |                |
-+----------------------------------------------------------------------------------------+----------------+
+|  |  |
+|:---:|---:|
+| $$f_{t;l}^{-} = \max\left( 1,\ DHW_{t - 1;l}^{\textbf{eff}} \right)$$
+$$f_{g,z,l}^{+} = \mu_{t = 0;g,z,l} + 24$$ | (13b) |
 
-The depth coefficient represents the protection provided by depth from heat stress (as in [@lushAnimalBreedingPlans1943]) clamped between 0 and 1, and is expressed in terms of DHWs. The minimum viable depth for all locations is assumed to be $2$ meters below surface, where values lower than 2 offer no protection [@bairdDeclineBleachingSuggests2018]. Bleaching mortality is represented by:
+: {tbl-colwidths="[90,10]"}
 
-+----------------------------------------------------------------------------------------+----------------+
-|$$m_{t;g,z,l}^{bleaching} = \left\{ \begin{array}{r}                                    | \(15\)         |
-|  \beta_{t;g,z,l} \cdot \eta_{l},\ \ z > 2 \\                                           |                |
-|  0,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ z \leq 2                          |                |
-|  \end{array} \right.\ $$                                                               |                |
-+----------------------------------------------------------------------------------------+----------------+
+where $DHW_{t - 1;l}^{\textbf{eff}}$ is the effective, depth-attenuated DHW at location $l$ during the previous timestep (see equation (14) below). Taking the maximum with 1 means $f_{t;l}^{-}$ reduces to a floor of 1 DHW-week whenever the previous timestep's effective DHW was itself below that floor, representing a lack of bleaching susceptibility below that level; following a timestep with effective DHW above 1, the threshold instead tracks how severe the preceding year's heat stress was, so a location that has already been through a heat-stress event needs at least as much heat stress the following year to affect a further proportion of the population. The distribution shape is informed by data from [@hughest.p.kerryj.t.bairda.h.etal.GlobalWarmingTransforms2018] and analyses on the heritability of coral traits [@bairos-novakCoralAdaptationClimate2021]. For each functional group, the standard deviations ($\sigma_{g}$) are assumed to be identical for all size classes and locations, and are fixed throughout the entire model run to represent stable genetic variance [@bairos-novakCoralAdaptationClimate2021]. Table S5 shows the values used for all $\sigma_{g}$. The mean values ($\mu_{t;g,z,l}$) are initially the same for all locations but vary between functional group and then updated at each timestep to account for natural adaptation. Table S4 shows the initial values adopted for all $\mu_{t = 0;g,z,l}$.
+
+At each timestep, the proportion of the population affected by bleaching for each functional group, size class and location, denoted by $\beta_{t;g,z,l}$, is estimated based on $F_{t;g,z,l}$, evaluated at an effective, depth-attenuated DHW value rather than the raw surface DHW. This effective DHW ($DHW_{t;l}^{\textbf{eff}}$) is obtained by attenuating the surface DHW value observed at location $l$ ($DHW_{t;l}$) with depth ($h_{l}$), using the Beer-Lambert law of light attenuation as a proxy for the dissipation of heat stress with depth, following the qualitative depth-refuge relationship reported in [@bairdDeclineBleachingSuggests2018]:
+
+|  |  |
+|:---:|---:|
+| $$DHW_{t;l}^{\textbf{eff}} = DHW_{t;l} \cdot e^{-\ \eta_{t;l}\  \cdot \ \max\left( 0,\ h_{l} - 2 \right)}$$ $$\eta_{t;l} = \begin{cases} \dfrac{\eta^{base}}{1 + DHW_{t;l}/\eta^{mix}}, & \eta^{mix} > 0 \\ 0, & \eta^{mix} = 0 \end{cases}$$ | (14) |
+
+: {tbl-colwidths="[90,10]"}
+
+The attenuation coefficient ($\eta_{t;l}$) is itself a function of a base attenuation coefficient ($\eta^{base}$, in m$^{-1}$) and a mixing factor ($\eta^{mix}$, in DHW), both of which are treated as free parameters and estimated by calibration jointly with the other model parameters (see "Model calibration and testing"). In the low-heat-stress regime ($DHW_{t;l} \approx 0$), we have $\eta_{t;l} \approx \eta^{base}$; as $DHW_{t;l}$ increases, $\eta_{t;l}$ decreases, so the depth-refuge effect weakens and saturates at higher heat-stress levels, as shown for the calibrated parameter values in Figure S3. A value of $\eta^{mix} = 0$ represents the special case in which depth provides no refuge at any DHW. The minimum viable depth for all locations is assumed to be $2$ meters below surface, where values lower than 2 offer no protection [@bairdDeclineBleachingSuggests2018]. Bleaching mortality is represented by:
+
+|  |  |
+|:---:|---:|
+| $$m_{t;g,z,l}^{bleaching} = \beta_{t;g,z,l}$$ | (15) |
+
+: {tbl-colwidths="[90,10]"}
 
 with
 
-+----------------------------------------------------------------------------------------+----------------+
-|$$\beta_{t;g,z,l}\sim F_{t;g,z,l}(DHW)$$                                                | \(16\)         |
-+----------------------------------------------------------------------------------------+----------------+
+|  |  |
+|:---:|---:|
+| $$\beta_{t;g,z,l}\sim F_{t;g,z,l}\left( DHW_{t;l}^{\textbf{eff}} \right)$$ | (16) |
 
-Bleaching mortality is not applied to juveniles as there is evidence that juveniles are less susceptible to bleaching and that juvenile mortality is well-represented by other factors included in background mortality [@alvarez-noriegaContrastingPatternsChanges2018; @speareSizedependentMortalityCorals2022].
+: {tbl-colwidths="[90,10]"}
+
+Bleaching mortality is applied to all size classes, as colony size is a weak predictor of bleaching susceptibility [@alvarez-noriegaChallengingParadigmsRole2025].
 
 ## Natural adaptation, selection, and inheritance
 
@@ -339,36 +377,37 @@ After each growth, reproduction and mortality events, the DHW tolerance distribu
 
 Since we assume all corals from size class $z = 1$ move to $z = 2$ after a growth event, we only need to update the DHW tolerance distributions for size classes 2 to 7. The distribution means for each functional group, size class, location and timestep are given by a weighted sum of means where the weights ($w$) are informed by the proportional coral cover ($C_{t;g,z,l}$) and growth rates ($\omega_{g,z}$):
 
-+--------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------+
-| $$w_{t;g,z,l}^{-} ≔ \frac{C_{t;g,z - 1,l}}{C_{t;g,z - 1,l} + C_{t;g,z,l}} \cdot \frac{\omega_{g,z - 1}}{\omega_{g,z - 1} + \omega_{g,z}}$$ | (17) |
-|                                                                                                                                            |                                |
-| $$w_{t;g,z,l}^{+} ≔ \frac{C_{t;g,z,l}}{C_{t;g,z - 1,l} + C_{t;g,z,l}} \cdot \frac{\omega_{g,z}}{\omega_{g,z - 1} + \omega_{g,z}}$$         |                                |
-|                                                                                                                                            |                                |
-| $$\mu_{t;g,z,l}^{growth} ≔ \mu_{t;\ g,z - 1,l} \cdot w_{t;g,z,l}^{-} + \mu_{t;g,\ z,l} \cdot w_{t;g,z,l}^{+}$$                             |                                |
-+============================================================================================================================================+================================+
+|  |  |
+|:---:|---:|
+| $$w_{t;g,z,l}^{-} ≔ \frac{C_{t;g,z - 1,l}}{C_{t;g,z - 1,l} + C_{t;g,z,l}} \cdot \frac{\omega_{g,z - 1}}{\omega_{g,z - 1} + \omega_{g,z}}$$ $$w_{t;g,z,l}^{+} ≔ \frac{C_{t;g,z,l}}{C_{t;g,z - 1,l} + C_{t;g,z,l}} \cdot \frac{\omega_{g,z}}{\omega_{g,z - 1} + \omega_{g,z}}$$ $$\mu_{t;g,z,l}^{growth} ≔ \mu_{t;\ g,z - 1,l} \cdot w_{t;g,z,l}^{-} + \mu_{t;g,\ z,l} \cdot w_{t;g,z,l}^{+}$$ | (17) |
+
+: {tbl-colwidths="[90,10]"}
 
 Thus, the updated mean is assumed to be informed by the relative contributions towards the increase in coral cover after growth. The DHW tolerance distributions after the growth event can be written with equations (13) and (17) as:
 
-+----------------------------------------------------------------------------------------+----------------+
-|$$F_{t;\ g,z,l}^{growth} ≔ TN\left( \mu_{t;g,z,l}^{growth},\ \sigma_{g},\ 4,\           | \(18\)         |
-|\mu_{t;g,z,l}^{growth} + 10 \right),\ z = 2,\ldots,7$$                                  |                |
-+----------------------------------------------------------------------------------------+----------------+
+|  |  |
+|:---:|---:|
+| $$F_{t;\ g,z,l}^{growth} ≔ TN\left( \mu_{t;g,z,l}^{growth},\ \sigma_{g},\ 1,\ f_{g,z,l}^{+} \right),\ z = 2,\ldots,7$$ | (18) |
+
+: {tbl-colwidths="[90,10]"}
 
 ### After reproduction distribution update
 
 The distribution for the newest generation ($z = 1$) is determined by accounting for heritability with the Breeders' equation [@lushAnimalBreedingPlans1943; @lernerGeneticBasisSelection1958; @dziedzicHeritableVariationBleaching2019; @janeiroRobustEvolutionaryInference2017; @richardsMovingHeritabilitySearch2023]. The selection differential ($S_{t;g,l}$) described in Breeder's equation is given by the difference between the mean of the previous timesteps juveniles and a weighted sum of mean tolerances of connected populations,
 
-+----------------------------------------------------------------------------------------+----------------+
-|$$S_{t;g,l} = {\overline{\mu}}_{t;l} - {\overline{\mu}}_{t;g,1,l}$$                     | \(19\)         |
-+----------------------------------------------------------------------------------------+----------------+
+|  |  |
+|:---:|---:|
+| $$S_{t;g,l} = {\overline{\mu}}_{t;l} - {\overline{\mu}}_{t;g,1,l}$$ | (19) |
+
+: {tbl-colwidths="[90,10]"}
 
 where ${\overline{\mu}}_{t;l}$ is the weighted mean of thermal tolerance from all source recruitment locations to location $l$ for each functional group and ${\overline{\mu}}_{t;g,1,l}$ is the mean thermal tolerance of corals for functional group $g$ and size class $z = 1$ at the location $l$ and timestep $t$. The distributions for size class $z = 1$ at timestep $t + 1$ are then updated as:
 
-+----------------------------------------------------------------------------------------+----------------+
-|$${\mu_{t;g,1,l}^{reprod.} = \mu_{t;g,1,l} + \left( S_{t;g,l} \cdot h^{2} \right)       | \(20\)         |
-|  }{F_{t;\ g,1,l}^{reprod.} ≔ TN(\mu_{t;g,1,l}^{reprod.},\ \sigma_{g},\ 4,\             |                |
-|\mu_{t;g,1,l}^{reprod.} + 10)}$$                                                        |                |
-+----------------------------------------------------------------------------------------+----------------+
+|  |  |
+|:---:|---:|
+| $${\mu_{t;g,1,l}^{reprod.} = \mu_{t;g,1,l} + \left( S_{t;g,l} \cdot h^{2} \right)   }{F_{t;\ g,1,l}^{reprod.} ≔ TN(\mu_{t;g,1,l}^{reprod.},\ \sigma_{g},\ 1,\ f_{g,1,l}^{+})}$$ | (20) |
+
+: {tbl-colwidths="[90,10]"}
 
 where the heritability coefficient $h^{2}$ is assumed to have a nominal value of 0.3.
 
@@ -376,25 +415,23 @@ where the heritability coefficient $h^{2}$ is assumed to have a nominal value of
 
 After a bleaching mortality event, the new DHW tolerance distribution is simply given by
 
-+----------------------------------------------------------------------------------------+----------------+
-|$$F_{t + 1;g,z,l}^{\ } = TN(\mu_{t;g,z,l}^{*},\ \sigma_{g},\ 4,\ \mu_{t;g,z,l}^{*} +    | \(21\)         |
-|10)$$                                                                                   |                |
-+----------------------------------------------------------------------------------------+----------------+
+|  |  |
+|:---:|---:|
+| $$F_{t + 1;g,z,l}^{\ } = TN(\mu_{t;g,z,l}^{*},\ \sigma_{g},\ 1,\ f_{g,z,l}^{+})$$ | (21) |
 
-where
+: {tbl-colwidths="[90,10]"}
 
-+----------------------------------------------------------------------------------------+----------------+
-|$$\mu_{t;g,z,l}^{*} = \left\{ \begin{array}{r}                                          | \(22\)         |
-|  mean\left( TN\left( \mu_{t;g,z,l}^{growth},\ \sigma_{g},\ m_{t;g,z,l}^{bleaching},\   |                |
-|\mu_{t;g,z,l}^{growth} + 10 \right) \right),\ \ \ \ \ \ \ \ \ z > 1 \\                  |                |
-|  mean\left( TN\left( \mu_{t;g,1,l}^{reprod.},\ \sigma_{g},\ m_{t;g,1,l}^{bleaching},\  |                |
-|\mu_{t;g,1,l}^{reprod.} + 10 \right) \right),\ \ z = 1                                  |                |
-|  \end{array} \right.\ $$                                                               |                |
-+----------------------------------------------------------------------------------------+----------------+
+where survivors' mean is recomputed by truncating below at the current effective DHW ($DHW_{t;l}^{\textbf{eff}}$, or 1 DHW-week, whichever is greater), since survivors must have had tolerance above the heat stress they were just exposed to:
 
-## Model calibration and validation
+|  |  |
+|:---:|---:|
+| $$\mu_{t;g,z,l}^{*} = \left\{ \begin{array}{r} mean\left( TN\left( \mu_{t;g,z,l}^{growth},\ \sigma_{g},\ \max\left( 1,\ DHW_{t;l}^{\textbf{eff}} \right),\ f_{g,z,l}^{+} \right) \right),\ \ \ \ \ \ \ \ \ z > 1 \\ mean\left( TN\left( \mu_{t;g,1,l}^{reprod.},\ \sigma_{g},\ \max\left( 1,\ DHW_{t;l}^{\textbf{eff}} \right),\ f_{g,1,l}^{+} \right) \right),\ \ z = 1 \end{array} \right.\ $$ | (22) |
 
-The AIMS Long-Term Monitoring Program has been operating since 1983 and provides yearly observations on the state of different locations within the GBR [@emslieDecadesMonitoringHave2020]. Observations include total coral cover observed from manta tow surveys and coral composition from fixed site surveys. A subset of the model parameters was selected for calibration to historic observations. Parameters were manually selected for calibration for their influence in growth and mortality dynamics. Some of the calibrated parameters are constant for all reef groups (linear extensions, background mortality rates, initial mean thermal tolerances) and some are constant across all the GBR (rate parameters of coral size exponential distribution, growth acceleration parameters, growth regional scale factors and base mortality regional scale factors). The model parameters were fit to the calibration set using the Adaptive Differential Evolution algorithm and error statistics were calculated for the test set to assess model performance on unseen data. See "Model calibration and validation" section in Supplementary Materials for further details.
+: {tbl-colwidths="[90,10]"}
+
+## Model calibration and testing
+
+The AIMS Long-Term Monitoring Program has been operating since 1983 and provides yearly observations on the state of different locations within the GBR [@emslieDecadesMonitoringHave2020]. Observations include total coral cover observed from manta tow surveys and coral composition from fixed site surveys. A subset of the model parameters was selected for calibration to historic observations. Parameters were manually selected for calibration for their influence in growth and mortality dynamics. Some of the calibrated parameters are constant for all reef groups (linear extensions, background mortality rates, initial mean thermal tolerances) and some are constant across all the GBR (rate parameters of coral size exponential distribution, growth acceleration parameters, growth regional scale factors, base mortality regional scale factors, and the DHW depth attenuation parameters). The model parameters were fit to the calibration set using the Adaptive Differential Evolution algorithm and error statistics were calculated for the test set to assess model performance on unseen data. See "Model calibration and testing" section in Supplementary Materials for further details.
 
 Prior to the calibration, reefs were grouped based on ecological similarity and spatial proximity (Figure S1). This split was done programmatically based on the Great Barrier Reef Marine Park Authority\'s bioregions [@greatbarrierreefmarineparkauthoritygbrmpaGBRMPAMarineBioregions2025; @kerriganClassifyingBiodiversityGreat2010]. These bioregions were grouped together based on spatial proximity to allow a 75%/25% calibration-test split and comparative assessment within each reef group. Refer to the "Data split and reef groups" section of the Supplementary Materials for more details.
 
@@ -418,6 +455,10 @@ Prior to the calibration, reefs were grouped based on ecological similarity and 
   Growth acceleration steepness parameter for each reef group.                       (-20, -15)                  12 (for each reef group)
 
   Growth acceleration height parameter for each reef group.                          (0.0, 2.0)                  12 (for each reef group)
+
+  Base DHW attenuation coefficient ($\mathbf{\eta}^{\mathbf{base}}\mathbf{)}$        (0.0, 1.0)                  1
+
+  DHW mixing factor ($\mathbf{\eta}^{\mathbf{mix}}\mathbf{)}$                        (0.0, 40.0)                 1
   ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   : . Parameters used in the calibration.
@@ -437,7 +478,7 @@ We acknowledge the Ngunnawal, Wulgurukaba, Bindal, Whadjuk Noongar, Turrbal and 
 
 The authors would like to thank Yves-Marie Bozec, Arne Adam for advice, comments and suggestions provided during the development of the model and earlier forms of this manuscript. The authors would like to additionally thank Ken Anthony for discussions around coral ecology and early conceptualization of what would eventually become CoralBlox.
 
-## Funding 
+## Funding
 
 This work is part of The Reef Restoration and Adaptation Program which is funded by the partnership between the Australian Government's Reef Trust and the Great Barrier Reef Foundation.
 
@@ -469,7 +510,7 @@ The authors declare no competing interests.
 
 CoralBlox and ADRIA are implemented in the Julia programming language. The code for CoralBlox [@ribeirodealmeidaCoralBloxjl2024] is freely and openly available at <https://github.com/open-AIMS/CoralBlox.jl>. The code for ADRIA is also freely and openly available at <https://github.com/open-AIMS/ADRIA.jl/>. Code to conduct calibration and reproduce analyses for this manuscript is available at.
 
-AIMS Long-Term Monitoring Program (LTMP) (<https://apps.aims.gov.au/reef-monitoring/reefs>) data was used to calibrate a subset of CoralBlox parameters [@emslieDecadesMonitoringHave2020]. LTMP manta tow observations were the target for modelled total coral cover outputs and LTMP fixed point photogrammetry community composition data was used as the target for modelled community composition during calibration and validation.
+AIMS Long-Term Monitoring Program (LTMP) (<https://apps.aims.gov.au/reef-monitoring/reefs>) data was used to calibrate a subset of CoralBlox parameters [@emslieDecadesMonitoringHave2020]. LTMP manta tow observations were the target for modelled total coral cover outputs and LTMP fixed point photogrammetry community composition data was used as the target for modelled community composition during calibration and testing.
 
 Mortality rates accounting for mortalities caused by cyclones and/or COTS that are used in the calibration were derived from the AIMS LTMP disturbance data.
 
@@ -483,31 +524,22 @@ Observed annual maximum degree heating weeks (DHWs) data was derived from daily 
 
 ## Tables
 
-  ------------------------------------------------------------------------------------------
-                      Along the GBR         Across the GBR         Maximum DHW
-  ------------------- --------------------- ---------------------- -------------------------
-  ΔRMSE Calibration   0.39 \[0.22, 0.61\]   0.37 \[0.17, 0.61\]    -0.40 \[-0.62, -0. 21\]
+| | Along the GBR | Across the GBR | Maximum DHW |
+|:---|:---|:---|:---|
+| ΔRMSE Calibration | `{julia} ci_str(scores["s1_rmse_diff_calib_along"])` | `{julia} ci_str(scores["s1_rmse_diff_calib_across"])` | `{julia} ci_str(scores["s1_rmse_diff_calib_dhw"])` |
+| ΔRMSE Test | `{julia} ci_str(scores["s1_rmse_diff_test_along"])` | `{julia} ci_str(scores["s1_rmse_diff_test_across"])` | `{julia} ci_str(scores["s1_rmse_diff_test_dhw"])` |
+| SRCC Calibration | `{julia} ci_str(scores["s1_srcc_calib_along"])` | `{julia} ci_str(scores["s1_srcc_calib_across"])` | `{julia} ci_str(scores["s1_srcc_calib_dhw"])` |
+| SRCC Test | `{julia} ci_str(scores["s1_srcc_test_along"])` | `{julia} ci_str(scores["s1_srcc_test_across"])` | `{julia} ci_str(scores["s1_srcc_test_dhw"])` |
 
-  ΔRMSE Test          0.29 \[0.02, 0.60\]   0.24 \[-0.06, 0.57\]   -0.46 \[-0.87, -0.19\]
+: Table S1. Bootstrapped SRCC with 95% confidence intervals between performance metrics and positions along and across the GBR, as well as maximum DHW.
 
-  SRCC Calibration    0.25 \[0.02, 0.48\]   0.28 \[0.06, 0.52\]    -0.44 \[-0.64, -0.26\]
+| | Calibration reefs | Test reefs |
+|:---|:---|:---|
+| RMSE | `{julia} ci_str(scores["rmse_calib_median"])` | `{julia} ci_str(scores["rmse_test_median"])` |
+| ΔRMSE | `{julia} ci_str(scores["rmse_diff_calib_median"])` | `{julia} ci_str(scores["rmse_diff_test_median"])` |
+| SRCC | `{julia} ci_str(scores["srcc_calib_median"])` | `{julia} ci_str(scores["srcc_test_median"])` |
 
-  SRCC Test           0.31 \[0.00, 0.74\]   0.13 \[-0.29, 0.56\]   -0.48 \[-0.92, -0.21\]
-  ------------------------------------------------------------------------------------------
-
-  : Table S1. Bootstrapped SRCC with 95% confidence intervals between performance metrics and positions along and across the GBR, as well as maximum DHW.
-
-  ------------------------------------------------------------------------
-                   Calibration reefs                  Test reefs
-  ---------- ------------------------------ ------------------------------
-     RMSE         0.08 \[0.07, 0.09\]            0.10 \[0.08, 0.11\]
-
-    ΔRMSE         0.01 \[0.01, 0.02\]            0.01 \[-0.01, 0.04\]
-
-     SRCC         0.59 \[0.52, 0.67\]            0.62 \[0.48, 0.78\]
-  ------------------------------------------------------------------------
-
-  : Table S2. Bootstrapped mean performance metrics and 95% confidence intervals for calibration and test reefs.
+: Table S2. Bootstrapped median performance metrics and 95% confidence intervals for calibration and test reefs.
 
   -----------------------------------------------------------------------------------------------------------------------------
         TA ($\mathbf{g = 1}$)   CA ($\mathbf{g = 2}$)   NAC ($\mathbf{g = 3}$)   SM ($\mathbf{g = 4}$)   LM ($\mathbf{g = 5}$)
@@ -877,17 +909,17 @@ With:
 |d_{g,z}^{-} \right)^{3} \right)}} \right) - \frac{12}{\pi}C_{t}^{A}}$$                  |                |
 +----------------------------------------------------------------------------------------+----------------+
 
-## Model calibration and validation
+## Model calibration and testing
 
 The model was fit to match total coral cover manta tow observations and coral composition observations from the Long-Term Monitoring Program (LTMP) using the Adaptive Differential Evolution algorithm [@zhangAdaptiveDifferentialEvolution2009], implemented in the BlackBoxOptim.jl Julia package [@feldtRobertfeldtBlackBoxOptimjl2023]. The parameter bound settings, data split and objective function are described in more detail in the following sections
 
 ### Data split and reef groups
 
-A reef grouping derived from the Great Barrier Reef Marine Park Authority\'s bioregions [@greatbarrierreefmarineparkauthoritygbrmpaGBRMPAMarineBioregions2025; @kerriganClassifyingBiodiversityGreat2010]. Bioregions were grouped together based on proximity to each other such that each new group had sufficient Long Term Monitoring Program Data for calibration and validation of a coral ecology model.
+A reef grouping derived from the Great Barrier Reef Marine Park Authority\'s bioregions [@greatbarrierreefmarineparkauthoritygbrmpaGBRMPAMarineBioregions2025; @kerriganClassifyingBiodiversityGreat2010]. Bioregions were grouped together based on proximity to each other such that each new group had sufficient Long Term Monitoring Program Data for calibration and testing of a coral ecology model.
 
 Data used to calibrate and validate the model is grouped by locations and split into a calibration and a test sets randomly. For 3806 reefs being modelled, only 99 were deemed to have sufficient data for use (4 or more manta tow observations over 10 or more years). Locations with observational data were split within reef groups, ensuring that for each reef group 75% of locations were in the calibration set and 25% were in the test set. This partition was done to ensure that both the calibration and test sets were representative of reef groups. Furthermore, in the case of reef groups with less than eight locations with observation data, the split was guaranteed to assign two locations to the test set. This resulted in 73 calibration locations and 26 test locations.
 
-![Figure S1. Each of the 12 reef groups used in the calibration.](media/image7.png){alt="A map of the country AI-generated content may be incorrect." width="3.820754593175853in" height="4.8399409448818895in"}
+![**Figure S1. Each of the 12 reef groups used in the calibration.**](media/image7.png){alt="A map of the country AI-generated content may be incorrect." width="3.820754593175853in" height="4.8399409448818895in"}
 
 ### Objective function
 
@@ -939,11 +971,17 @@ where $w_{1},w_{c},$ and $w_{p}$ are the weights given to each part of the objec
 
 We used two separate disturbance datasets in calibration: maximum historical DHW values and cyclone/storm mortality rates. The former was derived from observed maximum Degree Heating Weeks (DHWs) data provided by NOAA's CoralTempv3.1 product [@skirvingCoralTempCoralReef2020; @NOAACoralReef] for each year and reef (**Figure S2**). The latter was estimated by matching LTMP disturbance records (year and type of disturbance) with coral cover and benthic composition data to calculate mortality rates per functional group for each year and reef.
 
-![Figure S2. Degree heating weeks (DHW) trajectories for each reef group along the GBR. Individual lines correspond to values at individual reefs within a reef group.](../figures/S02_dhw_per_reef_group.png){width="6.268055555555556in" height="4.701041119860018in"}
+![**Figure S2. Degree heating weeks (DHW) trajectories for each reef group along the GBR.** Individual lines correspond to values at individual reefs within a reef group.](../figures/S02_dhw_per_reef_group.png){width="6.268055555555556in" height="4.701041119860018in"}
+
+### Depth attenuation of DHW
+
+The calibrated $\eta^{base}$ and $\eta^{mix}$ values determine how the effective DHW at depth (equation (14)) responds to surface DHW. Figure S3 shows this relationship for a range of depths, using the calibrated parameter values. The depth-refuge effect is strongest at low surface DHW and saturates as surface DHW increases, becoming approximately linear above roughly 10 DHW-weeks.
+
+![**Figure S3. Effective DHW as a function of surface DHW, at four representative depths, using the calibrated $\eta^{base}$ and $\eta^{mix}$ values.** The dotted line shows the 1:1 reference (no attenuation, i.e. surface conditions).](../figures/S03_effective_dhw_depth_attenuation.png){width="6.268055555555556in" height="4.701041119860018in"}
 
 ## Convergence analysis
 
-![Figure S. Convergence analysis for each DHW range and metric.](media/image9.png){width="6.268055555555556in" height="6.268055555555556in"}
+![**Figure S4. Convergence analysis for each DHW range and metric.**](media/image9.png){width="6.268055555555556in" height="6.268055555555556in"}
 
   ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   Factor Group                                                                                                                                                            Number of Parameters                                                    Sampling bounds
@@ -979,7 +1017,6 @@ We used two separate disturbance datasets in calibration: maximum historical DHW
   Initial relative cover                                                                                                                                                  1                                                                       (0.1, 0.3)
   ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-  : Table S. 218 factors included in the sensitivity analysis and their respective sampling bounds.
+  : Table S11. 218 factors included in the sensitivity analysis and their respective sampling bounds.
 
 \* - The last size class is assumed to have linear extension = 0.
-
