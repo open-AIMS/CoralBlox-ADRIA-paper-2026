@@ -268,7 +268,7 @@ Each coral colony has a linear extension, $\gamma_{g,z}$, that represents change
 
 : {tbl-colwidths="[90,10]"}
 
-A growth event is represented as the displacement of each coral block in the diameter space, where the growth rates act as translational velocities. The growth rates are always smaller than their correspondent size class widths, $\omega_{g,z} \leq d_{g,z}^{+} - d_{g,z}^{-}$, for all $g$, $z$. Hence after a growth event, we have one of the three following situations for each *block*: (i) the entire *block* remains within size class $z$; (ii) the entire *block* has moved to size class $z + 1$; (iii) part of the *block* is within size class $z$ and part is within size class $z + 1$. In the latter case, once the growth event ends, the *block* is split into two, each belonging to only a single size class and having a distinct constant diameter density, where the diameter density of the new *block* that lies within size class $z + 1$ is calculated so that to conserve the number of coral colonies.
+A growth event is represented as the displacement of each coral block in the diameter space, where the growth rates act as translational velocities. The growth rates are always smaller than their correspondent size class widths, $\omega_{t;g,z,l} \leq d_{g,z}^{+} - d_{g,z}^{-}$, for all $g$, $z$, $l$ and $t$. Hence after a growth event, we have one of the three following situations for each *block*: (i) the entire *block* remains within size class $z$; (ii) the entire *block* has moved to size class $z + 1$; (iii) part of the *block* is within size class $z$ and part is within size class $z + 1$. In the latter case, once the growth event ends, the *block* is split into two, each belonging to only a single size class and having a distinct constant diameter density, where the diameter density of the new *block* that lies within size class $z + 1$ is calculated so that to conserve the number of coral colonies.
 
 Settlers resulting from the reproduction process join the coral population in the following timestep as a block of corals in the smallest size class ($z = 1$). Hence, at each growth event we assume that all corals from the first size ($z = 1$) class move to the next size class ($z = 2$). We also assume that corals in the last size class ($z = 7$) have a constant growth rate of 0.
 
@@ -375,11 +375,11 @@ After each growth, reproduction and mortality events, the DHW tolerance distribu
 
 ### After growth distribution update
 
-Since we assume all corals from size class $z = 1$ move to $z = 2$ after a growth event, we only need to update the DHW tolerance distributions for size classes 2 to 7. The distribution means for each functional group, size class, location and timestep are given by a weighted sum of means where the weights ($w$) are informed by the proportional coral cover ($C_{t;g,z,l}$) and growth rates ($\omega_{g,z}$):
+Since we assume all corals from size class $z = 1$ move to $z = 2$ after a growth event, we only need to update the DHW tolerance distributions for size classes 2 to 7. The distribution means for each functional group, size class, location and timestep are given by a weighted mean where the weights ($w$) are informed by the proportional coral cover ($C_{t;g,z,l}$) and growth rates ($\omega_{t;g,z,l}$):
 
 |  |  |
 |:---:|---:|
-| $$w_{t;g,z,l}^{-} ≔ \frac{C_{t;g,z - 1,l}}{C_{t;g,z - 1,l} + C_{t;g,z,l}} \cdot \frac{\omega_{g,z - 1}}{\omega_{g,z - 1} + \omega_{g,z}}$$ $$w_{t;g,z,l}^{+} ≔ \frac{C_{t;g,z,l}}{C_{t;g,z - 1,l} + C_{t;g,z,l}} \cdot \frac{\omega_{g,z}}{\omega_{g,z - 1} + \omega_{g,z}}$$ $$\mu_{t;g,z,l}^{growth} ≔ \mu_{t;\ g,z - 1,l} \cdot w_{t;g,z,l}^{-} + \mu_{t;g,\ z,l} \cdot w_{t;g,z,l}^{+}$$ | (17) |
+| $$w_{t;g,z,l}^{-} ≔ \frac{C_{t;g,z - 1,l}}{C_{t;g,z - 1,l} + C_{t;g,z,l}} \cdot \frac{\omega_{t;g,z - 1,l}}{\omega_{t;g,z - 1,l} + \omega_{t;g,z,l}}$$ $$w_{t;g,z,l}^{+} ≔ \frac{C_{t;g,z,l}}{C_{t;g,z - 1,l} + C_{t;g,z,l}} \cdot \frac{\omega_{t;g,z,l}}{\omega_{t;g,z - 1,l} + \omega_{t;g,z,l}}$$ $$\mu_{t;g,z,l}^{growth} ≔ \frac{\mu_{t;\ g,z - 1,l} \cdot w_{t;g,z,l}^{-} + \mu_{t;g,\ z,l} \cdot w_{t;g,z,l}^{+}}{w_{t;g,z,l}^{-} + w_{t;g,z,l}^{+}}$$ | (17) |
 
 : {tbl-colwidths="[90,10]"}
 
@@ -393,19 +393,27 @@ Thus, the updated mean is assumed to be informed by the relative contributions t
 
 ### After reproduction distribution update
 
-The distribution for the newest generation ($z = 1$) is determined by accounting for heritability with the Breeders' equation [@lushAnimalBreedingPlans1943; @lernerGeneticBasisSelection1958; @dziedzicHeritableVariationBleaching2019; @janeiroRobustEvolutionaryInference2017; @richardsMovingHeritabilitySearch2023]. The selection differential ($S_{t;g,l}$) described in Breeder's equation is given by the difference between the mean of the previous timesteps juveniles and a weighted sum of mean tolerances of connected populations,
+Heritable adaptation is applied locally at each source location, before larvae disperse: at every location $l'$ and for every functional group $g$, the Breeders' equation [@lushAnimalBreedingPlans1943; @lernerGeneticBasisSelection1958; @dziedzicHeritableVariationBleaching2019; @janeiroRobustEvolutionaryInference2017; @richardsMovingHeritabilitySearch2023] shifts each reproductively active size class's tolerance mean from the previous timestep towards its current-timestep value, scaled by the heritability coefficient $h^{2}$, and these shifted means are combined across the reproductively active size classes, weighted by their relative cover, into a single tolerance mean representing that location's contribution to the larval pool:
 
 |  |  |
 |:---:|---:|
-| $$S_{t;g,l} = {\overline{\mu}}_{t;l} - {\overline{\mu}}_{t;g,1,l}$$ | (19) |
+| $$\mu_{t;g,l'}^{settler} = \sum_{z \in Z_{g}^{\phi}}{w_{t;g,z,l'}\left\lbrack \mu_{t - 1;g,z,l'} + \left( \mu_{t;g,z,l'} - \mu_{t - 1;g,z,l'} \right) \cdot h^{2} \right\rbrack}$$ | (19) |
 
 : {tbl-colwidths="[90,10]"}
 
-where ${\overline{\mu}}_{t;l}$ is the weighted mean of thermal tolerance from all source recruitment locations to location $l$ for each functional group and ${\overline{\mu}}_{t;g,1,l}$ is the mean thermal tolerance of corals for functional group $g$ and size class $z = 1$ at the location $l$ and timestep $t$. The distributions for size class $z = 1$ at timestep $t + 1$ are then updated as:
+where $Z_{g}^{\phi} = \left\{ z:\phi_{g,z} > 0 \right\}$ is the set of reproductively active size classes for functional group $g$ (see "Coral reproduction" section), and the weights $w_{t;g,z,l'}$ are given by each size class's relative cover among $Z_{g}^{\phi}$:
 
 |  |  |
 |:---:|---:|
-| $${\mu_{t;g,1,l}^{reprod.} = \mu_{t;g,1,l} + \left( S_{t;g,l} \cdot h^{2} \right)   }{F_{t;\ g,1,l}^{reprod.} ≔ TN(\mu_{t;g,1,l}^{reprod.},\ \sigma_{g},\ 1,\ f_{g,1,l}^{+})}$$ | (20) |
+| $$w_{t;g,z,l'} = \frac{C_{t;g,z,l'}}{\sum_{z' \in Z_{g}^{\phi}}C_{t;g,z',l'}}$$ | (19b) |
+
+: {tbl-colwidths="[90,10]"}
+
+The distribution for the newest generation ($z = 1$) at each sink location $l$ is then given by the connectivity-weighted mean of the source contributions $\mu_{t;g,l'}^{settler}$, using the same connectivity weights $P_{l',l}$ as equation (11):
+
+|  |  |
+|:---:|---:|
+| $${\mu_{t;g,1,l}^{reprod.} = \sum_{l'}{\frac{P_{l',l}}{\sum_{l''}P_{l'',l}}\mu_{t;g,l'}^{settler}}   }{F_{t;\ g,1,l}^{reprod.} ≔ TN(\mu_{t;g,1,l}^{reprod.},\ \sigma_{g},\ 1,\ f_{g,1,l}^{+})}$$ | (20) |
 
 : {tbl-colwidths="[90,10]"}
 
