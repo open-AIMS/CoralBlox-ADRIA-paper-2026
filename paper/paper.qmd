@@ -448,9 +448,9 @@ Prior to the calibration, reefs were grouped based on ecological similarity and 
   ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   Parameter Group                                                                    Bounds                      Number of Parameters
   ---------------------------------------------------------------------------------- --------------------------- -------------------------------------------------------------------------------------
-  Rate parameter of exponential distribution of coral size for each reef group.      (0.5, 2.0)                  12 (reef groups)
+  Rate parameter of exponential distribution of coral size for each reef group.      (0.25, 2.0)                 12 (reef groups)
 
-  Linear extension ($\mathbf{\gamma}_{\mathbf{g,z}}$)                                +/- 10% of nominal values   35 (for each of the 5 functional groups and 7 size classes)
+  Linear extension ($\mathbf{\gamma}_{\mathbf{g,z}}$)                                +/- 10% of nominal values   30 (for each of the 5 functional groups and 7 size classes, except the last size class, which is fixed at 0)
 
   Background mortality rate ($\mathbf{m}_{\mathbf{g,z}}^{\mathbf{base}}\mathbf{)}$   +/- 10% of nominal values   35 (for each of the 5 functional groups and 7 size classes)
 
@@ -458,7 +458,9 @@ Prior to the calibration, reefs were grouped based on ecological similarity and 
 
   Base mortality rate regional scale factor                                          (-1.0,1.0)                  60 (for each of the 5 functional groups and 12 reef groups)
 
-  Initial mean thermal tolerance ($\mathbf{\mu}_{\mathbf{t = 0;g,z,l}}\mathbf{)}$    +/- 10% of nominal values   35 (for each of the 5 functional groups and 7 size classes; same for all locations)
+  Initial mean thermal tolerance ($\mathbf{\mu}_{\mathbf{t = 0;g}}\mathbf{)}$        +/- 50% of nominal values   5 (one for each functional group; broadcast across all 7 size classes and locations)
+
+  Heat tolerance std. deviation ($\mathbf{\sigma}_{\mathbf{g}}\mathbf{)}$            +/- 25% of nominal values   5 (one for each functional group; broadcast across all 7 size classes and locations)
 
   Growth acceleration midpoint parameter for each reef group.                        (0.0, 0.3)                  12 (for each reef group)
 
@@ -471,7 +473,7 @@ Prior to the calibration, reefs were grouped based on ecological similarity and 
   DHW mixing factor ($\mathbf{\eta}^{\mathbf{mix}}\mathbf{)}$                        (0.0, 40.0)                 1
   ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-  : . Parameters used in the calibration.
+  : **Table 1. Parameters used in the calibration.** 245 parameters in total.
 
 We assess model performance based on modelled and observed relative coral cover for each calibration and test reef separately. For a given reef, let us denote $y$ the set of observed relative coral cover values for the year with data, $\widehat{y}$ the corresponding modelled relative coral cover values, and $\overline{y}$ the average across all $y$. The average cover $\overline{y}$ establishes a benchmark providing a minimum but not sufficient performance threshold for CoralBox. The two performance metrics used are i) the difference between modelled and benchmark Root Mean Squared Errors (RMSE) with respect to the observed data, $\Delta RMSE = RMSE\left( y - \overline{y} \right) - RMSE\left( y - \widehat{y} \right)$, and ii) the Spearman Rank Correlation Coefficient (SRCC) between observed and modelled relative coral cover. Positive ΔRMSE values indicate reefs where CoralBlox outperforms the benchmark. SRCC values provide an indication of alignment in trends between simulation and observations.
 
@@ -541,7 +543,7 @@ Observed annual maximum degree heating weeks (DHWs) data was derived from daily 
 | SRCC Calibration | `{julia} ci_str(scores["s1_srcc_calib_along"])` | `{julia} ci_str(scores["s1_srcc_calib_across"])` | `{julia} ci_str(scores["s1_srcc_calib_dhw"])` |
 | SRCC Test | `{julia} ci_str(scores["s1_srcc_test_along"])` | `{julia} ci_str(scores["s1_srcc_test_across"])` | `{julia} ci_str(scores["s1_srcc_test_dhw"])` |
 
-: Table S1. Bootstrapped SRCC with 95% confidence intervals between performance metrics and positions along and across the GBR, as well as maximum DHW.
+: **Table S1. Bootstrapped SRCC with 95% confidence intervals between performance metrics and positions along and across the GBR, as well as maximum DHW.**
 
 | | Calibration reefs | Test reefs |
 |:---|:---|:---|
@@ -549,7 +551,7 @@ Observed annual maximum degree heating weeks (DHWs) data was derived from daily 
 | ΔRMSE | `{julia} ci_str(scores["rmse_diff_calib_median"])` | `{julia} ci_str(scores["rmse_diff_test_median"])` |
 | SRCC | `{julia} ci_str(scores["srcc_calib_median"])` | `{julia} ci_str(scores["srcc_test_median"])` |
 
-: Table S2. Bootstrapped median performance metrics and 95% confidence intervals for calibration and test reefs.
+: **Table S2. Bootstrapped median performance metrics and 95% confidence intervals for calibration and test reefs.**
 
   -----------------------------------------------------------------------------------------------------------------------------
         TA ($\mathbf{g = 1}$)   CA ($\mathbf{g = 2}$)   NAC ($\mathbf{g = 3}$)   SM ($\mathbf{g = 4}$)   LM ($\mathbf{g = 5}$)
@@ -569,173 +571,169 @@ Observed annual maximum degree heating weeks (DHWs) data was derived from daily 
    7       120.0 to 160.0          100.0 to 150.0            50.0 to 60.0            50.0 to 100.0           50.0 to 100.0
   -----------------------------------------------------------------------------------------------------------------------------
 
-  : Table S3. Size class bin edges ($\mathbf{d}^{\mathbf{-}}$ to $\mathbf{d}^{\mathbf{+}}$) for each functional group (columns) and size class (rows) in cm.
+  : **Table S3. Size class bin edges ($\mathbf{d}^{\mathbf{-}}$ to $\mathbf{d}^{\mathbf{+}}$) for each functional group (columns) and size class (rows) in cm.**
 
-  ----------------------------------------------------------------------------------------------------------------------------
-       TA ($\mathbf{g = 1}$)   CA ($\mathbf{g = 2}$)   NAC ($\mathbf{g = 3}$)   SM ($\mathbf{g = 4}$)   LM ($\mathbf{g = 5}$)
-  --- ----------------------- ----------------------- ------------------------ ----------------------- -----------------------
-   1           3.36                    3.99                     3.81                    5.34                    6.07
+  ----------------------------------------------------------------------------
+      Functional Group       Initial Mean ($\mathbf{\mu}_{\mathbf{t = 0,g}}$)
+  ------------------------  --------------------------------------------------
+   TA ($\mathbf{g = 1}$)                           5.63
 
-   2           3.12                    3.72                     3.83                    5.31                    6.23
+   CA ($\mathbf{g = 2}$)                           6.12
 
-   3           3.41                    3.85                     3.86                    5.03                     5.7
+   NAC ($\mathbf{g = 3}$)                          6.73
 
-   4           2.97                    3.26                     3.79                    5.69                    5.68
+   SM ($\mathbf{g = 4}$)                           3.78
 
-   5           3.42                    3.67                     3.65                    5.03                    5.81
+   LM ($\mathbf{g = 5}$)                           3.58
+  ----------------------------------------------------------------------------
 
-   6           3.43                     3.7                     3.65                    5.21                     6.0
+  : **Table S4. Calibrated values for initial means ($\mathbf{\mu}_{\mathbf{t = 0,g}}$) of the truncated normal distributions (TN) of heat tolerance for each functional group, in Degree Heating Weeks (DHW).** As with $\sigma_{g}$ (Table S5), $\mu_{t=0}$ is calibrated per functional group and broadcast across all seven size classes and locations, not calibrated independently per size class.
 
-   7            2.9                    3.46                     3.81                     4.6                    5.53
-  ----------------------------------------------------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------
+      Functional Group       Standard Deviation ($\mathbf{\sigma}_{\mathbf{g}}$)
+  ------------------------  -----------------------------------------------------
+   TA ($\mathbf{g = 1}$)                             2.50
 
-  : Table S4. Calibrated values for initial means ($\mathbf{\mu}_{\mathbf{t = 0}}$) of the truncated normal distributions (TN) of heat tolerance for each functional group (columns) and size class (rows), in Degree Heating Weeks (DHW).
+   CA ($\mathbf{g = 2}$)                             3.65
 
-  ------------------------------------------------------------------------------
-      Functional Group      Standard Deviation ($\mathbf{\sigma}_{\mathbf{g}}$)
-  ------------------------ -----------------------------------------------------
-   TA ($\mathbf{g = 1}$)                           2.90
+   NAC ($\mathbf{g = 3}$)                            2.61
 
-   CA ($\mathbf{g = 2}$)                           3.16
+   SM ($\mathbf{g = 4}$)                             4.18
 
-   NAC ($\mathbf{g = 3}$)                          3.47
+   LM ($\mathbf{g = 5}$)                             4.15
+  -------------------------------------------------------------------------------
 
-   SM ($\mathbf{g = 4}$)                           4.77
+  : **Table S5. Standard deviation ($\mathbf{\sigma}_{\mathbf{g}}$) of the truncated normal distributions of heat tolerance (in DHW) assumed for each functional group.**
 
-   LM ($\mathbf{g = 5}$)                           5.54
-  ------------------------------------------------------------------------------
+  ---------------------------------------------------------------------------------------------------------------------------------
+        TA ($\mathbf{g = 1}$)    CA ($\mathbf{g = 2}$)    NAC ($\mathbf{g = 3}$)    SM ($\mathbf{g = 4}$)    LM ($\mathbf{g = 5}$)
+  ---  -----------------------  -----------------------  ------------------------  -----------------------  -----------------------
+   1             0.34                     0.25                     0.24                      0.24                     0.31
 
-  : Table S5. Standard deviation ($\mathbf{\sigma}_{\mathbf{g}}$) of the truncated normal distributions of heat tolerance (in DHW) assumed for each functional group.
+   2             0.21                     0.14                     0.14                      0.09                     0.09
 
-  -----------------------------------------------------------------------------------------------------------------------------
-        TA ($\mathbf{g = 1}$)   CA ($\mathbf{g = 2}$)   NAC ($\mathbf{g = 3}$)   SM ($\mathbf{g = 4}$)   LM ($\mathbf{g = 5}$)
-  ---- ----------------------- ----------------------- ------------------------ ----------------------- -----------------------
-   1            0.34                    0.22                     0.21                    0.23                    0.29
+   3             0.23                     0.10                     0.09                      0.05                     0.05
 
-   2            0.21                    0.13                     0.13                    0.08                    0.08
+   4             0.21                     0.14                     0.09                      0.03                     0.03
 
-   3            0.21                    0.09                     0.07                    0.05                    0.04
+   5             0.17                     0.12                     0.08                      0.01                     0.01
 
-   4            0.20                    0.12                     0.09                    0.03                    0.03
+   6             0.15                     0.10                     0.09                      0.02                     0.01
 
-   5            0.17                    0.12                     0.09                    0.01                    0.01
+   7             0.13                     0.12                     0.08                      0.03                     0.03
+  ---------------------------------------------------------------------------------------------------------------------------------
 
-   6            0.14                    0.11                     0.08                    0.01                    0.02
+  : **Table S6. Calibrated base mortality rates ($\mathbf{m}_{\mathbf{g,z}}^{\mathbf{background}}$) for each functional group (columns) and size class (rows).**
 
-   7            0.13                    0.10                     0.08                    0.03                    0.03
-  -----------------------------------------------------------------------------------------------------------------------------
+  ---------------------------------------------------------------------------------------------------------------------------------
+        TA ($\mathbf{g = 1}$)    CA ($\mathbf{g = 2}$)    NAC ($\mathbf{g = 3}$)    SM ($\mathbf{g = 4}$)    LM ($\mathbf{g = 5}$)
+  ---  -----------------------  -----------------------  ------------------------  -----------------------  -----------------------
+   1             2.21                     2.19                     1.58                      1.05                     1.08
 
-  : Table S6. Calibrated base mortality rates ($\mathbf{m}_{\mathbf{g,z}}^{\mathbf{background}}$) for each functional group (columns) and size class (rows).
+   2             4.62                     2.58                     1.52                      0.73                     0.67
 
-  -----------------------------------------------------------------------------------------------------------------------------
-        TA ($\mathbf{g = 1}$)   CA ($\mathbf{g = 2}$)   NAC ($\mathbf{g = 3}$)   SM ($\mathbf{g = 4}$)   LM ($\mathbf{g = 5}$)
-  ---- ----------------------- ----------------------- ------------------------ ----------------------- -----------------------
-   1            2.24                    2.43                     1.73                    1.25                     1.2
+   3             4.53                     2.51                     1.36                      0.68                     0.68
 
-   2            4.57                    2.78                     1.58                    0.79                    0.78
+   4             5.74                     2.57                     1.82                      0.85                     0.85
 
-   3            4.55                    2.91                     1.61                    0.74                     0.7
+   5             6.05                     2.83                     1.82                      1.21                     1.33
 
-   4            5.85                    2.96                     1.72                    0.96                    0.95
+   6             7.02                     3.28                     1.49                      1.27                     1.27
 
-   5            6.39                    2.93                     1.58                    1.38                    1.32
+   7             0.00                     0.00                     0.00                      0.00                     0.00
+  ---------------------------------------------------------------------------------------------------------------------------------
 
-   6            8.49                    3.29                     1.52                    1.36                    1.49
+  : **Table S7. Calibrated linear extensions ($\mathbf{\gamma}_{\mathbf{g,z}}$) for each functional group (columns) and size class (rows) in cm/year.**
 
-   7             0.0                     0.0                     0.0                      0.0                     0.0
-  -----------------------------------------------------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------------------------------------------
+         TA ($\mathbf{g = 1}$)    CA ($\mathbf{g = 2}$)    NAC ($\mathbf{g = 3}$)    SM ($\mathbf{g = 4}$)    LM ($\mathbf{g = 5}$)
+  ----  -----------------------  -----------------------  ------------------------  -----------------------  -----------------------
+   1              1.03                     0.72                     1.40                      0.70                     0.70
 
-  : Table S7. Calibrated linear extensions ($\mathbf{\gamma}_{\mathbf{g,z}}$) for each functional group (columns) and size class (rows) in cm/year.
+   2              1.08                     1.10                     1.27                      0.78                     1.44
 
-  -----------------------------------------------------------------------------------------------------------------------------
-        TA ($\mathbf{g = 1}$)   CA ($\mathbf{g = 2}$)   NAC ($\mathbf{g = 3}$)   SM ($\mathbf{g = 4}$)   LM ($\mathbf{g = 5}$)
-  ---- ----------------------- ----------------------- ------------------------ ----------------------- -----------------------
-   1            0.89                    0.95                     1.49                    0.78                    0.75
+   3              1.08                     1.24                     1.11                      0.70                     0.77
 
-   2            1.01                    1.28                     0.8                     0.98                    1.05
+   4              0.98                     1.37                     0.74                      1.38                     1.50
 
-   3            0.92                    1.47                     1.04                    1.26                    1.35
+   5              0.72                     0.90                     0.73                      1.24                     1.18
 
-   4             0.9                    0.74                     1.01                    1.31                    1.49
+   6              0.88                     0.70                     0.89                      1.09                     0.79
 
-   5            0.88                    0.81                     0.84                    0.92                     1.0
+   7              0.84                     0.88                     0.86                      0.87                     0.70
 
-   6            1.01                    0.71                     0.88                    0.89                    0.82
+   8              0.90                     0.85                     0.75                      0.78                     1.09
 
-   7            0.97                    1.23                     1.28                    1.16                    0.73
+   9              1.06                     1.00                     0.87                      1.03                     0.76
 
-   8            0.91                    0.83                     0.86                    1.26                    1.06
+   10             1.08                     0.98                     1.18                      1.37                     0.83
 
-   9            0.87                    0.87                     0.81                    0.86                    0.84
+   11             0.71                     0.79                     0.78                      0.74                     0.72
 
-   10           1.03                    1.22                     0.81                    0.93                    0.77
+   12             1.06                     0.86                     0.82                      0.70                     0.91
+  ----------------------------------------------------------------------------------------------------------------------------------
 
-   11           1.04                    0.85                     0.74                    0.91                    0.99
+  : **Table S8. Calibrated growth regional scale factors ($\mathbf{\Xi}_{\mathbf{g,}\mathcal{l}}$) for each reef group (rows) and functional group (columns).**
 
-   12            1.0                    1.05                     0.94                     1.0                    0.84
-  -----------------------------------------------------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------------------------------------------
+         TA ($\mathbf{g = 1}$)    CA ($\mathbf{g = 2}$)    NAC ($\mathbf{g = 3}$)    SM ($\mathbf{g = 4}$)    LM ($\mathbf{g = 5}$)
+  ----  -----------------------  -----------------------  ------------------------  -----------------------  -----------------------
+   1             -0.66                    -0.66                    -0.47                      0.02                     0.26
 
-  : Table S8. Calibrated growth regional scale factors ($\mathbf{\Xi}_{\mathbf{g,}\mathcal{l}}$) for each reef group (rows) and functional group (columns).
+   2              1.00                     0.47                     0.80                      0.65                    -0.81
 
-  -----------------------------------------------------------------------------------------------------------------------------
-        TA ($\mathbf{g = 1}$)   CA ($\mathbf{g = 2}$)   NAC ($\mathbf{g = 3}$)   SM ($\mathbf{g = 4}$)   LM ($\mathbf{g = 5}$)
-  ---- ----------------------- ----------------------- ------------------------ ----------------------- -----------------------
-   1            0.18                    -0.16                    0.76                     0.6                    0.29
+   3              1.00                     0.83                    -0.40                     -0.80                    -0.36
 
-   2            0.52                    -0.56                    0.59                    0.12                    -0.39
+   4              0.20                    -0.16                    -0.30                      0.53                     0.76
 
-   3            0.97                    0.99                    -0.41                    0.36                    0.23
+   5             -0.28                    -0.65                    -0.51                     -0.98                    -0.15
 
-   4            -0.62                   -0.27                    0.05                    -0.64                   -0.05
+   6             -0.59                    -0.47                    -0.68                      0.10                    -0.73
 
-   5            -0.44                   -0.76                    0.24                    -0.92                   -0.01
+   7             -0.21                    -0.27                     0.62                      1.00                     0.84
 
-   6            -0.94                   -0.89                    0.33                    0.83                    -0.59
+   8             -1.00                    -0.69                    -0.79                      0.96                     0.83
 
-   7            -0.2                    0.25                     -0.8                     0.8                    0.31
+   9             -0.14                    -0.07                     0.24                     -0.09                    -0.57
 
-   8            -0.61                   0.71                    -0.56                    -0.2                    0.98
+   10             0.99                     1.00                     0.32                     -0.36                    -0.16
 
-   9            -0.03                   0.29                    -0.26                    -0.29                   -0.87
+   11            -0.60                    -0.88                    -0.43                     -0.62                    -0.93
 
-   10           0.75                    0.27                     0.46                    0.55                    0.47
+   12            -0.32                     0.96                     1.00                     -0.99                     0.44
+  ----------------------------------------------------------------------------------------------------------------------------------
 
-   11           -0.78                   -0.37                    -0.3                    -0.62                   -0.82
+  : **Table S9. Calibrated background mortality scale factors ($\mathbf{\Upsilon}_{\mathbf{g,}\mathcal{l}}$) for each reef group (rows) and functional group (columns).**
 
-   12           0.61                    0.16                    -0.41                    -0.24                    0.9
-  -----------------------------------------------------------------------------------------------------------------------------
+  ---------------------------------------
+         Height    Midpoint    Steepness
+  ----  --------  ----------  -----------
+   1      1.06       0.07        -20.00
 
-  : Table S9. Calibrated background mortality scale factors ($\mathbf{\Upsilon}_{\mathbf{g,}\mathcal{l}}$) for each reef group (rows) and functional group (columns).
+   2      0.00       0.08        -15.42
 
-  ----------------------------------------
-         Height     Midpoint    Steepness
-  ---- ----------- ----------- -----------
-   1      1.42        0.24       -17.15
+   3      0.00       0.10        -19.79
 
-   2      0.05        0.07       -16.86
+   4      2.00       0.21        -19.95
 
-   3      0.46        0.05       -18.33
+   5      0.01       0.02        -17.27
 
-   4      1.84        0.16       -16.82
+   6      1.26       0.09        -19.96
 
-   5      0.27        0.19       -18.19
+   7      0.00       0.03        -16.96
 
-   6      0.11        0.03       -16.91
+   8      0.00       0.00        -19.33
 
-   7      0.16        0.05       -17.55
+   9      0.00       0.01        -16.98
 
-   8      0.33        0.12       -18.33
+   10     0.00       0.07        -18.72
 
-   9      0.06        0.21       -17.55
+   11     0.53       0.23        -20.00
 
-   10      0.5        0.08       -15.43
+   12     0.05       0.03        -19.86
+  ---------------------------------------
 
-   11     0.37        0.02       -16.16
-
-   12     1.54        0.15       -18.59
-  ----------------------------------------
-
-  : Table S10. Calibrated growth acceleration parameters ($\mathbf{\zeta}_{\mathbf{l}}^{\mathbf{h}}$,$\mathbf{\zeta}_{\mathbf{l}}^{\mathbf{m}}$ and $\mathbf{\zeta}_{\mathbf{l}}^{\mathbf{s}}$) for each reef group (rows).
+  : **Table S10. Calibrated growth acceleration parameters ($\mathbf{\zeta}_{\mathbf{l}}^{\mathbf{h}}$,$\mathbf{\zeta}_{\mathbf{l}}^{\mathbf{m}}$ and $\mathbf{\zeta}_{\mathbf{l}}^{\mathbf{s}}$) for each reef group (rows).**
 
 ## Coral block movement
 
@@ -1028,6 +1026,6 @@ The calibrated $\eta^{base}$ and $\eta^{mix}$ values determine how the effective
   Initial relative cover                                                                                                                                                  1                                                                       (0.1, 0.3)
   ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-  : Table S11. 218 factors included in the sensitivity analysis and their respective sampling bounds.
+  : **Table S11. 218 factors included in the sensitivity analysis and their respective sampling bounds.**
 
 \* - The last size class is assumed to have linear extension = 0.
