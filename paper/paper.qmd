@@ -753,11 +753,10 @@ This section analyzes the movement of a coral density *block* in detail. We assu
 
 In case 1, the bounds for the *block* after the growth event, at timestep $t$, are given by:
 
-  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  $${\lbrack\delta}_{t;g,z,b}^{-},\delta_{t;g,z,b}^{+}\rbrack = \lbrack\delta_{t - 1;g,z,b}^{-} + \omega_{g,z},\delta_{t - 1;g,z,b}^{+} + \omega_{g,z}\rbrack$$   (1S)
-  --------------------------------------------------------------------------------------------------------------------------------------------------------------- --------------------------------
-
-  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------------+----------------+
+|$${\lbrack\delta}_{t;g,z,b}^{-},\delta_{t;g,z,b}^{+}\rbrack = \lbrack\delta_{t -        | \(1S\)         |
+|1;g,z,b}^{-} + \omega_{g,z},\delta_{t - 1;g,z,b}^{+} + \omega_{g,z}\rbrack$$            |                |
++----------------------------------------------------------------------------------------+----------------+
 
 Note that, since $\Delta t = 1$, we have $\omega_{g,z}\Delta t = \omega_{g,z}$ on the left-hand side of Eq. (1S), so there is no dimension mismatch. In cases 2 and 3 we need to analyze the lower and upper bounds movements separately and then adjust the coral block density accordingly to conserve the number of corals. In both cases, the upper bound moves with speed $\omega_{g,z}$ until it reaches the current size class upper bound $d_{g,z}^{+}$, then it starts to move with speed $\omega_{g,z + 1}$. The total displacement of the upper bound $\Delta\delta^{+}$ is given by:
 
