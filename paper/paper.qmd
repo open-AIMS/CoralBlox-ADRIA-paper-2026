@@ -288,7 +288,7 @@ Fecundity is first considered within the scope of different coral functional gro
 
 |  |  |
 |:---:|---:|
-| $$\log\phi_{g,z} = (\log a_{g} + b_{g}\log{({\overline{\alpha}}_{g,z}))/0.1}$$ | (9) |
+| $$\phi_{g,z} = \frac{a_{g}{\overline{\alpha}}_{g,z}^{b_{g}}}{0.1}$$ | (9) |
 
 : {tbl-colwidths="[90,10]"}
 
@@ -877,14 +877,14 @@ The adjusted projected cover is given by:
 |\right)}{\left( C^{*} - C_{t - 1} \right)}\ $$                                          |                |
 +----------------------------------------------------------------------------------------+----------------+
 
-where the maximum projected cover $C^{*}$ is an upper bound to $C_{t}^{P}$. Since there are infinite possible upper bounds for $C_{t}^{P}$, we chose one that balances accuracy and computation speed.
+where the maximum projected cover $C^{*}$ is an upper bound to $C_{t}^{P}$. Since there are infinite possible upper bounds for $C_{t}^{P}$, we chose one that balances accuracy and computation speed: $C^{*}$ is obtained by concentrating the entire habitable area $H$ into whichever functional group and size class would see the largest relative increase in colony area over one year of linear extension, and applying that growth factor to $H$. Since colony (basal) area scales with the square of colony diameter, the relative area growth of a colony at diameter $d_{g,z}^{+}$ extending by $\gamma_{g,z}$ is the dimensionless ratio $(d_{g,z}^{+} + \gamma_{g,z})^{2}/(d_{g,z}^{+})^{2}$; taking the largest such ratio guarantees $C^{*}$ is a sufficiently generous bound that $C_{t}^{A}$ never exceeds $H$.
 
 +----------------------------------------------------------------------------------------+----------------+
-|$$C^{*} = H\frac{{(d_{g_{\max},Z}^{+} + \gamma_{g_{\max},Z})}^{2}}{d_{g_{\max},Z}^{+}}\ | \(17S\)        |
-|$$                                                                                      |                |
+|$$C^{*} = H\frac{{(d_{g_{\max},z_{\max}}^{+} +                                          | \(17S\)        |
+|\gamma_{g_{\max},z_{\max}})}^{2}}{{(d_{g_{\max},z_{\max}}^{+})}^{2}}\ $$                |                |
 +----------------------------------------------------------------------------------------+----------------+
 
-where $d_{g_{\max},Z}^{+}$ and $\gamma_{g_{max,}Z}$ are the upper bound and linear extension of the last size class ($z = Z$) of the functional group$\ g_{\max}\ $such that $g_{\max} = \arg{\max_{g}{(d_{g,Z}^{+} + \gamma_{g,Z})}}$.
+where $d_{g_{\max},z_{\max}}^{+}$ and $\gamma_{g_{\max},z_{\max}}$ are the upper bound and linear extension of the functional group $g_{\max}$ and size class $z_{\max}$ that jointly maximize $(d_{g,z}^{+} + \gamma_{g,z})^{2}/(d_{g,z}^{+})^{2}$, such that $(g_{\max},z_{\max}) = \arg\max_{g,z}{\left[(d_{g,z}^{+} + \gamma_{g,z})^{2}/(d_{g,z}^{+})^{2}\right]}$, taken over all functional groups $g$ and non-terminal size classes $z = 1,\ldots,Z-1$.
 
 One can see that if $C_{t}^{P}\  = \ C^{*}$, we have $C_{t}^{A}\  = \ H$. For all other values of $C_{t}^{P}$, we have $C_{t}^{A} < \ H$ , which means the adjusted projected cover will never outgrow the habitable area.
 
