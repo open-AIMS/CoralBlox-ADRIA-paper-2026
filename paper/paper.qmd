@@ -496,6 +496,7 @@ This work is part of The Reef Restoration and Adaptation Program which is funded
 
 ## Author Contributions
 
+::: {custom-style="Compact"}
 P. Ribeiro de Almeida: Writing, review and editing; data collation and analysis; model and software development.
 
 R. J. Crocker: Writing, model development.
@@ -513,6 +514,7 @@ B. Robson: Review
 S. Matthews: Review
 
 T. Iwanaga: Writing, review and editing. Model development and changes to incorporate natural adaptation and heritability. Software development for usability and computational performance. Conceptualization of research aims and primary draft. Coordinated manuscript efforts.
+:::
 
 ## Competing Interests
 
