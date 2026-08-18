@@ -908,13 +908,12 @@ If we solve Eq. (18S) with respect to $\kappa_{t}$, we have:
 With:
 
 +----------------------------------------------------------------------------------------+----------------+
-|$${\kappa_{a} = 3\sum_{g = 1}^{G}{\sum_{z = 1}^{Z}{\lambda_{g,z}\gamma_{g,z}^{2}\left(  | \(20S\)        |
-|d_{g,z}^{+} - d_{g,z}^{-} \right)}}                                                     |                |
-|  }{\kappa_{b} = 3\sum_{g = 1}^{T}{\sum_{z = 1}^{S}{\lambda_{g,z}\gamma_{g,z}\left(     |                |
-|\left( d_{g,z}^{+} \right)^{2} - \left( d_{g,z}^{-} \right)^{2} \right)}}               |                |
-|  }{\kappa_{c} = \left( \sum_{g = 1}^{G}{\sum_{z =                                      |                |
-|1}^{Z}{\lambda_{g,z}\gamma_{g,z}^{3}\left( \left( d_{g,z}^{+} \right)^{3} - \left(      |                |
-|d_{g,z}^{-} \right)^{3} \right)}} \right) - \frac{12}{\pi}C_{t}^{A}}$$                  |                |
+|$$\begin{aligned} \kappa_{a} &= 3\sum_{g = 1}^{G}{\sum_{z =                             | \(20S\)        |
+|1}^{Z}{\lambda_{g,z}\gamma_{g,z}^{2}\left( d_{g,z}^{+} - d_{g,z}^{-} \right)}} \\       |                |
+|\kappa_{b} &= 3\sum_{g = 1}^{G}{\sum_{z = 1}^{Z}{\lambda_{g,z}\gamma_{g,z}\left( \left( |                |
+|d_{g,z}^{+} \right)^{2} - \left( d_{g,z}^{-} \right)^{2} \right)}} \\ \kappa_{c} &=     |                |
+|\sum_{g = 1}^{G}{\sum_{z = 1}^{Z}{\lambda_{g,z}\left( \left( d_{g,z}^{+} \right)^{3} -  |                |
+|\left( d_{g,z}^{-} \right)^{3} \right)}} - \frac{12}{\pi}C_{t}^{A} \end{aligned}$$      |                |
 +----------------------------------------------------------------------------------------+----------------+
 
 ## Model calibration and testing
