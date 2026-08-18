@@ -57,7 +57,7 @@ TEST_STORE = calib_data.test_store
 CALIBRATION_STORE = calib_data.calibration_store
 
 scen = ADRIA.param_table(dom)
-rs_raw = ADRIA.run_model(dom, scen[1, :])
+rs_raw = ADRIA.run_model(dom, scen[1, :]; apply_allee_effect=false)
 
 # * Single reef scale: model vs observed
 # ** Sort reefs by SRCC
