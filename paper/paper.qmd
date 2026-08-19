@@ -274,7 +274,7 @@ A growth event is represented as the displacement of each coral block in the dia
 
 Settlers resulting from the reproduction process join the coral population in the following timestep as a block of corals in the smallest size class ($z = 1$). Hence, at each growth event we assume that all corals from the first size ($z = 1$) class move to the next size class ($z = 2$). We also assume that corals in the last size class ($z = 7$) have a constant growth rate of 0.
 
-After a growth event, the total cover $C_{t;g,z}^{\textbf{growth}}$, corresponding to corals belonging to the functional group $g$ and size class $z$, can be found by using Eq. (6 summed over all its *block**s***:
+After a growth event, the total cover $C_{t;g,z}^{\textbf{growth}}$, corresponding to corals belonging to the functional group $g$ and size class $z$, can be found by using Eq. (6) summed over all its *block**s***:
 
 |  |  |
 |:---:|---:|
@@ -343,7 +343,7 @@ $$f_{g,z,l}^{+} = \mu_{t = 0;g,z,l} + 24$$ | (13b) |
 
 : {tbl-colwidths="[90,10]"}
 
-where $DHW_{t - 1;l}^{\textbf{eff}}$ is the effective, depth-attenuated DHW at location $l$ during the previous timestep (see equation (14) below). Taking the maximum with 1 means $f_{t;l}^{-}$ reduces to a floor of 1 DHW-week whenever the previous timestep's effective DHW was itself below that floor, representing a lack of bleaching susceptibility below that level; following a timestep with effective DHW above 1, the threshold instead tracks how severe the preceding year's heat stress was, so a location that has already been through a heat-stress event needs at least as much heat stress the following year to affect a further proportion of the population. The distribution shape is informed by data from [@hughest.p.kerryj.t.bairda.h.etal.GlobalWarmingTransforms2018] and analyses on the heritability of coral traits [@bairos-novakCoralAdaptationClimate2021]. For each functional group, the standard deviations ($\sigma_{g}$) are assumed to be identical for all size classes and locations, and are fixed throughout the entire model run to represent stable genetic variance [@bairos-novakCoralAdaptationClimate2021]. Table S5 shows the values used for all $\sigma_{g}$. The mean values ($\mu_{t;g,z,l}$) are initially the same for all locations but vary between functional group and then updated at each timestep to account for natural adaptation. Table S4 shows the initial values adopted for all $\mu_{t = 0;g,z,l}$.
+where $DHW_{t - 1;l}^{\textbf{eff}}$ is the effective, depth-attenuated DHW at location $l$ during the previous timestep (see Eq. (14) below). Taking the maximum with 1 means $f_{t;l}^{-}$ reduces to a floor of 1 DHW-week whenever the previous timestep's effective DHW was itself below that floor, representing a lack of bleaching susceptibility below that level; following a timestep with effective DHW above 1, the threshold instead tracks how severe the preceding year's heat stress was, so a location that has already been through a heat-stress event needs at least as much heat stress the following year to affect a further proportion of the population. The distribution shape is informed by data from [@hughest.p.kerryj.t.bairda.h.etal.GlobalWarmingTransforms2018] and analyses on the heritability of coral traits [@bairos-novakCoralAdaptationClimate2021]. For each functional group, the standard deviations ($\sigma_{g}$) are assumed to be identical for all size classes and locations, and are fixed throughout the entire model run to represent stable genetic variance [@bairos-novakCoralAdaptationClimate2021]. Table S5 shows the values used for all $\sigma_{g}$. The mean values ($\mu_{t;g,z,l}$) are initially the same for all locations but vary between functional group and then updated at each timestep to account for natural adaptation. Table S4 shows the initial values adopted for all $\mu_{t = 0;g,z,l}$.
 
 At each timestep, the proportion of the population affected by bleaching for each functional group, size class and location, denoted by $\beta_{t;g,z,l}$, is estimated based on $F_{t;g,z,l}$, evaluated at an effective, depth-attenuated DHW value rather than the raw surface DHW. This effective DHW ($DHW_{t;l}^{\textbf{eff}}$) is obtained by attenuating the surface DHW value observed at location $l$ ($DHW_{t;l}$) with depth ($h_{l}$), using the Beer-Lambert law of light attenuation as a proxy for the dissipation of heat stress with depth, following the qualitative depth-refuge relationship reported in [@bairdDeclineBleachingSuggests2018]:
 
@@ -385,7 +385,7 @@ Since we assume all corals from size class $z = 1$ move to $z = 2$ after a growt
 
 : {tbl-colwidths="[90,10]"}
 
-Thus, the updated mean is assumed to be informed by the relative contributions towards the increase in coral cover after growth. Because the ceiling $f_{g,z,l}^{+}$ is anchored to each size class's own initial mean, it can differ between size classes $z - 1$ and $z$; the resulting blend is therefore capped at $f_{g,z,l}^{+}$, the ceiling of the size class it is now assigned to, so that blending across size classes does not push the mean past that size class's ceiling. The DHW tolerance distributions after the growth event can be written with equations (13) and (17) as:
+Thus, the updated mean is assumed to be informed by the relative contributions towards the increase in coral cover after growth. Because the ceiling $f_{g,z,l}^{+}$ is anchored to each size class's own initial mean, it can differ between size classes $z - 1$ and $z$; the resulting blend is therefore capped at $f_{g,z,l}^{+}$, the ceiling of the size class it is now assigned to, so that blending across size classes does not push the mean past that size class's ceiling. The DHW tolerance distributions after the growth event can be written with Eqs. (13) and (17) as:
 
 |  |  |
 |:---:|---:|
@@ -411,7 +411,7 @@ where $Z_{g}^{\phi} = \left\{ z:\phi_{g,z} > 0 \right\}$ is the set of reproduct
 
 : {tbl-colwidths="[90,10]"}
 
-The distribution for the newest generation ($z = 1$) at each sink location $l$ is then given by the connectivity-weighted mean of the source contributions $\mu_{t;g,l'}^{\textbf{settler}}$, using the same connectivity weights $P_{l',l}$ as equation (11):
+The distribution for the newest generation ($z = 1$) at each sink location $l$ is then given by the connectivity-weighted mean of the source contributions $\mu_{t;g,l'}^{\textbf{settler}}$, using the same connectivity weights $P_{l',l}$ as Eq. (11):
 
 |  |  |
 |:---:|---:|
@@ -419,7 +419,7 @@ The distribution for the newest generation ($z = 1$) at each sink location $l$ i
 
 : {tbl-colwidths="[90,10]"}
 
-where the heritability coefficient $h^{2}$ is assumed to have a nominal value of 0.3. Because the heritable shift in equation (19) can push $\mu_{t;g,l'}^{\textbf{settler}}$ above the source location's own ceiling, and the connectivity-weighted combination in equation (20) can compound this across source locations, $\mu_{t;g,1,l}^{\textbf{reprod.}}$ is capped at the sink size class's ceiling $f_{g,1,l}^{+}$ before being used as the mean of the truncated normal.
+where the heritability coefficient $h^{2}$ is assumed to have a nominal value of 0.3. Because the heritable shift in Eq. (19) can push $\mu_{t;g,l'}^{\textbf{settler}}$ above the source location's own ceiling, and the connectivity-weighted combination in Eq. (20) can compound this across source locations, $\mu_{t;g,1,l}^{\textbf{reprod.}}$ is capped at the sink size class's ceiling $f_{g,1,l}^{+}$ before being used as the mean of the truncated normal.
 
 ### After bleaching mortality distribution update
 
@@ -820,7 +820,7 @@ and we can use that to find the density of the coral block that moved to the nex
 |\right)}{({\delta_{t - 1;g,z,b}^{+} + \Delta\delta^{+} - d}_{g,z}^{+})}$$               |                |
 +----------------------------------------------------------------------------------------+----------------+
 
-In case 3, where both lower and upper bounds move to the next size class, the coral block's bounds are given, at the end of the timestep, by $\lbrack\delta_{t - 1;g,z,b}^{-} + \Delta\delta^{-},\delta_{t - 1;g,z,b}^{+} + \Delta\delta^{+}\rbrack$ where $\Delta\delta^{-}$ is, in analogy with Eq.(8S), by:
+In case 3, where both lower and upper bounds move to the next size class, the coral block's bounds are given, at the end of the timestep, by $\lbrack\delta_{t - 1;g,z,b}^{-} + \Delta\delta^{-},\delta_{t - 1;g,z,b}^{+} + \Delta\delta^{+}\rbrack$ where $\Delta\delta^{-}$ is, in analogy with Eq. (8S), by:
 
 +----------------------------------------------------------------------------------------+----------------+
 |$$\Delta\delta^{-} = d_{g,z}^{+} - \delta_{t - 1;g,z,b}^{-} + \omega_{g,z + 1}\left( 1 -| \(11S\)        |
@@ -837,7 +837,7 @@ and in this case the new coral density is given by:
 
 ## Coral growth and mortality
 
-The growth rates used at each timestep are based on the regionally-scaled linear extensions $\gamma_{g,z}\Xi_{g,l}$ and are rescaled by the coral growth and the spatial competition coefficients, as per Eq (7). This section presents details on these two coefficients calculations.
+The growth rates used at each timestep are based on the regionally-scaled linear extensions $\gamma_{g,z}\Xi_{g,l}$ and are rescaled by the coral growth and the spatial competition coefficients, as per Eq. (7). This section presents details on these two coefficients calculations.
 
 ### Low cover growth acceleration
 
@@ -951,7 +951,7 @@ Because CoralBlox is run forward from its initial cover without re-anchoring to 
 |N_{t} > 0}w_{t}}$$ $$w_{t} = t \cdot \sqrt{N_{t}}$$                                     |                |
 +----------------------------------------------------------------------------------------+----------------+
 
-where $t$ is the year index (1 for the first calibration year, increasing thereafter), and reefs surveyed in the same year are assumed not to fail independently of one another, so $N_{t}$ enters as $\sqrt{N_{t}}$ rather than linearly. Years with no reporting reefs are excluded from equation (22S).
+where $t$ is the year index (1 for the first calibration year, increasing thereafter), and reefs surveyed in the same year are assumed not to fail independently of one another, so $N_{t}$ enters as $\sqrt{N_{t}}$ rather than linearly. Years with no reporting reefs are excluded from Eq. (22S).
 
 Modelled coral composition data derived from LTMP photogrammetry data was used to inform the initial coral composition at specific locations and as the target coral composition for subsequent historic years. Coral composition data was not recorded at all locations where manta tow coral cover levels are recorded; the assumption is that composition at fixed-site photogrammetry locations is representative of composition at nearby manta tow locations. Compositional mismatch between simulated and observed functional group cover was calculated using Bray-Curtis dissimilarity between the observed ($c_{t,g,l}$) and modelled ($\widehat{c}_{t,g,l}$) proportional cover of each functional group $g$, and averaged into a single Coral Composition Error (CCE). Bray-Curtis dissimilarity was used in preference to a correlation-based measure for two reasons: a correlation coefficient computed across only five functional groups is statistically unstable, and functional group proportions are compositional (closure-bound, summing to one), which makes correlation among them prone to spurious signal regardless of sample size. Bray-Curtis compares the two composition vectors directly, without any correlation or sampling estimation step, so neither issue applies:
 
@@ -987,7 +987,7 @@ To account for heat stress mortality, we used a historical DHW dataset, derived 
 
 ### Depth attenuation of DHW
 
-The calibrated $\eta^{\textbf{base}}$ and $\eta^{\textbf{mix}}$ values determine how the effective DHW at depth (equation (14)) responds to surface DHW. Figure S3 shows this relationship for a range of depths, using the calibrated parameter values. The depth-refuge effect is strongest at low surface DHW and saturates as surface DHW increases, becoming approximately linear above roughly 10 DHW-weeks.
+The calibrated $\eta^{\textbf{base}}$ and $\eta^{\textbf{mix}}$ values determine how the effective DHW at depth (Eq. (14)) responds to surface DHW. Figure S3 shows this relationship for a range of depths, using the calibrated parameter values. The depth-refuge effect is strongest at low surface DHW and saturates as surface DHW increases, becoming approximately linear above roughly 10 DHW-weeks.
 
 ![**Figure S3. Effective DHW as a function of surface DHW, at four representative depths, using the calibrated $\eta^{\textbf{base}}$ and $\eta^{\textbf{mix}}$ values.** The dotted line shows the 1:1 reference (no attenuation, i.e. surface conditions).](../figures/S03_effective_dhw_depth_attenuation.png){width="6.268055555555556in" height="4.701041119860018in"}
 
