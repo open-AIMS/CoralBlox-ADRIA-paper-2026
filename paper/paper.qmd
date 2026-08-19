@@ -381,11 +381,11 @@ Since we assume all corals from size class $z = 1$ move to $z = 2$ after a growt
 
 |  |  |
 |:---:|---:|
-| $$w_{t;g,z,l}^{-} ≔ \frac{C_{t;g,z - 1,l}}{C_{t;g,z - 1,l} + C_{t;g,z,l}} \cdot \frac{\omega_{t;g,z - 1,l}}{\omega_{t;g,z - 1,l} + \omega_{t;g,z,l}}$$ $$w_{t;g,z,l}^{+} ≔ \frac{C_{t;g,z,l}}{C_{t;g,z - 1,l} + C_{t;g,z,l}} \cdot \frac{\omega_{t;g,z,l}}{\omega_{t;g,z - 1,l} + \omega_{t;g,z,l}}$$ $$\mu_{t;g,z,l}^{growth} ≔ \frac{\mu_{t;\ g,z - 1,l} \cdot w_{t;g,z,l}^{-} + \mu_{t;g,\ z,l} \cdot w_{t;g,z,l}^{+}}{w_{t;g,z,l}^{-} + w_{t;g,z,l}^{+}}$$ | (17) |
+| $$w_{t;g,z,l}^{-} ≔ \frac{C_{t;g,z - 1,l}}{C_{t;g,z - 1,l} + C_{t;g,z,l}} \cdot \frac{\omega_{t;g,z - 1,l}}{\omega_{t;g,z - 1,l} + \omega_{t;g,z,l}}$$ $$w_{t;g,z,l}^{+} ≔ \frac{C_{t;g,z,l}}{C_{t;g,z - 1,l} + C_{t;g,z,l}} \cdot \frac{\omega_{t;g,z,l}}{\omega_{t;g,z - 1,l} + \omega_{t;g,z,l}}$$ $$\mu_{t;g,z,l}^{growth} ≔ \min\left( \frac{\mu_{t;\ g,z - 1,l} \cdot w_{t;g,z,l}^{-} + \mu_{t;g,\ z,l} \cdot w_{t;g,z,l}^{+}}{w_{t;g,z,l}^{-} + w_{t;g,z,l}^{+}},\ f_{g,z,l}^{+} \right)$$ | (17) |
 
 : {tbl-colwidths="[90,10]"}
 
-Thus, the updated mean is assumed to be informed by the relative contributions towards the increase in coral cover after growth. The DHW tolerance distributions after the growth event can be written with equations (13) and (17) as:
+Thus, the updated mean is assumed to be informed by the relative contributions towards the increase in coral cover after growth. Because the ceiling $f_{g,z,l}^{+}$ is anchored to each size class's own initial mean, it can differ between size classes $z - 1$ and $z$; the resulting blend is therefore capped at $f_{g,z,l}^{+}$, the ceiling of the size class it is now assigned to, so that blending across size classes does not push the mean past that size class's ceiling. The DHW tolerance distributions after the growth event can be written with equations (13) and (17) as:
 
 |  |  |
 |:---:|---:|
@@ -415,11 +415,11 @@ The distribution for the newest generation ($z = 1$) at each sink location $l$ i
 
 |  |  |
 |:---:|---:|
-| $${\mu_{t;g,1,l}^{reprod.} = \sum_{l'}{\frac{P_{l',l}}{\sum_{l''}P_{l'',l}}\mu_{t;g,l'}^{settler}}   }{F_{t;\ g,1,l}^{reprod.} ≔ TN(\mu_{t;g,1,l}^{reprod.},\ \sigma_{g},\ 1,\ f_{g,1,l}^{+})}$$ | (20) |
+| $${\mu_{t;g,1,l}^{reprod.} = \min\left( \sum_{l'}{\frac{P_{l',l}}{\sum_{l''}P_{l'',l}}\mu_{t;g,l'}^{settler}},\ f_{g,1,l}^{+} \right)   }{F_{t;\ g,1,l}^{reprod.} ≔ TN(\mu_{t;g,1,l}^{reprod.},\ \sigma_{g},\ 1,\ f_{g,1,l}^{+})}$$ | (20) |
 
 : {tbl-colwidths="[90,10]"}
 
-where the heritability coefficient $h^{2}$ is assumed to have a nominal value of 0.3.
+where the heritability coefficient $h^{2}$ is assumed to have a nominal value of 0.3. Because the heritable shift in equation (19) can push $\mu_{t;g,l'}^{settler}$ above the source location's own ceiling, and the connectivity-weighted combination in equation (20) can compound this across source locations, $\mu_{t;g,1,l}^{reprod.}$ is capped at the sink size class's ceiling $f_{g,1,l}^{+}$ before being used as the mean of the truncated normal.
 
 ### After bleaching mortality distribution update
 
