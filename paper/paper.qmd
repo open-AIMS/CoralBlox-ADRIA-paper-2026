@@ -935,49 +935,46 @@ Data used to calibrate and validate the model is grouped by locations and split 
 
 ### Objective function
 
-The objective function used to optimize the parameterization of CoralBlox has two components, corresponding to the total cover error and to the coral composition error. The total cover error captures the difference between modelled and observed total coral cover and the coral composition error captures differences between modelled and observed coral composition. AIMS' Long Term Monitoring Program (LTMP) Manta Tow data was used as the target reef coral cover levels and modelled coral composition data derived from AIMS' LTMP photogrammetry data was used as target coral composition levels.
+The objective function used to optimize the parameterization of CoralBlox has two components: a total cover error and a coral composition error. AIMS' Long Term Monitoring Program (LTMP) Manta Tow data was used as the target reef coral cover levels, and coral composition data derived from AIMS' LTMP photogrammetry data was used as the target coral composition levels.
 
-The Mean Absolute Exponential Error (MAEE) between coral cover observed estimates and model outputs was calculated for each timestep of the historical period where data was available. The MAEE for each timestep is given below
-
-+----------------------------------------------------------------------------------------+----------------+
-|$${MAEE}_{t} = \ \exp\left( \left| y - \ \widehat{y} \right| \bullet \left( 1 + \ \left|| \(21S\)        |
-|y - \ \widehat{y} \right| \right) \right) - 1$$                                         |                |
-+----------------------------------------------------------------------------------------+----------------+
-
-where y and $\widehat{y}$ are the target LTMP data and modelled outputs respectively.
-
-Furthermore, the years where minimum and maximum levels of coral cover were recorded were weighted by a factor of two to encourage the calibration to capture this trend in the target data.
-
-The objective function considers the temporal variability of MAEE to ensure the mean error between observed LTMP estimates and modelled coral cover are both minimized and not highly variable over time. The temporal variability of MAEE is given as
+The total cover error combines a year-weighted mean absolute error over the calibration period with two further terms scoring how well each reef's observed peak and trough in coral cover are reproduced. The per-year error, calculated across all reefs $l$ with an observed value at year $t$ ($L_{t}$, with $N_{t} = \left| L_{t} \right|$ reefs), is given by:
 
 +----------------------------------------------------------------------------------------+----------------+
-|$$\text{MAEE}_{\sigma} = \mu_{t}\left( {MAEE}_{t} \right) \cdot 0.9 + \sigma_{t}\left(  | \(22S\)        |
-|{MAEE}_{t} \right) \cdot 0.1$$                                                          |                |
+|$$Err_{t} = \frac{1}{N_{t}}\sum_{l \in L_{t}}{\left| y_{t,l} - \widehat{y}_{t,l}        |\(21S\)         |
+|\right|}$$                                                                              |                |
 +----------------------------------------------------------------------------------------+----------------+
 
-where $\mu_{t}$ and $\sigma_{t}$ are the mean and standard deviation functions taken over timesteps.
-
-Modelled coral composition data derived from LTMP photogrammetry data was used to inform the initial coral composition and data at specific locations and as the target coral composition for subsequent historic years. Coral composition data was not recorded at all locations where manta tow coral cover levels are recorded. To account for the misalignment between Manta Tow observations and modelled coral composition cover values, Pearson's Correlation Coefficient was incorporated in the objective function to match ADRIA-mod's modelled coral composition to observations. The assumption being that coral composition at fixed site photogrammetry observations are representative of coral composition at manta tow locations, whilst this is not true, it is a limitation provided by a lack of data. The Coral Composition Error (CCE) was calculated for each timestep where data was available as follows
+Because CoralBlox is run forward from its initial cover without re-anchoring to observations, error compounds over the course of a simulation. Later years, and years with more reporting reefs, are therefore weighted more heavily when combining the per-year errors into a single reef performance error:
 
 +----------------------------------------------------------------------------------------+----------------+
-|$$\text{CCE}_{t} = 1 - cor\left( y,\widehat{y} \right)$$                                | \(23S\)        |
+|$$Err_{reef} = \frac{\sum_{t:\ N_{t} > 0}{w_{t} \cdot Err_{t}}}{\sum_{t:\ N_{t} >       |\(22S\)         |
+|0}w_{t}}$$ $$w_{t} = t \cdot \sqrt{N_{t}}$$                                             |                |
 +----------------------------------------------------------------------------------------+----------------+
 
-Finally, emphasis is placed on minimizing error on the beginning and end of calibration data as well as the peaks and the troughs of calibration data. Given that the ecological model is relatively simple, the objective function should prioritize matching the overall trend of calibration data. The calibration error at these characteristics points is calculated using mean absolute error
+where $t$ is the year index (1 for the first calibration year, increasing thereafter), and reefs surveyed in the same year are assumed not to fail independently of one another, so $N_{t}$ enters as $\sqrt{N_{t}}$ rather than linearly. Years with no reporting reefs are excluded from equation (22S).
+
+Modelled coral composition data derived from LTMP photogrammetry data was used to inform the initial coral composition at specific locations and as the target coral composition for subsequent historic years. Coral composition data was not recorded at all locations where manta tow coral cover levels are recorded; the assumption is that composition at fixed-site photogrammetry locations is representative of composition at nearby manta tow locations. Compositional mismatch between simulated and observed functional group cover was calculated using Bray-Curtis dissimilarity between the observed ($c_{t,g,l}$) and modelled ($\widehat{c}_{t,g,l}$) proportional cover of each functional group $g$, and averaged into a single Coral Composition Error (CCE). Bray-Curtis dissimilarity was used in preference to a correlation-based measure for two reasons: a correlation coefficient computed across only five functional groups is statistically unstable, and functional group proportions are compositional (closure-bound, summing to one), which makes correlation among them prone to spurious signal regardless of sample size. Bray-Curtis compares the two composition vectors directly, without any correlation or sampling estimation step, so neither issue applies:
 
 +----------------------------------------------------------------------------------------+----------------+
-|$$Err_{p} = \mu_{p}\left( \left| \widehat{y} - y \right| \right)$$                      | \(24S\)        |
+|$$BC_{t,l} = \frac{\sum_{g}{\left| c_{t,g,l} - \widehat{c}_{t,g,l}                      |\(23S\)         |
+|\right|}}{\sum_{g}{\left( c_{t,g,l} + \widehat{c}_{t,g,l} \right)}}$$ $$CCE =           |                |
+|\frac{1}{\left| L^{comp} \right|}\sum_{l \in L^{comp}}{CCE_{l}}$$                       |                |
 +----------------------------------------------------------------------------------------+----------------+
 
-where $\mu_{p}$ is the mean function over all peaks, troughs, beginning and ending timesteps.
+where $CCE_{l}$ is the mean of $BC_{t,l}$ over the years at reef $l$ where all functional groups' composition was observed, and $L^{comp}$ is the set of reefs with composition data. Reefs with no year of fully observed composition data are assigned a neutral $CCE_{l}$ of 0.5 rather than being excluded from the mean.
 
-Finally, the objective function is given as
+Finally, emphasis is placed on minimizing error at the peak and trough of each reef's observed coral cover trajectory. For each reef $l$, let $t_{l}^{peak}$ and $t_{l}^{trough}$ be the years of that reef's highest and lowest observed coral cover, respectively; the error at these points is calculated using mean absolute error across all reefs $L$ with at least one observation:
 
 +----------------------------------------------------------------------------------------+----------------+
-|$$\text{MAEE}_{\sigma} \cdot w_{1} + \text{CCE}_{t} \cdot w_{c} + Err_{p} \cdot w_{p}$$ | \(25S\)        |
+|$$Err_{c} = \frac{1}{\left| L \right|}\sum_{l \in L}{\left| \widehat{y}_{t_{l}^{c},l} - |\(24S\)         |
+|y_{t_{l}^{c},l} \right|},\ \ c \in \left\{ peak,\ trough \right\}$$                     |                |
 +----------------------------------------------------------------------------------------+----------------+
 
-where $w_{1},w_{c},$ and $w_{p}$ are the weights given to each part of the objective function and are 1, 2, and 2 respectively.
+The objective function is then given as
+
++----------------------------------------------------------------------------------------+----------------+
+|$$Err_{reef} + 0.5 \cdot Err_{peak} + 0.5 \cdot Err_{trough} + 2.0 \cdot CCE$$          |\(25S\)         |
++----------------------------------------------------------------------------------------+----------------+
 
 Candidate parameter sets that violate parameter-bound constraints or produce an invalid model run (e.g. a negative recruitment scale factor) are assigned a large fixed penalty instead of being scored by the equations above.
 
