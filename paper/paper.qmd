@@ -218,19 +218,19 @@ The coral cover for each location is computed at the functional group and size c
 
 |  |  |
 |:---:|---:|
-| $$C_{t;l} = \sum_{g = 1}^{G}{\left\lbrack C_{t;g,l}^{recruits} + \sum_{z = 1}^{Z}\left( C_{t;\ g,z,l}^{growth} \cdot v_{g,z,l}^{background} \cdot v_{t;\ g,z,l}^{bleaching} \cdot v_{t;\ g,z,l}^{cyclone/COTS} \right) \right\rbrack\ }$$ | (2) |
+| $$C_{t;l} = \sum_{g = 1}^{G}{\left\lbrack C_{t;g,l}^{\textbf{recruits}} + \sum_{z = 1}^{Z}\left( C_{t;\ g,z,l}^{\textbf{growth}} \cdot v_{g,z,l}^{\textbf{background}} \cdot v_{t;\ g,z,l}^{\textbf{bleaching}} \cdot v_{t;\ g,z,l}^{cyclone/COTS} \right) \right\rbrack\ }$$ | (2) |
 
 : {tbl-colwidths="[90,10]"}
 
-where the recruits cover $C_{t;\ g,l}^{recruits}$ represents the increase in coral cover resulting from reproduction (see "Coral reproduction" section in Materials and Methods) and the growth cover $C_{t;\ g,z,l}^{growth}$ accounts for the coral cover after a growth event (see the "Coral growth" section in Materials and Methods). The survival rates $v$ can be written in terms of their respective mortality rates as $v = 1 - m$. The *background* mortality rate, $m_{g,z,l}^{background}$, account for the mortality under stable conditions adjusted by the regional scale factor:
+where the recruits cover $C_{t;\ g,l}^{\textbf{recruits}}$ represents the increase in coral cover resulting from reproduction (see "Coral reproduction" section in Materials and Methods) and the growth cover $C_{t;\ g,z,l}^{\textbf{growth}}$ accounts for the coral cover after a growth event (see the "Coral growth" section in Materials and Methods). The survival rates $v$ can be written in terms of their respective mortality rates as $v = 1 - m$. The *background* mortality rate, $m_{g,z,l}^{\textbf{background}}$, account for the mortality under stable conditions adjusted by the regional scale factor:
 
 |  |  |
 |:---:|---:|
-| $$m_{g,z,l}^{background} = m_{g,z}^{*}\left( 1 - 0.5\Upsilon_{g,l} \right)$$ | (3) |
+| $$m_{g,z,l}^{\textbf{background}} = m_{g,z}^{*}\left( 1 - 0.5\Upsilon_{g,l} \right)$$ | (3) |
 
 : {tbl-colwidths="[90,10]"}
 
-where $m_{g,z}^{*}$ is the base background mortality value. The bleaching mortality rates, $m_{t;g,z}^{bleaching}$, are derived from the observed relationships between heat stress and coral mortality (see section "Coral bleaching and mortality"). Although CoralBlox does not explicitly model cyclone or COTS related damage, the cyclone/COTS survival rates $\left( v_{t;\ g,z,l}^{cyclone/COTS} \right)$ were derived from LTMP historical data for the purpose of assessing how well coral dynamics are captured.
+where $m_{g,z}^{*}$ is the base background mortality value. The bleaching mortality rates, $m_{t;g,z}^{\textbf{bleaching}}$, are derived from the observed relationships between heat stress and coral mortality (see section "Coral bleaching and mortality"). Although CoralBlox does not explicitly model cyclone or COTS related damage, the cyclone/COTS survival rates $\left( v_{t;\ g,z,l}^{cyclone/COTS} \right)$ were derived from LTMP historical data for the purpose of assessing how well coral dynamics are captured.
 
 ## Coral growth
 
@@ -274,11 +274,11 @@ A growth event is represented as the displacement of each coral block in the dia
 
 Settlers resulting from the reproduction process join the coral population in the following timestep as a block of corals in the smallest size class ($z = 1$). Hence, at each growth event we assume that all corals from the first size ($z = 1$) class move to the next size class ($z = 2$). We also assume that corals in the last size class ($z = 7$) have a constant growth rate of 0.
 
-After a growth event, the total cover $C_{t;g,z}^{growth}$, corresponding to corals belonging to the functional group $g$ and size class $z$, can be found by using Eq. (6 summed over all its *block**s***:
+After a growth event, the total cover $C_{t;g,z}^{\textbf{growth}}$, corresponding to corals belonging to the functional group $g$ and size class $z$, can be found by using Eq. (6 summed over all its *block**s***:
 
 |  |  |
 |:---:|---:|
-| $$C_{t;\ g,z}^{growth} = \ \sum_{b = 1\ }^{B_{gz}}{\lambda_{t;\ g,z,b}\frac{\pi}{12}\ \left( {\delta_{g,z,b}^{+}}^{3} - {\delta_{g,z,b}^{-}}^{3} \right)}$$ | (8) |
+| $$C_{t;\ g,z}^{\textbf{growth}} = \ \sum_{b = 1\ }^{B_{gz}}{\lambda_{t;\ g,z,b}\frac{\pi}{12}\ \left( {\delta_{g,z,b}^{+}}^{3} - {\delta_{g,z,b}^{-}}^{3} \right)}$$ | (8) |
 
 : {tbl-colwidths="[90,10]"}
 
@@ -349,15 +349,15 @@ At each timestep, the proportion of the population affected by bleaching for eac
 
 |  |  |
 |:---:|---:|
-| $$DHW_{t;l}^{\textbf{eff}} = DHW_{t;l} \cdot e^{-\ \eta_{t;l}\  \cdot \ \max\left( 0,\ h_{l} - 2 \right)}$$ $$\eta_{t;l} = \begin{cases} \dfrac{\eta^{base}}{1 + DHW_{t;l}/\eta^{mix}}, & \eta^{mix} > 0 \\ 0, & \eta^{mix} = 0 \end{cases}$$ | (14) |
+| $$DHW_{t;l}^{\textbf{eff}} = DHW_{t;l} \cdot e^{-\ \eta_{t;l}\  \cdot \ \max\left( 0,\ h_{l} - 2 \right)}$$ $$\eta_{t;l} = \begin{cases} \dfrac{\eta^{\textbf{base}}}{1 + DHW_{t;l}/\eta^{\textbf{mix}}}, & \eta^{\textbf{mix}} > 0 \\ 0, & \eta^{\textbf{mix}} = 0 \end{cases}$$ | (14) |
 
 : {tbl-colwidths="[90,10]"}
 
-The attenuation coefficient ($\eta_{t;l}$) is itself a function of a base attenuation coefficient ($\eta^{base}$, in m$^{-1}$) and a mixing factor ($\eta^{mix}$, in DHW), both of which are treated as free parameters and estimated by calibration jointly with the other model parameters (see "Model calibration and testing"). In the low-heat-stress regime ($DHW_{t;l} \approx 0$), we have $\eta_{t;l} \approx \eta^{base}$; as $DHW_{t;l}$ increases, $\eta_{t;l}$ decreases, so the depth-refuge effect weakens and saturates at higher heat-stress levels, as shown for the calibrated parameter values in Figure S3. A value of $\eta^{mix} = 0$ represents the special case in which depth provides no refuge at any DHW. The minimum viable depth for all locations is assumed to be $2$ meters below surface, where values lower than 2 offer no protection [@bairdDeclineBleachingSuggests2018]. Bleaching mortality is represented by:
+The attenuation coefficient ($\eta_{t;l}$) is itself a function of a base attenuation coefficient ($\eta^{\textbf{base}}$, in m$^{-1}$) and a mixing factor ($\eta^{\textbf{mix}}$, in DHW), both of which are treated as free parameters and estimated by calibration jointly with the other model parameters (see "Model calibration and testing"). In the low-heat-stress regime ($DHW_{t;l} \approx 0$), we have $\eta_{t;l} \approx \eta^{\textbf{base}}$; as $DHW_{t;l}$ increases, $\eta_{t;l}$ decreases, so the depth-refuge effect weakens and saturates at higher heat-stress levels, as shown for the calibrated parameter values in Figure S3. A value of $\eta^{\textbf{mix}} = 0$ represents the special case in which depth provides no refuge at any DHW. The minimum viable depth for all locations is assumed to be $2$ meters below surface, where values lower than 2 offer no protection [@bairdDeclineBleachingSuggests2018]. Bleaching mortality is represented by:
 
 |  |  |
 |:---:|---:|
-| $$m_{t;g,z,l}^{bleaching} = \beta_{t;g,z,l}$$ | (15) |
+| $$m_{t;g,z,l}^{\textbf{bleaching}} = \beta_{t;g,z,l}$$ | (15) |
 
 : {tbl-colwidths="[90,10]"}
 
@@ -381,7 +381,7 @@ Since we assume all corals from size class $z = 1$ move to $z = 2$ after a growt
 
 |  |  |
 |:---:|---:|
-| $$w_{t;g,z,l}^{-} ≔ \frac{C_{t;g,z - 1,l}}{C_{t;g,z - 1,l} + C_{t;g,z,l}} \cdot \frac{\omega_{t;g,z - 1,l}}{\omega_{t;g,z - 1,l} + \omega_{t;g,z,l}}$$ $$w_{t;g,z,l}^{+} ≔ \frac{C_{t;g,z,l}}{C_{t;g,z - 1,l} + C_{t;g,z,l}} \cdot \frac{\omega_{t;g,z,l}}{\omega_{t;g,z - 1,l} + \omega_{t;g,z,l}}$$ $$\mu_{t;g,z,l}^{growth} ≔ \min\left( \frac{\mu_{t;\ g,z - 1,l} \cdot w_{t;g,z,l}^{-} + \mu_{t;g,\ z,l} \cdot w_{t;g,z,l}^{+}}{w_{t;g,z,l}^{-} + w_{t;g,z,l}^{+}},\ f_{g,z,l}^{+} \right)$$ | (17) |
+| $$w_{t;g,z,l}^{-} ≔ \frac{C_{t;g,z - 1,l}}{C_{t;g,z - 1,l} + C_{t;g,z,l}} \cdot \frac{\omega_{t;g,z - 1,l}}{\omega_{t;g,z - 1,l} + \omega_{t;g,z,l}}$$ $$w_{t;g,z,l}^{+} ≔ \frac{C_{t;g,z,l}}{C_{t;g,z - 1,l} + C_{t;g,z,l}} \cdot \frac{\omega_{t;g,z,l}}{\omega_{t;g,z - 1,l} + \omega_{t;g,z,l}}$$ $$\mu_{t;g,z,l}^{\textbf{growth}} ≔ \min\left( \frac{\mu_{t;\ g,z - 1,l} \cdot w_{t;g,z,l}^{-} + \mu_{t;g,\ z,l} \cdot w_{t;g,z,l}^{+}}{w_{t;g,z,l}^{-} + w_{t;g,z,l}^{+}},\ f_{g,z,l}^{+} \right)$$ | (17) |
 
 : {tbl-colwidths="[90,10]"}
 
@@ -389,7 +389,7 @@ Thus, the updated mean is assumed to be informed by the relative contributions t
 
 |  |  |
 |:---:|---:|
-| $$F_{t;\ g,z,l}^{growth} ≔ TN\left( \mu_{t;g,z,l}^{growth},\ \sigma_{g},\ 1,\ f_{g,z,l}^{+} \right),\ z = 2,\ldots,7$$ | (18) |
+| $$F_{t;\ g,z,l}^{\textbf{growth}} ≔ TN\left( \mu_{t;g,z,l}^{\textbf{growth}},\ \sigma_{g},\ 1,\ f_{g,z,l}^{+} \right),\ z = 2,\ldots,7$$ | (18) |
 
 : {tbl-colwidths="[90,10]"}
 
@@ -399,7 +399,7 @@ Heritable adaptation is applied locally at each source location, before larvae d
 
 |  |  |
 |:---:|---:|
-| $$\mu_{t;g,l'}^{settler} = \sum_{z \in Z_{g}^{\phi}}{w_{t;g,z,l'}\left\lbrack \mu_{t - 1;g,z,l'} + \left( \mu_{t;g,z,l'} - \mu_{t - 1;g,z,l'} \right) \cdot h^{2} \right\rbrack}$$ | (19) |
+| $$\mu_{t;g,l'}^{\textbf{settler}} = \sum_{z \in Z_{g}^{\phi}}{w_{t;g,z,l'}\left\lbrack \mu_{t - 1;g,z,l'} + \left( \mu_{t;g,z,l'} - \mu_{t - 1;g,z,l'} \right) \cdot h^{2} \right\rbrack}$$ | (19) |
 
 : {tbl-colwidths="[90,10]"}
 
@@ -411,15 +411,15 @@ where $Z_{g}^{\phi} = \left\{ z:\phi_{g,z} > 0 \right\}$ is the set of reproduct
 
 : {tbl-colwidths="[90,10]"}
 
-The distribution for the newest generation ($z = 1$) at each sink location $l$ is then given by the connectivity-weighted mean of the source contributions $\mu_{t;g,l'}^{settler}$, using the same connectivity weights $P_{l',l}$ as equation (11):
+The distribution for the newest generation ($z = 1$) at each sink location $l$ is then given by the connectivity-weighted mean of the source contributions $\mu_{t;g,l'}^{\textbf{settler}}$, using the same connectivity weights $P_{l',l}$ as equation (11):
 
 |  |  |
 |:---:|---:|
-| $${\mu_{t;g,1,l}^{reprod.} = \min\left( \sum_{l'}{\frac{P_{l',l}}{\sum_{l''}P_{l'',l}}\mu_{t;g,l'}^{settler}},\ f_{g,1,l}^{+} \right)   }{F_{t;\ g,1,l}^{reprod.} ≔ TN(\mu_{t;g,1,l}^{reprod.},\ \sigma_{g},\ 1,\ f_{g,1,l}^{+})}$$ | (20) |
+| $${\mu_{t;g,1,l}^{\textbf{reprod.}} = \min\left( \sum_{l'}{\frac{P_{l',l}}{\sum_{l''}P_{l'',l}}\mu_{t;g,l'}^{\textbf{settler}}},\ f_{g,1,l}^{+} \right)   }{F_{t;\ g,1,l}^{\textbf{reprod.}} ≔ TN(\mu_{t;g,1,l}^{\textbf{reprod.}},\ \sigma_{g},\ 1,\ f_{g,1,l}^{+})}$$ | (20) |
 
 : {tbl-colwidths="[90,10]"}
 
-where the heritability coefficient $h^{2}$ is assumed to have a nominal value of 0.3. Because the heritable shift in equation (19) can push $\mu_{t;g,l'}^{settler}$ above the source location's own ceiling, and the connectivity-weighted combination in equation (20) can compound this across source locations, $\mu_{t;g,1,l}^{reprod.}$ is capped at the sink size class's ceiling $f_{g,1,l}^{+}$ before being used as the mean of the truncated normal.
+where the heritability coefficient $h^{2}$ is assumed to have a nominal value of 0.3. Because the heritable shift in equation (19) can push $\mu_{t;g,l'}^{\textbf{settler}}$ above the source location's own ceiling, and the connectivity-weighted combination in equation (20) can compound this across source locations, $\mu_{t;g,1,l}^{\textbf{reprod.}}$ is capped at the sink size class's ceiling $f_{g,1,l}^{+}$ before being used as the mean of the truncated normal.
 
 ### After bleaching mortality distribution update
 
@@ -435,7 +435,7 @@ where survivors' mean is recomputed by truncating below at the current effective
 
 |  |  |
 |:---:|---:|
-| $$\mu_{t;g,z,l}^{*} = \left\{ \begin{array}{r} mean\left( TN\left( \mu_{t;g,z,l}^{growth},\ \sigma_{g},\ \max\left( 1,\ DHW_{t;l}^{\textbf{eff}} \right),\ f_{g,z,l}^{+} \right) \right),\ \ \ \ \ \ \ \ \ z > 1 \\ mean\left( TN\left( \mu_{t;g,1,l}^{reprod.},\ \sigma_{g},\ \max\left( 1,\ DHW_{t;l}^{\textbf{eff}} \right),\ f_{g,1,l}^{+} \right) \right),\ \ z = 1 \end{array} \right.\ $$ | (22) |
+| $$\mu_{t;g,z,l}^{*} = \left\{ \begin{array}{r} mean\left( TN\left( \mu_{t;g,z,l}^{\textbf{growth}},\ \sigma_{g},\ \max\left( 1,\ DHW_{t;l}^{\textbf{eff}} \right),\ f_{g,z,l}^{+} \right) \right),\ \ \ \ \ \ \ \ \ z > 1 \\ mean\left( TN\left( \mu_{t;g,1,l}^{\textbf{reprod.}},\ \sigma_{g},\ \max\left( 1,\ DHW_{t;l}^{\textbf{eff}} \right),\ f_{g,1,l}^{+} \right) \right),\ \ z = 1 \end{array} \right.\ $$ | (22) |
 
 : {tbl-colwidths="[90,10]"}
 
@@ -947,8 +947,8 @@ The total cover error combines a year-weighted mean absolute error over the cali
 Because CoralBlox is run forward from its initial cover without re-anchoring to observations, error compounds over the course of a simulation. Later years, and years with more reporting reefs, are therefore weighted more heavily when combining the per-year errors into a single reef performance error:
 
 +----------------------------------------------------------------------------------------+----------------+
-|$$Err_{reef} = \frac{\sum_{t:\ N_{t} > 0}{w_{t} \cdot Err_{t}}}{\sum_{t:\ N_{t} >       |\(22S\)         |
-|0}w_{t}}$$ $$w_{t} = t \cdot \sqrt{N_{t}}$$                                             |                |
+|$$Err_{\textbf{reef}} = \frac{\sum_{t:\ N_{t} > 0}{w_{t} \cdot Err_{t}}}{\sum_{t:\      |\(22S\)         |
+|N_{t} > 0}w_{t}}$$ $$w_{t} = t \cdot \sqrt{N_{t}}$$                                     |                |
 +----------------------------------------------------------------------------------------+----------------+
 
 where $t$ is the year index (1 for the first calibration year, increasing thereafter), and reefs surveyed in the same year are assumed not to fail independently of one another, so $N_{t}$ enters as $\sqrt{N_{t}}$ rather than linearly. Years with no reporting reefs are excluded from equation (22S).
@@ -958,12 +958,12 @@ Modelled coral composition data derived from LTMP photogrammetry data was used t
 +----------------------------------------------------------------------------------------+----------------+
 |$$BC_{t,l} = \frac{\sum_{g}{\left| c_{t,g,l} - \widehat{c}_{t,g,l}                      |\(23S\)         |
 |\right|}}{\sum_{g}{\left( c_{t,g,l} + \widehat{c}_{t,g,l} \right)}}$$ $$CCE =           |                |
-|\frac{1}{\left| L^{comp} \right|}\sum_{l \in L^{comp}}{CCE_{l}}$$                       |                |
+|\frac{1}{\left| L^{\textbf{comp}} \right|}\sum_{l \in L^{\textbf{comp}}}{CCE_{l}}$$     |                |
 +----------------------------------------------------------------------------------------+----------------+
 
-where $CCE_{l}$ is the mean of $BC_{t,l}$ over the years at reef $l$ where all functional groups' composition was observed, and $L^{comp}$ is the set of reefs with composition data. Reefs with no year of fully observed composition data are assigned a neutral $CCE_{l}$ of 0.5 rather than being excluded from the mean.
+where $CCE_{l}$ is the mean of $BC_{t,l}$ over the years at reef $l$ where all functional groups' composition was observed, and $L^{\textbf{comp}}$ is the set of reefs with composition data. Reefs with no year of fully observed composition data are assigned a neutral $CCE_{l}$ of 0.5 rather than being excluded from the mean.
 
-Finally, emphasis is placed on minimizing error at the peak and trough of each reef's observed coral cover trajectory. For each reef $l$, let $t_{l}^{peak}$ and $t_{l}^{trough}$ be the years of that reef's highest and lowest observed coral cover, respectively; the error at these points is calculated using mean absolute error across all reefs $L$ with at least one observation:
+Finally, emphasis is placed on minimizing error at the peak and trough of each reef's observed coral cover trajectory. For each reef $l$, let $t_{l}^{\textbf{peak}}$ and $t_{l}^{\textbf{trough}}$ be the years of that reef's highest and lowest observed coral cover, respectively; the error at these points is calculated using mean absolute error across all reefs $L$ with at least one observation:
 
 +----------------------------------------------------------------------------------------+----------------+
 |$$Err_{c} = \frac{1}{\left| L \right|}\sum_{l \in L}{\left| \widehat{y}_{t_{l}^{c},l} - |\(24S\)         |
@@ -973,7 +973,8 @@ Finally, emphasis is placed on minimizing error at the peak and trough of each r
 The objective function is then given as
 
 +----------------------------------------------------------------------------------------+----------------+
-|$$Err_{reef} + 0.5 \cdot Err_{peak} + 0.5 \cdot Err_{trough} + 2.0 \cdot CCE$$          |\(25S\)         |
+|$$Err_{\textbf{reef}} + 0.5 \cdot Err_{\textbf{peak}} + 0.5 \cdot Err_{\textbf{trough}} |\(25S\)         |
+|+ 2.0 \cdot CCE$$                                                                       |                |
 +----------------------------------------------------------------------------------------+----------------+
 
 Candidate parameter sets that violate parameter-bound constraints or produce an invalid model run (e.g. a negative recruitment scale factor) are assigned a large fixed penalty instead of being scored by the equations above.
@@ -986,9 +987,9 @@ To account for heat stress mortality, we used a historical DHW dataset, derived 
 
 ### Depth attenuation of DHW
 
-The calibrated $\eta^{base}$ and $\eta^{mix}$ values determine how the effective DHW at depth (equation (14)) responds to surface DHW. Figure S3 shows this relationship for a range of depths, using the calibrated parameter values. The depth-refuge effect is strongest at low surface DHW and saturates as surface DHW increases, becoming approximately linear above roughly 10 DHW-weeks.
+The calibrated $\eta^{\textbf{base}}$ and $\eta^{\textbf{mix}}$ values determine how the effective DHW at depth (equation (14)) responds to surface DHW. Figure S3 shows this relationship for a range of depths, using the calibrated parameter values. The depth-refuge effect is strongest at low surface DHW and saturates as surface DHW increases, becoming approximately linear above roughly 10 DHW-weeks.
 
-![**Figure S3. Effective DHW as a function of surface DHW, at four representative depths, using the calibrated $\eta^{base}$ and $\eta^{mix}$ values.** The dotted line shows the 1:1 reference (no attenuation, i.e. surface conditions).](../figures/S03_effective_dhw_depth_attenuation.png){width="6.268055555555556in" height="4.701041119860018in"}
+![**Figure S3. Effective DHW as a function of surface DHW, at four representative depths, using the calibrated $\eta^{\textbf{base}}$ and $\eta^{\textbf{mix}}$ values.** The dotted line shows the 1:1 reference (no attenuation, i.e. surface conditions).](../figures/S03_effective_dhw_depth_attenuation.png){width="6.268055555555556in" height="4.701041119860018in"}
 
 ## Convergence analysis
 
