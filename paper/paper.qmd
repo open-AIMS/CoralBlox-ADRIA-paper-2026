@@ -979,6 +979,8 @@ Finally, the objective function is given as
 
 where $w_{1},w_{c},$ and $w_{p}$ are the weights given to each part of the objective function and are 1, 2, and 2 respectively.
 
+Candidate parameter sets that violate parameter-bound constraints or produce an invalid model run (e.g. a negative recruitment scale factor) are assigned a large fixed penalty instead of being scored by the equations above.
+
 ### Disturbances datasets
 
 To account for heat stress mortality, we used a historical DHW dataset, derived from observed maximum Degree Heating Weeks (DHWs) data provided by NOAA's CoralTempv3.1 product [@skirvingCoralTempCoralReef2020; @NOAACoralReef] for each year and reef (**Figure S2**). To account for cyclone/storm and COTS mortality, we derived a separate mortality dataset from LTMP disturbance records (year and type of disturbance) with coral cover and benthic composition data. Because coral cover grows naturally between surveys, survival was calculated against a counterfactual undisturbed growth projection of the pre-disturbance cover. This background growth rate was estimated once from each reef's total cover, then split into per functional group mortality rates using benthic composition data. Locations with disturbances flagged as "unknown" were not included in this mortality-rate calculation.
