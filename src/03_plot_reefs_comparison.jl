@@ -1,21 +1,41 @@
-# plot_locs = vcat(reefs_sorted_by_srcc[end-4:end][[1,5]], reefs_sorted_by_srcc[1:2])
-plot_locs = vcat(reefs_sorted_by_rmse[end-1:end], reefs_sorted_by_rmse[1:2])
+# Two worst and two best test reefs by ΔRMSE (benchmark - model): low/negative ΔRMSE means
+# the model underperforms the naive benchmark, high ΔRMSE means it substantially beats it.
+plot_locs = vcat(reefs_sorted_by_rmse_diff[1:2], reefs_sorted_by_rmse_diff[end-1:end])
 
 single_reef_fig = begin
     plot_locs_idx = [findfirst(TEST_STORE.ltmp_unique_ids .== loc) for loc in plot_locs]
     plot_loc_names = [TEST_STORE.domain_gpkg[TEST_STORE.domain_gpkg.RME_UNIQUE_ID.==l, :cluster_id][1] for l in plot_locs]
     # TEST_STORE.domain_gpkg[TEST_STORE.domain_gpkg.RME_UNIQUE_ID.∈Ref(plot_locs), :cluster_id]
 
+    # Shared y-axis upper limit across all 4 panels (rather than a fixed 0-100%, which
+    # wastes vertical space since cover here never approaches 100%), based on the highest
+    # modelled or observed cover among the selected reefs, rounded up to the nearest 10%.
+    fig5_domain_idx = [ltmp_cover_idx_to_domain(TEST_STORE, idx) for idx in plot_locs_idx]
+    fig5_model_cover = [
+        dropdims(sum(rs_raw.raw[:, :, :, didx], dims=(2, 3)), dims=(2, 3)) .*
+        ADRIA.site_k_area(dom)[didx] ./ ADRIA.loc_area(dom)[didx]
+        for didx in fig5_domain_idx
+    ]
+    fig5_obs_cover = [
+        collect(skipmissing(TEST_STORE.ltmp_coral_cover[idx, :])) for idx in plot_locs_idx
+    ]
+    fig5_y_max = ceil(maximum(vcat(fig5_model_cover..., fig5_obs_cover...)) * 10) / 10
+
     model_srcc = string.(round.(vcat(test_error_stats.srcc[plot_locs_idx]); digits=2))
     model_rmse = string.(round.(test_error_stats.rmse_model[plot_locs_idx], digits=2))
     benchmark_rmse = string.(round.(test_error_stats.rmse_benchmark[plot_locs_idx], digits=2))
+    model_rmse_diff = string.(round.(t_rmse_diffs[plot_locs_idx], digits=2))
+    model_bias = string.(round.(test_error_stats.bias[plot_locs_idx], digits=2))
 
     plot_labels = ["(A) ", "(B) ", "(C) ", "(D) "] .* plot_loc_names .* "\n"
 
-    # print_metrics
+    # print_metrics - split across two lines (rather than one long line) so the combined
+    # text fits within the narrower right-hand column without overlapping the reef name.
     plot_labels = plot_labels .* (
         "RMSE: " .* model_rmse .* " | " .*
-        "SRCC: " .* model_srcc)
+        "ΔRMSE: " .* model_rmse_diff .* "\n" .*
+        "SRCC: " .* model_srcc .* " | " .*
+        "Bias: " .* model_bias)
     @info plot_labels .* "μRMSE:" .* string.(benchmark_rmse)
 
     plot_positions = [(1, 1), (1, 2), (2, 1), (2, 2)]
@@ -53,10 +73,13 @@ single_reef_fig = begin
                 :yticklabelsvisible => plot_positions[i][2] == 1,
                 :xlabelvisible => plot_positions[i][1] == 2,
                 :ylabelvisible => plot_positions[i][2] == 1,
-                :model_vs_obs_yticks => ([0, 0.5, 1.0], ["0%", "50%", "100%"]),
+                :model_vs_obs_yticks => (
+                    [0, fig5_y_max / 2, fig5_y_max],
+                    ["0%", "$(round(Int, fig5_y_max / 2 * 100))%", "$(round(Int, fig5_y_max * 100))%"]
+                ),
                 :model_vs_obs_yminorticksvisible => true,
-                :model_vs_obs_yminorticks => collect(0.0:0.1:1.0),
-                :model_vs_obs_limits => (nothing, (0.0, 1.0)),
+                :model_vs_obs_yminorticks => collect(0.0:0.1:fig5_y_max),
+                :model_vs_obs_limits => (nothing, (0.0, fig5_y_max)),
                 :model_vs_obs_ylabel => "Relative coral cover",
                 :model_vs_obs_xticklabelsvisible => false,
                 :model_dist_xticklabelsvisible => false,

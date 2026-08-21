@@ -86,6 +86,10 @@ c_corr_stats = correlation_stats(rs_raw.raw, CALIBRATION_STORE, dom; correlation
 t_rmse_diffs = t_rmse_stats.diff
 c_rmse_diffs = c_rmse_stats.diff
 
+# ** Sort reefs by ΔRMSE (benchmark - model; low/negative = model underperforms benchmark)
+rmse_diff_sortperm = sortperm(t_rmse_diffs)
+reefs_sorted_by_rmse_diff = TEST_STORE.ltmp_unique_ids[rmse_diff_sortperm]
+
 t_srcc_ = t_corr_stats.corr
 c_srcc_ = c_corr_stats.corr
 

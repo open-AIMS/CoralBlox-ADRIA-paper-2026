@@ -74,6 +74,20 @@ n_reefs_test = length(test_rmse_stats.diff)
 calib_error_stats = collect_error_stats(rs_raw.raw, dom; observations=CALIBRATION_STORE)
 test_error_stats = collect_error_stats(rs_raw.raw, dom; observations=TEST_STORE)
 
+# * Figure 5: two worst and two best test reefs by ΔRMSE (benchmark - model), matching
+# src/03_plot_reefs_comparison.jl's reef selection exactly (low/negative ΔRMSE = model
+# underperforms the benchmark, high ΔRMSE = model substantially beats it).
+fig5_reefs_sorted = TEST_STORE.ltmp_unique_ids[sortperm(test_rmse_stats.diff)]
+fig5_reef_ids = vcat(fig5_reefs_sorted[1:2], fig5_reefs_sorted[end-1:end])
+fig5_idx = [findfirst(TEST_STORE.ltmp_unique_ids .== loc) for loc in fig5_reef_ids]
+fig5_names = [TEST_STORE.domain_gpkg[TEST_STORE.domain_gpkg.RME_UNIQUE_ID.==l, :cluster_id][1] for l in fig5_reef_ids]
+
+fig5_rmse = round.(test_error_stats.rmse_model[fig5_idx]; digits=2)
+fig5_rmse_benchmark = round.(test_error_stats.rmse_benchmark[fig5_idx]; digits=2)
+fig5_rmse_diff = round.(test_rmse_stats.diff[fig5_idx]; digits=2)
+fig5_srcc = round.(test_error_stats.srcc[fig5_idx]; digits=2)
+fig5_bias = round.(test_error_stats.bias[fig5_idx]; digits=2)
+
 calib_rmse_median_stats = bootstrap_median_ci(
     calib_error_stats.rmse_model[calib_rmse_stats.block_eligible]
 )
@@ -214,6 +228,15 @@ scores = Dict{String,Any}(
     "s1_srcc_calib_dhw" => triple(s1_srcc_calib_dhw),
     "s1_srcc_test_dhw" => triple(s1_srcc_test_dhw),
 )
+
+for (i, letter) in enumerate(["a", "b", "c", "d"])
+    scores["fig5_$(letter)_name"] = fig5_names[i]
+    scores["fig5_$(letter)_rmse"] = fig5_rmse[i]
+    scores["fig5_$(letter)_rmse_benchmark"] = fig5_rmse_benchmark[i]
+    scores["fig5_$(letter)_rmse_diff"] = fig5_rmse_diff[i]
+    scores["fig5_$(letter)_srcc"] = fig5_srcc[i]
+    scores["fig5_$(letter)_bias"] = fig5_bias[i]
+end
 
 scores_path = joinpath(dirname(dirname(@__DIR__)), "outputs", "calibration_scores_data.jl")
 open(scores_path, "w") do io
