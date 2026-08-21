@@ -2,7 +2,7 @@ calib_params_ds = open_dataset(CALIB_PARAMS_FN)
 κ_base = calib_params_ds.depth_attenuation[1]
 mixing_scale = calib_params_ds.depth_attenuation[2]
 
-dhw_surface = 0:0.5:30
+dhw_surface = 0:0.5:80
 depths = [2.0, 5.0, 10.0, 20.0]
 
 fig_eff_dhw = Figure(; size=(800, 600))
