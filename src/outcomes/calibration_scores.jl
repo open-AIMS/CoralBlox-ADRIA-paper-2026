@@ -53,18 +53,24 @@ test_rmse_stats = rmse_diff_stats(rs_raw.raw, TEST_STORE, dom)
 calib_corr_stats = correlation_stats(rs_raw.raw, CALIBRATION_STORE, dom; correlation_metric=:spearman)
 test_corr_stats = correlation_stats(rs_raw.raw, TEST_STORE, dom; correlation_metric=:spearman)
 
+calib_bias_stats = bias_stats(rs_raw.raw, CALIBRATION_STORE, dom)
+test_bias_stats = bias_stats(rs_raw.raw, TEST_STORE, dom)
+
 # * Figure 2 caption: reefs where the model outperforms the benchmark (ΔRMSE > 0)
 n_outperform_calib = sum(calib_rmse_stats.diff .> 0)
 n_reefs_calib = length(calib_rmse_stats.diff)
 n_outperform_test = sum(test_rmse_stats.diff .> 0)
 n_reefs_test = length(test_rmse_stats.diff)
 
-# * Table S2: bootstrapped median performance metrics per reef set.
-# ΔRMSE and SRCC reuse the same bootstrapped medians as Figure 2 (computed over the
-# block-bootstrap-eligible reefs, n_years >= 5 - see CoralBloxCalib.common.rmse_diff_stats).
-# Absolute RMSE has no equivalent package function, so its per-reef point estimates
-# (restricted to the same block-eligible reef set) are aggregated with the package's own
-# `bootstrap_median_ci`, for consistency with the ΔRMSE/SRCC rows.
+# * Table S1: bootstrapped median performance metrics per reef set.
+# ΔRMSE, SRCC and bias reuse the same bootstrapped medians as Figure 2 (computed over the
+# block-bootstrap-eligible reefs, n_years >= 5 - see CoralBloxCalib.common.rmse_diff_stats/
+# bias_stats). Absolute RMSE has no equivalent package function, so its per-reef point
+# estimates (restricted to the same block-eligible reef set) are aggregated with the
+# package's own `bootstrap_median_ci`, for consistency with the ΔRMSE/SRCC/bias rows.
+# Mean |bias| is reported alongside the signed median bias: the signed median can be near
+# zero purely from roughly-as-many-reefs-over-as-underpredicting, so it alone doesn't show
+# how far off a typical individual reef is - see bias_stats' docstring.
 calib_error_stats = collect_error_stats(rs_raw.raw, dom; observations=CALIBRATION_STORE)
 test_error_stats = collect_error_stats(rs_raw.raw, dom; observations=TEST_STORE)
 
@@ -75,7 +81,7 @@ test_rmse_median_stats = bootstrap_median_ci(
     test_error_stats.rmse_model[test_rmse_stats.block_eligible]
 )
 
-# * Table S1: bootstrapped SRCC between reef position/max DHW and each performance metric.
+# * Table S2: bootstrapped SRCC between reef position/max DHW and each performance metric.
 # Point-estimate (non-bootstrapped) per-reef ΔRMSE/SRCC correlated against position and
 # heat stress via Bootstrap.jl's `bootstrap(corr_boot, ..., BalancedSampling(1000))`.
 function calculate_along(lats::AbstractVector{<:Real})
@@ -189,6 +195,10 @@ scores = Dict{String,Any}(
     "rmse_diff_test_median" => triple(test_rmse_stats.median, test_rmse_stats.median_lo, test_rmse_stats.median_hi),
     "srcc_calib_median" => triple(calib_corr_stats.median, calib_corr_stats.median_lo, calib_corr_stats.median_hi),
     "srcc_test_median" => triple(test_corr_stats.median, test_corr_stats.median_lo, test_corr_stats.median_hi),
+    "bias_calib_median" => triple(calib_bias_stats.median, calib_bias_stats.median_lo, calib_bias_stats.median_hi),
+    "bias_test_median" => triple(test_bias_stats.median, test_bias_stats.median_lo, test_bias_stats.median_hi),
+    "bias_calib_mean_abs" => triple(calib_bias_stats.mean_abs_bias, calib_bias_stats.mean_abs_bias_lo, calib_bias_stats.mean_abs_bias_hi),
+    "bias_test_mean_abs" => triple(test_bias_stats.mean_abs_bias, test_bias_stats.mean_abs_bias_lo, test_bias_stats.mean_abs_bias_hi),
     "rmse_calib_median" => triple(calib_rmse_median_stats.median, calib_rmse_median_stats.lo, calib_rmse_median_stats.hi),
     "rmse_test_median" => triple(test_rmse_median_stats.median, test_rmse_median_stats.lo, test_rmse_median_stats.hi),
     "s1_rmse_diff_calib_along" => triple(s1_Δrmse_calib_along),
