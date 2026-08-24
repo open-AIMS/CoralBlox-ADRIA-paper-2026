@@ -481,6 +481,8 @@ Uncertainty in these metrics was quantified via bootstrap resampling, using the 
 
 We conducted an additional analysis of the model\'s performance metrics, focusing on spatial and heat-stress correlations for both dataset splits and both metrics. We categorized spatial correlations into correlations along and across the GBR. For each category, we calculated the SRCC between each reef's position and each of its performance metrics. For the position along the GBR, we used distance to the northernmost reef, following the definition from [@fabriciusBiodiversityGreatBarrier2000]. For the position across the GBR, we used the haversine distance between each reef and the coast, which was approximated by the minimum of the distances between that reef and each point of the Great Barrier Reef mainland polygon [@greatbarrierreefmarineparkauthoritygbrmpaGreatBarrierReef2025]. Haversine distances were calculated using the Distances.jl package [@variousauthorsJuliaStatsDistancesjl2024]. For the heat-stress correlations, we calculated the SRCC between each reefs' performance metric and the maximum cumulative thermal exposure, measured in DHW.
 
+AI-assisted tools (Claude Sonnet 5 and Claude Opus 5, Anthropic) were used during the development of this study to write and refine code for the CoralBlox and ADRIA model implementations, the calibration pipeline, and the analysis scripts used to compute the performance metrics reported here (ΔRMSE, SRCC, bias, and their bootstrapped confidence intervals). All AI-assisted code was reviewed, tested, and validated by the authors against the model formulation described above prior to use.
+
 # References
 
 ::: {#refs}
@@ -531,6 +533,10 @@ AIMS Long-Term Monitoring Program (LTMP) (<https://apps.aims.gov.au/reef-monitor
 Mortality rates accounting for mortalities caused by cyclones and/or COTS that are used in the calibration were derived from the AIMS LTMP disturbance data.
 
 Observed annual maximum degree heating weeks (DHWs) data was derived from daily DHWs provided by the NOAA CoralTempv3.1 product at (<https://coralreefwatch.noaa.gov/product/5km/>). Annual values are based on 1 July from the year prior to 30 June.
+
+## AI Usage
+
+We acknowledge the use of AI-assisted tools (Claude Sonnet 5 and Claude Opus 5, Anthropic) in preparing this manuscript: drafting and revising portions of the text, generating the Quarto code used to render the manuscript and its figures, and producing the plots and performance metrics presented in the Results and Supplementary Materials. All AI-assisted content was reviewed and verified by the authors.
 
 # Supplementary Materials
 
