@@ -7,19 +7,17 @@ single_reef_fig = begin
     plot_loc_names = [TEST_STORE.domain_gpkg[TEST_STORE.domain_gpkg.RME_UNIQUE_ID.==l, :cluster_id][1] for l in plot_locs]
     # TEST_STORE.domain_gpkg[TEST_STORE.domain_gpkg.RME_UNIQUE_ID.∈Ref(plot_locs), :cluster_id]
 
-    # Shared y-axis upper limit across all 4 panels (rather than a fixed 0-100%, which
-    # wastes vertical space since cover here never approaches 100%), based on the highest
-    # modelled or observed cover among the selected reefs, rounded up to the nearest 10%.
-    fig5_domain_idx = [ltmp_cover_idx_to_domain(TEST_STORE, idx) for idx in plot_locs_idx]
-    fig5_model_cover = [
-        dropdims(sum(rs_raw.raw[:, :, :, didx], dims=(2, 3)), dims=(2, 3)) .*
-        ADRIA.site_k_area(dom)[didx] ./ ADRIA.loc_area(dom)[didx]
-        for didx in fig5_domain_idx
+    # Shared DHW y-axis upper limit across all 4 panels, based on the highest surface DHW
+    # among the selected reefs, rounded up to the nearest 5 - a fixed 0-10 clips any reef
+    # whose DHW exceeds 10.
+    fig5_gbrmpa_ids = [
+        TEST_STORE.domain_gpkg[TEST_STORE.domain_gpkg.RME_UNIQUE_ID.==loc, :RME_GBRMPA_ID][1]
+        for loc in plot_locs
     ]
-    fig5_obs_cover = [
-        collect(skipmissing(TEST_STORE.ltmp_coral_cover[idx, :])) for idx in plot_locs_idx
-    ]
-    fig5_y_max = ceil(maximum(vcat(fig5_model_cover..., fig5_obs_cover...)) * 10) / 10
+    fig5_dhw_max = maximum(
+        maximum(collect(dom.dhw_scens[scenarios=1][locations=At(gid)])) for gid in fig5_gbrmpa_ids
+    )
+    fig5_dhw_y_max = max(ceil(fig5_dhw_max / 5) * 5, 15)
 
     model_srcc = string.(round.(vcat(test_error_stats.srcc[plot_locs_idx]); digits=2))
     model_rmse = string.(round.(test_error_stats.rmse_model[plot_locs_idx], digits=2))
@@ -73,20 +71,16 @@ single_reef_fig = begin
                 :yticklabelsvisible => plot_positions[i][2] == 1,
                 :xlabelvisible => plot_positions[i][1] == 2,
                 :ylabelvisible => plot_positions[i][2] == 1,
-                :model_vs_obs_yticks => (
-                    [0, fig5_y_max / 2, fig5_y_max],
-                    ["0%", "$(round(Int, fig5_y_max / 2 * 100))%", "$(round(Int, fig5_y_max * 100))%"]
-                ),
+                :model_vs_obs_yticks => ([0, 0.5, 1.0], ["0%", "50%", "100%"]),
                 :model_vs_obs_yminorticksvisible => true,
-                :model_vs_obs_yminorticks => collect(0.0:0.1:fig5_y_max),
-                :model_vs_obs_limits => (nothing, (0.0, fig5_y_max)),
+                :model_vs_obs_yminorticks => collect(0.0:0.1:1.0),
+                :model_vs_obs_limits => (nothing, (0.0, 1.0)),
                 :model_vs_obs_ylabel => "Relative coral cover",
                 :model_vs_obs_xticklabelsvisible => false,
                 :model_dist_xticklabelsvisible => false,
-                :model_dist_yticks => ([0, 5, 10]),
-                :model_dist_yminorticksvisible => true,
-                :model_dist_yminorticks => collect(0:1:10),
-                :model_dist_limits => (nothing, (0.0, 10)),
+                :model_dist_yticks => ([0, 5, 10, 15]),
+                :model_dist_yminorticksvisible => false,
+                :model_dist_limits => (nothing, (0.0, fig5_dhw_y_max)),
                 :benthic_yticks => ([0, 0.5, 1.0], ["0%", "50%", "100%"]),
                 :benthic_yminorticksvisible => true,
                 :benthic_yminorticks => collect(0.0:0.1:1.0),
