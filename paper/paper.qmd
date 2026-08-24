@@ -530,6 +530,8 @@ CoralBlox and ADRIA are implemented in the Julia programming language. The code 
 
 AIMS Long-Term Monitoring Program (LTMP) (<https://apps.aims.gov.au/reef-monitoring/reefs>) data was used to calibrate a subset of CoralBlox parameters [@emslieDecadesMonitoringHave2020]. LTMP manta tow observations were the target for modelled total coral cover outputs and LTMP fixed point photogrammetry community composition data was used as the target for modelled community composition during calibration and testing.
 
+To run the model, we used data from the ReefMod-GBR model [@bozecRapidlyClosingWindow2025], freely and openly available at <https://github.com/ymbozec/REEFMOD.7.2_GBR>. This data is available upon request; please send enquiries to y.bozec@uq.edu.au. Further details are available in the calibration code repository referenced above.
+
 Mortality rates accounting for mortalities caused by cyclones and/or COTS that are used in the calibration were derived from the AIMS LTMP disturbance data.
 
 Observed annual maximum degree heating weeks (DHWs) data was derived from daily DHWs provided by the NOAA CoralTempv3.1 product at (<https://coralreefwatch.noaa.gov/product/5km/>). Annual values are based on 1 July from the year prior to 30 June.
