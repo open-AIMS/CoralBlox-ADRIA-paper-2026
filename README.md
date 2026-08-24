@@ -1,4 +1,4 @@
-# CoralBlox (2026) paper plots
+# CoralBlox-ADRIA paper (2026)
 
 This repo supports the paper "CoralBlox: A computationally efficient coral model for decision support". It contains the code to generate the manuscript (`paper/`) and all plots (`src/`).
 
@@ -9,7 +9,7 @@ locations (`out_dir`, `results.dat`, etc.).
 ## Structure
 
 ```
-paper_plots_2026_coralblox/
+CoralBlox-ADRIA-paper-2026/
 ├─ src/        # numbered plotting scripts, run via main.jl
 ├─ figures/    # generated figures
 ├─ outputs/    # generated non-figure data (e.g. calibration_scores_data.jl)
