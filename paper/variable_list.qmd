@@ -1,0 +1,51 @@
+---
+title: "CoralBlox Variables/Parameters/Indexes List"
+format:
+  docx:
+    reference-doc: reference.docx
+---
+
+# Variables/Parameters/Indexes List
+
+- $C$ -- Coral cover
+- $C_{t}$ -- Coral cover at time t
+- $t$ -- Time
+- $g$ -- Functional Groups
+- $G$ -- Number of functional groups
+- $z$ -- Size Classes
+- $Z$ -- Number of Size classes
+- $b$ -- Coral Block
+- $B$ -- Number of Coral Blocks
+- $\gamma$ -- Linear Extension
+- $\omega$ -- Growth rate
+- $\lambda$ -- Coral diameter density
+- $\kappa$ -- Spatial competition coefficient
+- $\zeta$ -- growth acceleration coefficient
+- $\sigma$ -- standard deviation
+- $\mu$ -- mean of heat tolerance distribution
+- $\beta$ -- Proportion of each functional group and size class population affected by bleaching
+- $m^{background}$/$m^{bleaching}$/etc -- mortality rates
+- $H$ -- Habitable area / Carrying capacity
+- $K$ -- Available space
+- $C^{*}$ -- Maximum projected cover
+- $l$ -- location
+- $L$ -- number of locations
+- $\mathcal{l}$ -- Reef group
+- $h$ -- depth
+- $\eta$ -- Depth coefficient
+- $\delta$ -- Coral Block bounds
+- $d^{+}$/$d^{-}$ -- Size Class bounds
+- $\alpha$ -- Modelled colony area
+- $\overline{\alpha}$ -- Mean colony area
+- $\phi$ -- Fecundity
+- $R$ -- Larval pool
+- $\Lambda$ -- rate parameter
+- $\Lambda_{1}$, $\Lambda_{2}$ -- Maximum achievable density and larval stock required to produce 50% of the max settlement
+- $P$ -- Connectivity matrix
+- $F$ -- Truncated distribution
+- $f_{-}$, $f_{+}$ -- Lower and Upper truncation bounds
+- $a$, $p$ -- Fecundity parameters
+- $w$ -- Heat tolerance weights
+- $S$ -- Selection Differential
+- $\Xi$ -- Linear extension regional scale factor
+- $\Upsilon$ -- Background mortality regional scale factor

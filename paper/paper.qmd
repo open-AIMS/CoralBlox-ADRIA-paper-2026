@@ -290,11 +290,11 @@ Fecundity is first considered within the scope of different coral functional gro
 
 |  |  |
 |:---:|---:|
-| $$\phi_{g,z} = \frac{a_{g}{\overline{\alpha}}_{g,z}^{b_{g}}}{0.1}$$ | (9) |
+| $$\phi_{g,z} = \frac{a_{g}{\overline{\alpha}}_{g,z}^{p_{g}}}{0.1}$$ | (9) |
 
 : {tbl-colwidths="[90,10]"}
 
-Where $a_{g}$ and $b_{g}$ are fecundity parameters from [@hallReproductiveStrategiesModular1996] and ${\overline{\alpha}}_{g,z}$ is the mean colony area for the functional group $g$ and size class $z$. The number of larvae produced by each functional group and location, $\phi_{g,l}$, is then determined by multiplying the location coral area and the summation of all size classes:
+Where $a_{g}$ and $p_{g}$ are fecundity parameters from [@hallReproductiveStrategiesModular1996] and ${\overline{\alpha}}_{g,z}$ is the mean colony area for the functional group $g$ and size class $z$. The number of larvae produced by each functional group and location, $\phi_{g,l}$, is then determined by multiplying the location coral area and the summation of all size classes:
 
 |  |  |
 |:---:|---:|
