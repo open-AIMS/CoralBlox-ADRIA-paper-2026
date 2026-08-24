@@ -86,6 +86,17 @@ c_corr_stats = correlation_stats(rs_raw.raw, CALIBRATION_STORE, dom; correlation
 t_rmse_diffs = t_rmse_stats.diff
 c_rmse_diffs = c_rmse_stats.diff
 
+# Short GBRMPA reef codes (e.g. "14-137"), aligned to TEST_STORE/CALIBRATION_STORE row order,
+# for use as x-axis labels in the per-reef bootstrap metric scatter plots.
+t_reef_ids = [
+    TEST_STORE.domain_gpkg[TEST_STORE.domain_gpkg.RME_UNIQUE_ID .== uid, :RME_GBRMPA_ID][1]
+    for uid in TEST_STORE.ltmp_unique_ids
+]
+c_reef_ids = [
+    CALIBRATION_STORE.domain_gpkg[CALIBRATION_STORE.domain_gpkg.RME_UNIQUE_ID .== uid, :RME_GBRMPA_ID][1]
+    for uid in CALIBRATION_STORE.ltmp_unique_ids
+]
+
 # ** Sort reefs by ΔRMSE (benchmark - model; low/negative = model underperforms benchmark)
 rmse_diff_sortperm = sortperm(t_rmse_diffs)
 reefs_sorted_by_rmse_diff = TEST_STORE.ltmp_unique_ids[rmse_diff_sortperm]
@@ -117,3 +128,8 @@ include("./02_plot_reef_groups.jl")
 include("./03_plot_reefs_comparison.jl")
 include("./04_plot_dhw.jl")
 include("./supplementary_figures/effective_dhw_depth_attenuation.jl")
+include("./supplementary_figures/_bootstrap_metric_scatter.jl")
+include("./supplementary_figures/rmse_diff_calibration.jl")
+include("./supplementary_figures/rmse_diff_test.jl")
+include("./supplementary_figures/srcc_calibration.jl")
+include("./supplementary_figures/srcc_test.jl")

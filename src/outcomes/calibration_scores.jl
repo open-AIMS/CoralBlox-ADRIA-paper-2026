@@ -68,7 +68,7 @@ n_reefs_test = length(test_rmse_stats.diff)
 # bias_stats). Absolute RMSE has no equivalent package function, so its per-reef point
 # estimates (restricted to the same block-eligible reef set) are aggregated with the
 # package's own `bootstrap_median_ci`, for consistency with the ΔRMSE/SRCC/bias rows.
-# Mean |bias| is reported alongside the signed median bias: the signed median can be near
+# Median |bias| is reported alongside the signed median bias: the signed median can be near
 # zero purely from roughly-as-many-reefs-over-as-underpredicting, so it alone doesn't show
 # how far off a typical individual reef is - see bias_stats' docstring.
 calib_error_stats = collect_error_stats(rs_raw.raw, dom; observations=CALIBRATION_STORE)
@@ -211,8 +211,8 @@ scores = Dict{String,Any}(
     "srcc_test_median" => triple(test_corr_stats.median, test_corr_stats.median_lo, test_corr_stats.median_hi),
     "bias_calib_median" => triple(calib_bias_stats.median, calib_bias_stats.median_lo, calib_bias_stats.median_hi),
     "bias_test_median" => triple(test_bias_stats.median, test_bias_stats.median_lo, test_bias_stats.median_hi),
-    "bias_calib_mean_abs" => triple(calib_bias_stats.mean_abs_bias, calib_bias_stats.mean_abs_bias_lo, calib_bias_stats.mean_abs_bias_hi),
-    "bias_test_mean_abs" => triple(test_bias_stats.mean_abs_bias, test_bias_stats.mean_abs_bias_lo, test_bias_stats.mean_abs_bias_hi),
+    "bias_calib_median_abs" => triple(calib_bias_stats.median_abs_bias, calib_bias_stats.median_abs_bias_lo, calib_bias_stats.median_abs_bias_hi),
+    "bias_test_median_abs" => triple(test_bias_stats.median_abs_bias, test_bias_stats.median_abs_bias_lo, test_bias_stats.median_abs_bias_hi),
     "rmse_calib_median" => triple(calib_rmse_median_stats.median, calib_rmse_median_stats.lo, calib_rmse_median_stats.hi),
     "rmse_test_median" => triple(test_rmse_median_stats.median, test_rmse_median_stats.lo, test_rmse_median_stats.hi),
     "s1_rmse_diff_calib_along" => triple(s1_Δrmse_calib_along),
