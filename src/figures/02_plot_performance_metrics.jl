@@ -314,6 +314,24 @@ metric_map_fig = begin
     Label(g11[1, 1, Left()], "Calibration reefs", rotation=π / 2, padding=left_label_padding, fontsize=11pt,)
     Label(g21[1, 1, Left()], "Test reefs", rotation=π / 2, padding=left_label_padding, fontsize=11pt,)
 
+    # Marker-shape legend: star5 = value > 0, circle = value <= 0 (see plot_metric_map_ci!'s
+    # high_mask/low_mask split above). Colour is irrelevant to this legend - it only conveys
+    # shape - so a neutral grey stands in for the colormap-driven marker colours.
+    legend_elements = [
+        MarkerElement(marker=:star5, color=:gray20, markersize=15, strokewidth=strokewidth, strokecolor=strokecolor),
+        MarkerElement(marker=:circle, color=:gray20, markersize=15, strokewidth=strokewidth, strokecolor=strokecolor),
+    ]
+    Legend(
+        fig[4, 1:2],
+        legend_elements,
+        ["Value > 0", "Value ≤ 0"];
+        orientation=:horizontal,
+        framevisible=false,
+        labelsize=9pt,
+        tellheight=true,
+        tellwidth=false,
+    )
+
     colgap!(g0, 32)
     colgap!(g1, -60)
     colgap!(gr2, -60)
