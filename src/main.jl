@@ -123,13 +123,13 @@ t_lat = domain_gpkg[t_ltmp_idx, :].LAT
 c_lon = domain_gpkg[c_ltmp_idx, :].LON
 c_lat = domain_gpkg[c_ltmp_idx, :].LAT
 
-include("./01_plot_performance_metrics.jl")
-include("./02_plot_reef_groups.jl")
-include("./03_plot_reefs_comparison.jl")
-include("./04_plot_dhw.jl")
-include("./supplementary_figures/effective_dhw_depth_attenuation.jl")
-include("./supplementary_figures/_bootstrap_metric_scatter.jl")
-include("./supplementary_figures/rmse_diff_calibration.jl")
-include("./supplementary_figures/rmse_diff_test.jl")
-include("./supplementary_figures/srcc_calibration.jl")
-include("./supplementary_figures/srcc_test.jl")
+include("./figures/02_plot_performance_metrics.jl")
+include("./figures/03_plot_reef_groups.jl")
+include("./figures/05_plot_reefs_comparison.jl")
+include("./figures/s02_plot_dhw.jl")
+include("./figures/s03_effective_dhw_depth_attenuation.jl")
+include("./figures/_bootstrap_metric_scatter.jl")
+include("./figures/s05_rmse_diff_calibration.jl")
+include("./figures/s06_rmse_diff_test.jl")
+include("./figures/s07_srcc_calibration.jl")
+include("./figures/s08_srcc_test.jl")
