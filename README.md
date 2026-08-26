@@ -10,9 +10,20 @@ locations (`out_dir`, `results.dat`, etc.).
 
 ```
 CoralBlox-ADRIA-paper-2026/
-├─ src/        # numbered plotting scripts, run via main.jl
-├─ figures/    # generated figures
-├─ outputs/    # generated non-figure data (e.g. manuscript_metrics_data.jl)
+├─ src/
+│  ├─ main.jl                  # loads the calibrated domain, runs the model once, then
+│  │                            # includes every figures/ script below
+│  ├─ figures/                 # numbered plotting scripts (figure number in the manuscript),
+│  │                            # writing figures/NN_*.png - run via main.jl
+│  ├─ outcomes/                 # manual, not run via main.jl: computes the calibration/
+│  │                            # performance metrics and single-run timing quoted inline in
+│  │                            # paper.qmd, merging into outputs/manuscript_metrics_data.jl
+│  └─ sensitivity_analysis/     # manual, not run via main.jl: runs the Shapley-effect global
+│                                # sensitivity analysis and aggregates its results - see
+│                                # "Running the sensitivity analysis" below
+├─ figures/    # generated figures (committed)
+├─ outputs/    # generated non-figure data (committed - e.g. manuscript_metrics_data.jl,
+│               # sensitivity_analysis_shapley_effects.parq, sensitivity_analysis_convergence.parq)
 ├─ paper/      # reproducible Quarto manuscript (paper.qmd), targeting Science Advances
 ├─ config.toml
 ├─ Project.toml
@@ -79,3 +90,54 @@ overwriting the other's:
 `quarto render` only reads the frozen result, so it stays fast and doesn't re-run the model on
 every render. Quarto manages its own Julia notebook-runner environment separately and
 bootstraps it automatically the first time you render.
+
+## Running the sensitivity analysis
+
+Figure 6 (Shapley effects) and Figure S4 (convergence analysis) are generated from a
+variance-based global sensitivity analysis (GSA) on a synthetic single reef, migrated from
+the standalone `Analysis_CoralBlox_Shapley-Effect` repo. Unlike every other figure in this
+repo, it is a three-stage pipeline rather than a single script, because the first stage is
+expensive (tens of thousands of model runs) and shouldn't be re-run just to tweak a plot.
+
+`config.toml` is git-ignored (no committed example file), so a fresh clone needs it created
+by hand before steps 1-2 will run. It must already have `[calibration.domains].rme_domain`
+and `[calibration.products].calib_params` set (steps 1-2 read these directly - see "Model
+calibration and testing" above for what they point to), plus a `[sensitivity_analysis]`
+section:
+
+```toml
+[sensitivity_analysis]
+n_samples = 1000    # total ADRIA runs per DHW range = n_samples * (n_factors + 1), ~218 factors
+n_cores = 6          # optional, defaults to 1; runs via Distributed.jl with n_cores - 1 workers
+raw_data_dir = "C:/path/to/external/raw_results"   # external, multi-GB, created if missing
+```
+
+Step 3 only reads the two committed `outputs/*.parq` files, so it needs no
+`[sensitivity_analysis]` config at all - it'll run on a fresh clone with no `config.toml`
+changes beyond what `main.jl` already needs.
+
+1. **Run** — `julia --project=. src/sensitivity_analysis/01_run_sa.jl`. Samples ~218 model
+   factors and runs ADRIA once per sample per DHW range (total runs ≈
+   `n_samples * (n_factors + 1)` per range), using THIS repo's own pinned RME domain and
+   calibrated params (`config.toml`'s `[calibration.domains].rme_domain` /
+   `[calibration.products].calib_params`), not a separately-configured domain. Writes raw
+   per-sample results to `config.toml`'s `[sensitivity_analysis].raw_data_dir` — an
+   EXTERNAL, multi-GB, git-ignored directory, mirroring `[calibration.outputs].out_dir`'s
+   pattern. Controlled by `[sensitivity_analysis]`'s `n_samples` (the main runtime driver)
+   and `n_cores` (runs via `Distributed.jl` with `n_cores - 1` worker processes when > 1).
+   This is the step to skip unless you actually need fresh raw results — it can take hours.
+2. **Aggregate** — `julia --project=. src/sensitivity_analysis/02_aggregate_results.jl`.
+   Reads `raw_data_dir`, computes Shapley effects and convergence diagnostics, and writes
+   the two small, tidy, COMMITTED Parquet files: `outputs/sensitivity_analysis_shapley_effects.parq`
+   and `outputs/sensitivity_analysis_convergence.parq`. Fast (no model runs) — safe to
+   re-run whenever the raw results change.
+3. **Plot** — `src/figures/06_plot_sensitivity_analysis.jl` and
+   `src/figures/s04_plot_convergence_analysis.jl` read those two committed Parquet files and
+   write `figures/06_sensitivity_analysis.png` / `figures/S04_convergence_analysis.png`,
+   which `paper.qmd` references directly. Unlike steps 1-2, these two ARE included by
+   `main.jl`, so a normal `julia --project=. src/main.jl` regenerates them from whatever is
+   already committed in `outputs/` without touching the raw data at all.
+
+In short: steps 1-2 are for whoever needs to regenerate the underlying sensitivity analysis
+(e.g. after a recalibration); step 3 is what runs by default, and only needs the two
+committed Parquet files to already exist.
