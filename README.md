@@ -87,6 +87,17 @@ overwriting the other's:
   (`julia --project=. -t 1 src/outcomes/single_run_timing.jl`) whenever that estimate needs
   refreshing.
 
+A separate hidden setup chunk (in the "Coral survival under high DHW varies with depth"
+section) `include`s `outputs/sensitivity_analysis_factors_data.jl` instead - kept apart from
+`manuscript_metrics_data.jl` since it describes a different thing (Table S11's literal-numeric
+sensitivity-analysis sampling bounds, not calibration/test performance). Written by
+`src/outcomes/sensitivity_analysis_factors.jl`, which mirrors
+`src/sensitivity_analysis/01_run_sa.jl`'s domain setup and reads the real bounds off
+`ADRIA.model_spec(dom)`/`SAConfig` rather than having them hand-typed (and liable to drift, as
+happened at least twice already) - run it manually
+(`julia --project=. src/outcomes/sensitivity_analysis_factors.jl`) whenever `SAConfig` or the
+underlying model's factor bounds change.
+
 `quarto render` only reads the frozen result, so it stays fast and doesn't re-run the model on
 every render. Quarto manages its own Julia notebook-runner environment separately and
 bootstraps it automatically the first time you render.

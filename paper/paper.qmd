@@ -160,11 +160,19 @@ A comparison between modeled and observed relative coral cover for four selected
 
 ## Coral survival under high DHW varies with depth
 
-We performed a variance-based global sensitivity analysis using Shapley effects [@godaSimpleAlgorithmGlobal2021; @owenSobolIndicesShapley2014] to determine how distinct ecological and environmental factors influence four metrics: change in coral cover, evenness (measure as the inverse of the Simpson's Index [@hillDiversityEvennessUnifying1973]), juvenile cover (measured as the coral cover for the first two smaller size classes) and shelter volume (measured in $m^{3}$ [@urbina-barretoQuantifyingShelterCapacity2021]) in over a single simulated timestep (Figure 6. Shapley effects). The implementation of these metrics is described in [@tanOpenAIMSADRIAIndicatorsjlInitial2025]. To produce each plot in Figure 6. Shapley effects, we performed 30 000 model runs. See Figure S4 for a convergence analysis. A synthetic (hypothetical) reef was used for this analysis, enabling parameterization of some of the reef's environmental and ecological features (namely, habitable area, depth, initial coral cover, and benthic composition). Refer to Table S11 for a full list of all factors included in this analysis (218 in total).
+```{julia}
+#| echo: false
+#| output: false
+include("../outputs/sensitivity_analysis_factors_data.jl")
+fmt_num(x; digits::Int=2) = (r = round(x, digits=digits); isinteger(r) ? string(Int(r)) : string(r))
+bounds_str(lo, hi; digits::Int=2) = "($(fmt_num(lo; digits=digits)), $(fmt_num(hi; digits=digits)))"
+```
 
-![**Figure 6. Shapley effects for distinct disturbance scenarios.** Factors with a \* represent groups of parameters across distinct functional groups, size classes or reef groups. Initial proportion of each functional group -- tabular Acropora (%TA), corymbose Acropora %CA, corymbose non-Acropora (%CNA), small massive (%SM), and large massive (%LM) -- were included in the assessment. (A) DHW = 0: no heat stress scenarios. (B) 0 ≤ DHW ≤ 30: Broad-range heat stress scenarios. (C) 0 ≤ DHW ≤ 8: Low-value and narrow-range heat stress scenarios. (D) 8 ≤ DHW ≤ 16: Mid-value and narrow-range heat stress scenarios. (E) 16 ≤ DHW ≤ 30: High-value and narrow-range heat stress scenarios.](../figures/06_sensitivity_analysis.png){width="6.251968503937008in" height="7.811023622047244in"}
+We performed a variance-based global sensitivity analysis using Shapley effects [@godaSimpleAlgorithmGlobal2021; @owenSobolIndicesShapley2014] to determine how distinct ecological and environmental factors influence four metrics: change in coral cover, shelter volume (measured in $m^{3}$ [@urbina-barretoQuantifyingShelterCapacity2021]), evenness (measure as the inverse of the Simpson's Index [@hillDiversityEvennessUnifying1973]) and juvenile cover (measured as the coral cover for the first two smaller size classes) over a single simulated timestep (Figure 6). The implementation of these metrics is described in [@tanOpenAIMSADRIAIndicatorsjlInitial2025]. To produce each plot in Figure 6, we used 30 000 samples per DHW range. See Figure S4 for a convergence analysis. A synthetic (hypothetical) reef was used for this analysis, enabling parameterization of some of the reef's environmental and ecological features (namely, habitable area, depth, and benthic composition); initial relative cover itself was held fixed at `{julia} sa_factors["init_cover_fixed"]` across all scenarios, isolating the sensitivity analysis to compositional and environmental effects rather than absolute starting cover. Refer to Table S11 for a full list of all factors included in this analysis (219 in total).
 
-We included a dummy factor -- a model input known to have no effect on model outcomes -- to provide a statistical threshold [@khorashadizadehComparisonVariancebasedMomentindependent2017]. From the 218 factors included in the analysis, only the ones whose sensitivity indexes were higher than the dummy factor were included in from the analysis. Under no heat stress (Figure 6A), initial coral cover and benthic composition emerge as the most influential factors. In scenarios with a broad range of heat stress (Figure 6B), DHW becomes much more influential on model metric outcomes. The importance of DHWs and initial cover are overtaken by reef depth as reefs face increasing heat stress (Figure 6C**-**E).
+![**Figure 6. Shapley effects for distinct disturbance scenarios.** Factors with a † represent groups of parameters across distinct functional groups, size classes or reef groups. Initial proportion of each functional group -- tabular Acropora (%TA), corymbose Acropora %CA, corymbose non-Acropora (%CNA), small massive (%SM), and large massive (%LM) -- were included in the assessment. (A) DHW = 0: no heat stress scenarios. (B) 0 ≤ DHW ≤ 30: Broad-range heat stress scenarios. (C) 0 ≤ DHW ≤ 8: Low-value and narrow-range heat stress scenarios. (D) 8 ≤ DHW ≤ 16: Mid-value and narrow-range heat stress scenarios. (E) 16 ≤ DHW ≤ 30: High-value and narrow-range heat stress scenarios.](../figures/06_sensitivity_analysis.png){width="6.251968503937008in" height="7.811023622047244in"}
+
+We included a dummy factor -- a model input known to have no effect on model outcomes -- to provide a statistical threshold [@khorashadizadehComparisonVariancebasedMomentindependent2017]. From the 219 factors included in the analysis, only the ones whose sensitivity indexes were higher than the dummy factor were included in the analysis. Under no heat stress (Figure 6A), linear extension and benthic composition (in particular for corymbose Acropora and corymbose non-Acropora) appear as the most influential factors for change in coral cover. In scenarios with a broad range of heat stress (Figure 6B), DHW dominates change in coral cover. Stratifying heat stress into low, medium and high ranges (Figure 6C**-**E) shows that, for this same metric, depth's influence rivals DHW's only in the medium-heat-stress range, where the depth-refuge effect can be the difference between a reef surviving or not. At low DHW, heat stress is rarely severe enough for depth to matter; at high DHW, it is severe enough to overwhelm the protection depth provides regardless of location. Depth's contribution to coral cover therefore peaks in this intermediate heat-stress window, where its buffering capacity is neither redundant nor overwhelmed.
 
 # Discussion
 
@@ -445,41 +453,27 @@ where survivors' mean is recomputed by truncating below at the current effective
 
 ## Model calibration and testing
 
-The AIMS Long-Term Monitoring Program has been operating since 1983 and provides observations on the state of different locations within the GBR [@emslieDecadesMonitoringHave2020]. Observations include total coral cover observed from manta tow surveys and coral composition from fixed site surveys. A subset of the model parameters was selected for calibration to historic observations. Parameters were manually selected for calibration for their influence in growth and mortality dynamics. Some of the calibrated parameters are constant for all reef groups (linear extensions, background mortality rates, initial mean thermal tolerances) and some are constant across all the GBR (rate parameters of coral size exponential distribution, growth acceleration parameters, growth regional scale factors, base mortality regional scale factors, and the DHW depth attenuation parameters). The model parameters were fit to the calibration set using the Adaptive Differential Evolution algorithm [@zhangAdaptiveDifferentialEvolution2009], implemented in the BlackBoxOptim.jl Julia package [@feldtRobertfeldtBlackBoxOptimjl2023], and error statistics were calculated for the test set to assess model performance on unseen data. See "Model calibration and testing" section in Supplementary Materials for further details.
+The AIMS Long-Term Monitoring Program has been operating since 1983 and provides observations on the state of different locations within the GBR [@emslieDecadesMonitoringHave2020]. Observations include total coral cover observed from manta tow surveys and coral composition from fixed site surveys. A subset of the model parameters was selected for calibration to historic observations. Parameters were manually selected for calibration for their influence in growth and mortality dynamics. Some of the calibrated parameters are constant across all reef groups (linear extensions, background mortality rates, initial mean thermal tolerances, and the DHW depth attenuation parameters), while others are resolved separately for each of the twelve reef groups (rate parameters of coral size exponential distribution, growth acceleration parameters, growth regional scale factors, and base mortality regional scale factors). The model parameters were fit to the calibration set using the Adaptive Differential Evolution algorithm [@zhangAdaptiveDifferentialEvolution2009], implemented in the BlackBoxOptim.jl Julia package [@feldtRobertfeldtBlackBoxOptimjl2023], and error statistics were calculated for the test set to assess model performance on unseen data. See "Model calibration and testing" section in Supplementary Materials for further details.
 
 Prior to the calibration, reefs were grouped based on ecological similarity and spatial proximity (Figure S1). This split was done programmatically based on the Great Barrier Reef Marine Park Authority\'s bioregions [@greatbarrierreefmarineparkauthoritygbrmpaGBRMPAMarineBioregions2025; @kerriganClassifyingBiodiversityGreat2010]. These bioregions were grouped together based on spatial proximity to allow a 75%/25% calibration-test split and comparative assessment within each reef group. Refer to the "Data split and reef groups" section of the Supplementary Materials for more details.
 
-  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  Parameter Group                                                                    Bounds                      Number of Parameters
-  ---------------------------------------------------------------------------------- --------------------------- -------------------------------------------------------------------------------------
-  Rate parameter of exponential distribution of coral size for each reef group.      (0.25, 2.0)                 12 (reef groups)
+| Parameter Group | Bounds | Number of Parameters |
+|:---|:---|:---|
+| Rate parameter of exponential distribution of coral size for each reef group. | (0.25, 2.0) | 12 (reef groups) |
+| Linear extension ($\mathbf{\gamma}_{\mathbf{g,z}}$) | +/- 10% of calibrated values | 30 (for each of the 5 functional groups and 7 size classes, except the last size class, which is fixed at 0) |
+| Background mortality rate ($\mathbf{m}_{\mathbf{g,z}}^{\mathbf{base}}\mathbf{)}$ | +/- 10% of calibrated values | 35 (for each of the 5 functional groups and 7 size classes) |
+| Growth regional scale factor | (0.7, 1.5) | 60 (for each of the 5 functional groups and 12 reef groups) |
+| Base mortality rate regional scale factor | (-1.0,1.0) | 60 (for each of the 5 functional groups and 12 reef groups) |
+| Initial mean thermal tolerance ($\mathbf{\mu}_{\mathbf{t = 0;g}}\mathbf{)}$ | +/- 50% of calibrated values | 5 (one for each functional group; broadcast across all 7 size classes and locations) |
+| Heat tolerance std. deviation ($\mathbf{\sigma}_{\mathbf{g}}\mathbf{)}$ | +/- 25% of calibrated values | 5 (one for each functional group; broadcast across all 7 size classes and locations) |
+| Growth acceleration midpoint parameter for each reef group. | (0.0, 0.3) | 12 (for each reef group) |
+| Growth acceleration steepness parameter for each reef group. | (-20, -15) | 12 (for each reef group) |
+| Growth acceleration height parameter for each reef group. | (0.0, 2.0) | 12 (for each reef group) |
+| Base DHW attenuation coefficient ($\mathbf{\eta}^{\mathbf{base}}\mathbf{)}$ | +/- 20% of calibrated values | 1 |
+| DHW mixing factor ($\mathbf{\eta}^{\mathbf{mix}}\mathbf{)}$ | +/- 20% of calibrated values | 1 |
+| **Total** | | **245** |
 
-  Linear extension ($\mathbf{\gamma}_{\mathbf{g,z}}$)                                +/- 10% of nominal values   30 (for each of the 5 functional groups and 7 size classes, except the last size class, which is fixed at 0)
-
-  Background mortality rate ($\mathbf{m}_{\mathbf{g,z}}^{\mathbf{base}}\mathbf{)}$   +/- 10% of nominal values   35 (for each of the 5 functional groups and 7 size classes)
-
-  Growth regional scale factor                                                       (0.7, 1.5)                  60 (for each of the 5 functional groups and 12 reef groups)
-
-  Base mortality rate regional scale factor                                          (-1.0,1.0)                  60 (for each of the 5 functional groups and 12 reef groups)
-
-  Initial mean thermal tolerance ($\mathbf{\mu}_{\mathbf{t = 0;g}}\mathbf{)}$        +/- 50% of nominal values   5 (one for each functional group; broadcast across all 7 size classes and locations)
-
-  Heat tolerance std. deviation ($\mathbf{\sigma}_{\mathbf{g}}\mathbf{)}$            +/- 25% of nominal values   5 (one for each functional group; broadcast across all 7 size classes and locations)
-
-  Growth acceleration midpoint parameter for each reef group.                        (0.0, 0.3)                  12 (for each reef group)
-
-  Growth acceleration steepness parameter for each reef group.                       (-20, -15)                  12 (for each reef group)
-
-  Growth acceleration height parameter for each reef group.                          (0.0, 2.0)                  12 (for each reef group)
-
-  Base DHW attenuation coefficient ($\mathbf{\eta}^{\mathbf{base}}\mathbf{)}$        (0.0, 1.0)                  1
-
-  DHW mixing factor ($\mathbf{\eta}^{\mathbf{mix}}\mathbf{)}$                        (0.0, 40.0)                 1
-
-  **Total**                                                                                                      **245**
-  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-  : **Table 1. Parameters used in the calibration.**
+: **Table 1. Parameters used in the calibration.**
 
 We assess model performance based on modelled and observed relative coral cover for each calibration and test reef separately. For a given reef, let us denote $y$ the set of observed relative coral cover values for the year with data, $\widehat{y}$ the corresponding modelled relative coral cover values, and $\overline{y}$ the average across all $y$. The average cover $\overline{y}$ establishes a benchmark providing a minimum but not sufficient performance threshold for CoralBox. The three performance metrics used are i) the difference between modelled and benchmark Root Mean Squared Errors (RMSE) with respect to the observed data, $\Delta RMSE = RMSE\left( y - \overline{y} \right) - RMSE\left( y - \widehat{y} \right)$, ii) the Spearman Rank Correlation Coefficient (SRCC) between observed and modelled relative coral cover, and iii) the bias, $bias = mean\left( \widehat{y} - y \right)$. Positive ΔRMSE values indicate reefs where CoralBlox outperforms the benchmark. SRCC values provide an indication of alignment in trends between simulation and observations. Positive bias values indicate CoralBlox overpredicts coral cover on average, negative values indicate underprediction.
 
@@ -997,7 +991,7 @@ Candidate parameter sets that violate parameter-bound constraints or produce an 
 
 ### Disturbances datasets
 
-To account for heat stress mortality, we used a historical DHW dataset, derived from observed maximum Degree Heating Weeks (DHWs) data provided by NOAA's CoralTempv3.1 product [@skirvingCoralTempCoralReef2020; @NOAACoralReef] for each year and reef (**Figure S2**). To account for cyclone/storm and COTS mortality, we derived a separate mortality dataset from LTMP disturbance records (year and type of disturbance) with coral cover and benthic composition data. Because coral cover grows naturally between surveys, survival was calculated against a counterfactual undisturbed growth projection of the pre-disturbance cover. This background growth rate was estimated once from each reef's total cover, then split into per functional group mortality rates using benthic composition data. Locations with disturbances flagged as "unknown" were not included in this mortality-rate calculation.
+To account for heat stress mortality, we used a historical DHW dataset, derived from observed maximum Degree Heating Weeks (DHWs) data provided by NOAA's CoralTempv3.1 product [@skirvingCoralTempCoralReef2020; @NOAACoralReef] for each year and reef (Figure S2). To account for cyclone/storm and COTS mortality, we derived a separate mortality dataset from LTMP disturbance records (year and type of disturbance) with coral cover and benthic composition data. Because coral cover grows naturally between surveys, survival was calculated against a counterfactual undisturbed growth projection of the pre-disturbance cover. This background growth rate was estimated once from each reef's total cover, then split into per functional group mortality rates using benthic composition data. Locations with disturbances flagged as "unknown" were not included in this mortality-rate calculation.
 
 ![**Figure S2. Degree heating weeks (DHW) trajectories for each reef group along the GBR.** Individual lines correspond to values at individual reefs within a reef group.](../figures/S02_dhw_per_reef_group.png){width="6.268055555555556in" height="4.701041119860018in"}
 
@@ -1011,44 +1005,29 @@ The calibrated $\eta^{\textbf{base}}$ and $\eta^{\textbf{mix}}$ values determine
 
 ![**Figure S4. Convergence analysis for each DHW range and metric.**](../figures/S04_convergence_analysis.png){width="6.268055555555556in" height="6.268055555555556in"}
 
-  ---------------------------------------------------------------------------------------------------------------------------------- ----------------------------------------------------------------------- ----------------------------------------------------------------
-  Factor Group                                                                                                                       Number of Parameters                                                    Sampling bounds
-  ---------------------------------------------------------------------------------------------------------------------------------- ----------------------------------------------------------------------- ----------------------------------------------------------------
-  Heritability (h)                                                                                                                   1                                                                       (0.25, 0.5)
+| Factor Group | Number of Parameters | Sampling bounds |
+|:---|:---|:---|
+| Heritability (h) | 1 | `{julia} bounds_str(sa_factors["heritability_lo"], sa_factors["heritability_hi"])` |
+| Mean colony diameter | 35 | +/- 10% of calibrated values |
+| Linear extension ($\mathbf{\gamma}$) | 30 (one for each functional group and size class - except the last)\* | +/- 10% of calibrated values |
+| Background mortality rate ($\mathbf{m}^{\mathbf{background}}$) | 35 (one for each functional group and size class) | +/- 10% of calibrated values |
+| Fecundity ($\mathbf{\phi}$) | 25 (one for each functional group and size classes 3 to 7) | +/- 10% of calibrated values |
+| Heat tolerance distribution mean ($\mathbf{\mu}$) | 35 (one for each functional group and size class) | `{julia} bounds_str(sa_factors["dist_mean_lo"], sa_factors["dist_mean_hi"])` |
+| Heat tolerance distribution standard deviation ($\mathbf{\sigma}$) | 35 (one for each functional group and size class) | +/- 10% of calibrated values |
+| Growth scale factors ($\mathbf{\Xi}$) | 5 (one for each functional group) | +/- 10% of calibrated values |
+| Background mortality scale factors ($\mathbf{\Upsilon}_{\mathbf{g,}\mathcal{l}}$) | 5 (one for each functional group) | +/- 10% of calibrated values |
+| Growth acceleration parameters ($\mathbf{\zeta}_{\mathbf{l}}^{\mathbf{h}}$, $\mathbf{\zeta}_{\mathbf{l}}^{\mathbf{m}}$ and $\mathbf{\zeta}_{\mathbf{l}}^{\mathbf{s}}$) | 3 (Steepness, midpoint and height) | +/- 10% of calibrated values |
+| DHW depth attenuation ($\mathbf{\eta}^{\mathbf{base}}$, $\mathbf{\eta}^{\mathbf{mix}}$) | 2 (base coefficient and mixing scale) | +/- 20% of calibrated values |
+| Reef relative habitable area | 1 | `{julia} bounds_str(sa_factors["k_area_lo"], sa_factors["k_area_hi"])` |
+| Reef depth | 1 | `{julia} bounds_str(sa_factors["depth_lo"], sa_factors["depth_hi"])` |
+| DHW | 1 | `{julia} bounds_str(sa_factors["dhw_lo"], sa_factors["dhw_hi"])`\*\* |
+| Initial coral composition | 5 (one for each functional group) | `{julia} bounds_str(sa_factors["icc_lo"], sa_factors["icc_hi"])` |
 
-  Mean colony diameter                                                                                                               35                                                                      +/- 10% of nominal values
-
-  Linear extension ($\mathbf{\gamma}$)                                                                                               30 (one for each functional group and size class - except the last)\*   +/- 10% of nominal values
-
-  Background mortality rate ($\mathbf{m}^{\mathbf{background}}$)                                                                     35 (one for each functional group and size class)                       +/- 10% of nominal values
-
-  Fecundity ($\mathbf{\phi}$)                                                                                                        25 (one for each functional group and size classes 3 to 7)              +/- 10% of nominal values
-
-  Heat tolerance distribution mean ($\mathbf{\mu}$)                                                                                  35 (one for each functional group and size class)                       (3, 10)
-
-  Heat tolerance distribution standard deviation ($\mathbf{\sigma}$)                                                                 35 (one for each functional group and size class)                       +/- 10% of nominal values
-
-  Growth scale factors ($\mathbf{\Xi}$)                                                                                              5 (one for each functional group)                                       +/- 10% of nominal values
-
-  Background mortality scale factors ($\mathbf{\Upsilon}_{\mathbf{g,}\mathcal{l}}$)                                                  5 (one for each functional group)                                       +/- 10% of nominal values
-
-  Growth acceleration parameters ($\mathbf{\zeta}_{\mathbf{l}}^{\mathbf{h}}$,$\mathbf{\zeta}_{\mathbf{l}}^{\mathbf{m}}$ and          3 (Steepness, midpoint and height)                                      +/- 10% of nominal values
-  $\mathbf{\zeta}_{\mathbf{l}}^{\mathbf{s}}$)
-
-  Reef relative habitable area                                                                                                       1                                                                       (0, 1)
-
-  Reef depth                                                                                                                         1                                                                       (0, 24)
-
-  DHW                                                                                                                                1                                                                       (0,30)\*\*
-
-  Initial coral composition                                                                                                          5 (one for each functional group)                                       (0.05, 0.5)
-
-  Initial relative cover                                                                                                             1                                                                       (0.1, 0.3)
-  ---------------------------------------------------------------------------------------------------------------------------------- ----------------------------------------------------------------------- ----------------------------------------------------------------
-
-  : **Table S11. 218 factors included in the sensitivity analysis and their respective sampling bounds.**
+: **Table S11. 219 factors included in the sensitivity analysis and their respective sampling bounds.**
 
 \* - The last size class is assumed to have linear extension = 0.
+
+\*\* - This range spans the union of the five DHW-range scenarios; within any single scenario DHW is fixed or sampled over a narrower sub-range - see Figure 6 and the "Coral survival under high DHW varies with depth" section.
 
 ## Per-reef performance metrics
 

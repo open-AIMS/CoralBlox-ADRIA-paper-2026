@@ -80,6 +80,13 @@ function human_readable_factors(factors::Vector{String})::Vector{String}
     # Don't change the input object
     _factors = copy(factors)
 
+    # Captured before any relabelling below, since the relabelling functions replace
+    # "group_*" names with clean text and lose the prefix - see the "†" suffix applied at
+    # the end, matching Figure 6's caption ("Factors with a † represent groups of
+    # parameters..."). A dagger rather than "*"/"**" specifically to avoid colliding with
+    # Table S11's own unrelated use of those two markers.
+    is_grouped = startswith.(_factors, "group_")
+
     icc_mask = occursin.("icc_", _factors)
     icc_factors = split.(_factors[icc_mask], "_")
     _factors[icc_mask] .= [
@@ -87,10 +94,11 @@ function human_readable_factors(factors::Vector{String})::Vector{String}
         for icc_factor in icc_factors
     ]
 
-    _human_readable_group_factor!(_factors, "group_linear_extension", "Linear extension group")
-    _human_readable_group_factor!(_factors, "dist_mean", "Dist. mean group")
+    _human_readable_group_factor!(_factors, "group_linear_extension", "Linear extension")
+    _human_readable_group_factor!(_factors, "dist_mean", "Dist. mean")
     _human_readable_group_factor!(_factors, "midpoint", "Growth Acc. midpoint")
     _human_readable_group_factor!(_factors, "height", "Growth Acc. height")
+    _human_readable_group_factor!(_factors, "group_eff_dhw", "DHW atten.")
 
     _human_readable_factors!(_factors, "dist_std", "Dist. Std.")
     _human_readable_factors!(_factors, "mb_rate", "Mortality rate")
@@ -102,10 +110,10 @@ function human_readable_factors(factors::Vector{String})::Vector{String}
         "depth_med" => "Depth",
         "k_area" => "Hab. area",
         "initial_relative_cover" => "Initial Cover",
-        "eff_dhw_base" => "Depth DHW att. base",
-        "eff_dhw_mix" => "Depth DHW att. mix",
     )
     replace!(_factors, known_mappings...)
+
+    _factors[is_grouped] .*= "†"
 
     return _factors
 end

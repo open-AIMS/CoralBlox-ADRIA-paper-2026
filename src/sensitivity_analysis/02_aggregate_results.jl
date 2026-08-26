@@ -260,7 +260,8 @@ factors_to_group = [
     "dist_std",
     "midpoint",
     "height",
-    "steepness"
+    "steepness",
+    "eff_dhw"
 ]
 g_se = group_factors(se, factors_to_group)
 

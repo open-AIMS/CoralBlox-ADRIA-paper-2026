@@ -118,9 +118,13 @@ function plot_normalized_se!(
         end
     end
 
+    # Panel letters match paper.qmd's Figure 6 caption/in-text references (Figure 6A-E),
+    # which are keyed to column position - only meaningful while columns are DHW ranges.
+    _panel_letters = ["A", "B", "C", "D", "E", "F", "G", "H"]
     for (idx, val) in enumerate(metric_by_dhw ? _dhw_labels : _xticks)
         col_label_size = get(opts, :col_label_size, HEADER_LABEL_SIZE)
-        Label(g[1, idx], val, fontsize=col_label_size, tellwidth=false)
+        label = metric_by_dhw ? "($(_panel_letters[idx])) $(val)" : val
+        Label(g[1, idx], label, fontsize=col_label_size, tellwidth=false)
     end
 
     if get(opts, :title_visible, true)
