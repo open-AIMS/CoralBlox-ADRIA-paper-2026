@@ -53,20 +53,22 @@ function plot_bootstrap_metric_scatter(
                     " [$(trunc(median_lo; digits=3)), $(trunc(median_hi; digits=3))]"
     title = title_main * "\n" * title_sub * "\n" * summary_line
 
-    fig = Figure(; size=(max(900, 12 * length(x)), 600), fontsize=9pt)
+    fig = Figure(; size=(max(900, 12 * length(x)), 600), fontsize=AXIS_LABEL_SIZE)
     ax = Axis(
         fig[1, 1];
         title=title,
         titlealign=:left,
-        titlesize=9pt,
+        titlesize=TITLE_SIZE,
         xlabel="Reef ID",
         ylabel=ylabel,
-        xlabelsize=9pt,
-        ylabelsize=9pt,
+        xlabelsize=AXIS_LABEL_SIZE,
+        ylabelsize=AXIS_LABEL_SIZE,
         xticks=(x, reef_ids),
         xticklabelrotation=pi / 3,
+        # Deliberately below TICK_LABEL_SIZE: many crowded, rotated reef ID labels on this
+        # axis specifically - the standard size overlaps here.
         xticklabelsize=7pt,
-        yticklabelsize=9pt,
+        yticklabelsize=TICK_LABEL_SIZE,
         xgridvisible=false,
         ygridvisible=false,
     )
@@ -101,7 +103,7 @@ function plot_bootstrap_metric_scatter(
 
     Legend(
         fig[2, 1], legend_els, legend_labels;
-        orientation=:horizontal, framevisible=false, labelsize=9pt,
+        orientation=:horizontal, framevisible=false, labelsize=AXIS_LABEL_SIZE,
         tellwidth=false, tellheight=true
     )
     rowsize!(fig.layout, 2, Auto())

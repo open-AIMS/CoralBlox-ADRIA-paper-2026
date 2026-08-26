@@ -101,7 +101,9 @@ function human_readable_factors(factors::Vector{String})::Vector{String}
         "dhw" => "DHW",
         "depth_med" => "Depth",
         "k_area" => "Hab. area",
-        "initial_relative_cover" => "Initial Cover"
+        "initial_relative_cover" => "Initial Cover",
+        "eff_dhw_base" => "Depth DHW att. base",
+        "eff_dhw_mix" => "Depth DHW att. mix",
     )
     replace!(_factors, known_mappings...)
 

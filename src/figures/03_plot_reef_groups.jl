@@ -42,18 +42,18 @@ for (idx_d, d) in enumerate(data)
         keys(d)[keys_sort];
         opts=Dict{Symbol,Any}(
             :show_title => false,
-            :titlesize => 11pt,
-            :textlabelsize => 9pt,
+            :titlesize => HEADER_LABEL_SIZE,
+            :textlabelsize => AXIS_LABEL_SIZE,
             :textlabelbackground => "#ededeb",
             :showtextlabel => false
         ),
         fig_opts=Dict{Symbol,Any}(:size => (650, 600)),
         axis_opts=Dict{Symbol,Any}(
-            :titlesize => 9pt,
-            :xlabelsize => 9pt,
-            :ylabelsize => 9pt,
-            :xticklabelsize => 9pt,
-            :yticklabelsize => 9pt,
+            :titlesize => TITLE_SIZE,
+            :xlabelsize => AXIS_LABEL_SIZE,
+            :ylabelsize => AXIS_LABEL_SIZE,
+            :xticklabelsize => TICK_LABEL_SIZE,
+            :yticklabelsize => TICK_LABEL_SIZE,
             :xticklabelrotation => 0,
             :xticks => xticks,
             :yticks => ytick_labels,
@@ -61,7 +61,7 @@ for (idx_d, d) in enumerate(data)
             :xgridvisible => false,
             :ygridvisible => false
         ),
-        legend_opts=Dict{Symbol,Any}(:labelsize => 9pt, :framevisible => false),
+        legend_opts=Dict{Symbol,Any}(:labelsize => AXIS_LABEL_SIZE, :framevisible => false),
     )
 
     filename = "0$(fig_base_number+idx_d)_reef_groups_$(reef_group_type[idx_d])"

@@ -21,6 +21,16 @@ inch = 96
 pt = 4 / 3
 cm = inch / 2.54
 
+# * Standard font sizes (Makie units), used consistently across every figure in figures/.
+# TICK_LABEL_SIZE/AXIS_LABEL_SIZE/TITLE_SIZE cover the three per-Axis roles (tick labels,
+# x/ylabel, title). HEADER_LABEL_SIZE is for standalone Label() annotations acting as
+# section/panel headers, row labels or colorbar captions - a visually larger, separate role
+# from an Axis's own (usually blank) title.
+const TICK_LABEL_SIZE = 9pt
+const AXIS_LABEL_SIZE = 9pt
+const TITLE_SIZE = 9pt
+const HEADER_LABEL_SIZE = 11pt
+
 fig_path::String = dirname(@__DIR__) .* "/figures"
 
 # * Load calibration domain, observations and calibrated model run

@@ -11,10 +11,6 @@ include("./_sensitivity_analysis_helpers.jl")
 const OPTS_TYPE = Dict{Symbol,Any}
 const OPTS_DEFAULT = Dict{Symbol,Any}()
 
-sa_label_size = 11pt
-sa_tick_size = 9pt
-sa_title_size = 14pt
-
 sa_repo_root = dirname(dirname(@__DIR__))
 shapley_effects_path = joinpath(sa_repo_root, "outputs", "sensitivity_analysis_shapley_effects.parq")
 shapley_effects_df = DataFrame(Parquet2.Dataset(shapley_effects_path))
@@ -121,7 +117,7 @@ function plot_normalized_se!(
     end
 
     for (idx, val) in enumerate(metric_by_dhw ? _dhw_labels : _xticks)
-        col_label_size = get(opts, :col_label_size, 20)
+        col_label_size = get(opts, :col_label_size, HEADER_LABEL_SIZE)
         Label(g[1, idx], val, fontsize=col_label_size, tellwidth=false)
     end
 
@@ -130,7 +126,7 @@ function plot_normalized_se!(
         Label(
             g[0, :],
             "Normalized Shapley Effects for influential factors$(title_suffix)";
-            fontsize=get(opts, :title_size, 26), tellwidth=false
+            fontsize=get(opts, :title_size, HEADER_LABEL_SIZE), tellwidth=false
         )
     end
 
@@ -157,20 +153,20 @@ fig_norm_se = plot_normalized_se(
     g_se;
     fig_opts=Dict{Symbol,Any}(:size => (800, 900)),
     axis_opts=Dict{Symbol,Any}(
-        :ylabelsize => sa_label_size,
-        :xticklabelsize => sa_tick_size,
-        :yticklabelsize => sa_tick_size,
+        :ylabelsize => AXIS_LABEL_SIZE,
+        :xticklabelsize => TICK_LABEL_SIZE,
+        :yticklabelsize => TICK_LABEL_SIZE,
         :yticks => (0:0.2:1, string.(0:0.2:1)),
         :xticklabelrotation => π / 4,
         :limits => (nothing, (0, 1.1)),
         :xgridvisible => false
     ),
     opts=Dict{Symbol,Any}(
-        :title_size => sa_title_size,
-        :col_label_size => sa_label_size,
+        :title_size => HEADER_LABEL_SIZE,
+        :col_label_size => HEADER_LABEL_SIZE,
         :color => "#b52482"
     )
 )
-Label(fig_norm_se[end+1, :], "Factors"; fontsize=sa_label_size, tellwidth=false)
+Label(fig_norm_se[end+1, :], "Factors"; fontsize=AXIS_LABEL_SIZE, tellwidth=false)
 
 save(fig_path * "/06_sensitivity_analysis.png", fig_norm_se; px_per_unit=(300 / inch))

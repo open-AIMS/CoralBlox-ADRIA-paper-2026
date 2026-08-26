@@ -42,7 +42,7 @@ single_reef_fig = begin
     ltmp_disturbances = open_dataset(disturbances_path).layer
 
     # ** Plot comparison
-    fig = Figure(; size=(750, 650), fontsize=9pt)
+    fig = Figure(; size=(750, 650), fontsize=AXIS_LABEL_SIZE)
     for (i, plot_idx) in enumerate(plot_locs_idx)
         # reef_idx = 1
         target_loc_data = dom.loc_data[dom.loc_data.RME_UNIQUE_ID.==plot_locs[i], :]
@@ -89,16 +89,16 @@ single_reef_fig = begin
                 :xticks => (2008:4:2022, string.(2008:4:2022)),
                 :xminorticksvisible => true,
                 :xminorticks => collect(2008:2022),
-                :ylabelsize => 9pt,
-                :xlabelsize => 9pt,
-                :xticklabelsize => 9pt,
-                :yticklabelsize => 9pt,
+                :ylabelsize => AXIS_LABEL_SIZE,
+                :xlabelsize => AXIS_LABEL_SIZE,
+                :xticklabelsize => TICK_LABEL_SIZE,
+                :yticklabelsize => TICK_LABEL_SIZE,
                 :halign => :left,
                 :xgridvisible => false,
                 :ygridvisible => false,
             ),
             fig_opts=Dict{Symbol,Any}(
-                :titlesize => 9pt,
+                :titlesize => TITLE_SIZE,
                 :title => plot_labels[i],
                 :titlehalign => :left,
                 :titlevalign => :bottom,
@@ -134,7 +134,7 @@ single_reef_fig = begin
             taxa_labels
         ],
         ["Coral cover", "Disturbances", "Functional groups"];
-        halign=:left, valign=:center, labelsize=9pt, titlesize=9pt, labelhalign=:left,
+        halign=:left, valign=:center, labelsize=AXIS_LABEL_SIZE, titlesize=TITLE_SIZE, labelhalign=:left,
         gridshalign=:left, titlehalign=:left, framevisible=false
     )
     fig

@@ -74,7 +74,7 @@ function plot_metric_map_ci!(
 
     if get(opts, :colorbar_visible, true)
         colorbar_label = get(opts, :colorbar_label, "Benchmark RMSE - Model RMSE")
-        colorbar_ticklabelsize = get(opts, :colorbar_ticklabelsize, 16)
+        colorbar_ticklabelsize = get(opts, :colorbar_ticklabelsize, TICK_LABEL_SIZE)
         colorbar_ticks = get(opts, :colorbar_ticks, automatic)
         colorbar_vertical = get(opts, :colorbar_vertical, true)
         position = colorbar_vertical ? (1, 2) : (2, 1)
@@ -93,7 +93,7 @@ function plot_metric_map_ci!(
 end
 
 metric_map_fig = begin
-    fig = Figure(; size=(550, 650), fontsize=9pt)
+    fig = Figure(; size=(550, 650), fontsize=AXIS_LABEL_SIZE)
 
     markersize = 15
     strokewidth = 0.7
@@ -122,10 +122,10 @@ metric_map_fig = begin
     rmse_colorbar_ticks = (rmse_ticks_range, string.(rmse_ticks_range))
 
     g0 = fig[1, 1:2] = GridLayout()
-    g1 = fig[2, 1:2] = GridLayout()
+    g1 = fig[3, 1:2] = GridLayout()
     g11 = g1[1, 1] = GridLayout()
     g12 = g1[1, 2] = GridLayout()
-    gr2 = fig[3, 1:2] = GridLayout()
+    gr2 = fig[4, 1:2] = GridLayout()
     g21 = gr2[1, 1] = GridLayout()
     g22 = gr2[1, 2] = GridLayout()
 
@@ -138,12 +138,12 @@ metric_map_fig = begin
         c_lat;
         axis_opts=Dict(
             :title => "",
-            :titlesize => 9pt,
-            :xlabelsize => 9pt,
-            :ylabelsize => 9pt,
+            :titlesize => TITLE_SIZE,
+            :xlabelsize => AXIS_LABEL_SIZE,
+            :ylabelsize => AXIS_LABEL_SIZE,
             :yticks => min_y:1:max_y,
-            :yticklabelsize => 9pt,
-            :xticklabelsize => 9pt,
+            :yticklabelsize => TICK_LABEL_SIZE,
+            :xticklabelsize => TICK_LABEL_SIZE,
             :xgridcolor => grid_color,
             :ygridcolor => grid_color,
             :xgridvisible => false,
@@ -154,7 +154,7 @@ metric_map_fig = begin
         opts=Dict(
             :colorrange => (-0.2, 0.2),
             :colorbar_label => "",
-            :colorbar_ticklabelsize => 9pt,
+            :colorbar_ticklabelsize => TICK_LABEL_SIZE,
             :colorbar_ticks => rmse_colorbar_ticks,
             :markersize => markersize,
             :alpha => 0.8,
@@ -176,11 +176,11 @@ metric_map_fig = begin
         c_lat;
         axis_opts=Dict(
             :title => "",
-            :titlesize => 9pt,
-            :xlabelsize => 9pt,
-            :ylabelsize => 9pt,
-            :yticklabelsize => 9pt,
-            :xticklabelsize => 9pt,
+            :titlesize => TITLE_SIZE,
+            :xlabelsize => AXIS_LABEL_SIZE,
+            :ylabelsize => AXIS_LABEL_SIZE,
+            :yticklabelsize => TICK_LABEL_SIZE,
+            :xticklabelsize => TICK_LABEL_SIZE,
             :xgridcolor => grid_color,
             :ygridcolor => grid_color,
             :xgridvisible => false,
@@ -191,7 +191,7 @@ metric_map_fig = begin
         ),
         opts=Dict(
             :colorbar_label => "",
-            :colorbar_ticklabelsize => 9pt,
+            :colorbar_ticklabelsize => TICK_LABEL_SIZE,
             :colorbar_ticks => srcc_colorbar_ticks,
             :markersize => markersize,
             :alpha => 0.6,
@@ -211,11 +211,11 @@ metric_map_fig = begin
         t_lat;
         axis_opts=Dict(
             :title => "",
-            :titlesize => 9pt,
-            :xlabelsize => 9pt,
-            :ylabelsize => 9pt,
-            :yticklabelsize => 9pt,
-            :xticklabelsize => 9pt,
+            :titlesize => TITLE_SIZE,
+            :xlabelsize => AXIS_LABEL_SIZE,
+            :ylabelsize => AXIS_LABEL_SIZE,
+            :yticklabelsize => TICK_LABEL_SIZE,
+            :xticklabelsize => TICK_LABEL_SIZE,
             :xgridcolor => grid_color,
             :ygridcolor => grid_color,
             :xgridvisible => false,
@@ -226,7 +226,7 @@ metric_map_fig = begin
         opts=Dict(
             :colorrange => rmse_colorrange,
             :colorbar_label => "",
-            :colorbar_ticklabelsize => 9pt,
+            :colorbar_ticklabelsize => TICK_LABEL_SIZE,
             :colorbar_ticks => rmse_colorbar_ticks,
             :markersize => markersize,
             :alpha => 0.8,
@@ -246,11 +246,11 @@ metric_map_fig = begin
         t_lat;
         axis_opts=Dict(
             :title => "",
-            :titlesize => 9pt,
-            :xlabelsize => 9pt,
-            :ylabelsize => 9pt,
-            :yticklabelsize => 9pt,
-            :xticklabelsize => 9pt,
+            :titlesize => TITLE_SIZE,
+            :xlabelsize => AXIS_LABEL_SIZE,
+            :ylabelsize => AXIS_LABEL_SIZE,
+            :yticklabelsize => TICK_LABEL_SIZE,
+            :xticklabelsize => TICK_LABEL_SIZE,
             :xgridcolor => grid_color,
             :ygridcolor => grid_color,
             :xgridvisible => false,
@@ -262,7 +262,7 @@ metric_map_fig = begin
         opts=Dict(
             :colormap => srcc_colormap,
             :colorbar_label => "",
-            :colorbar_ticklabelsize => 9pt,
+            :colorbar_ticklabelsize => TICK_LABEL_SIZE,
             :colorbar_ticks => srcc_colorbar_ticks,
             :markersize => markersize,
             :alpha => 0.6,
@@ -293,26 +293,26 @@ metric_map_fig = begin
         colorrange=rmse_colorrange,
         colormap=rmse_colormap,
         ticks=rmse_colorbar_ticks,
-        ticklabelsize=9pt,
+        ticklabelsize=TICK_LABEL_SIZE,
     )
-    Label(gcb1[1, 1], "ΔRMSE (Benchmark - Model) ", padding=(0, 0, 60, -30), fontsize=11pt, justification=:center, halign=:center)
+    Label(gcb1[1, 1], "ΔRMSE (Benchmark - Model) ", padding=(0, 0, 60, -30), fontsize=HEADER_LABEL_SIZE, justification=:center, halign=:center)
 
     cb_srcc = Colorbar(
         gcb2[1, 1];
         colorrange=srcc_colorrange,
         colormap=srcc_colormap,
         ticks=srcc_colorbar_ticks,
-        ticklabelsize=9pt,)
-    Label(gcb2[1, 1], "SRCC", padding=(0, 0, 60, -30), fontsize=11pt, justification=:center, halign=:center)
+        ticklabelsize=TICK_LABEL_SIZE,)
+    Label(gcb2[1, 1], "SRCC", padding=(0, 0, 60, -30), fontsize=HEADER_LABEL_SIZE, justification=:center, halign=:center)
 
-    Label(g21[1, 1, Bottom()], "Longitude", padding=lon_padding, fontsize=9pt)
-    Label(g22[1, 1, Bottom()], "Longitude", padding=lon_padding, fontsize=9pt)
+    Label(g21[1, 1, Bottom()], "Longitude", padding=lon_padding, fontsize=AXIS_LABEL_SIZE)
+    Label(g22[1, 1, Bottom()], "Longitude", padding=lon_padding, fontsize=AXIS_LABEL_SIZE)
 
-    Label(g11[1, 1, Left()], "Latitude", rotation=π / 2, padding=lat_padding, fontsize=9pt, tellwidth=false)
-    Label(g21[1, 1, Left()], "Latitude", rotation=π / 2, padding=lat_padding, fontsize=9pt, tellwidth=false)
+    Label(g11[1, 1, Left()], "Latitude", rotation=π / 2, padding=lat_padding, fontsize=AXIS_LABEL_SIZE, tellwidth=false)
+    Label(g21[1, 1, Left()], "Latitude", rotation=π / 2, padding=lat_padding, fontsize=AXIS_LABEL_SIZE, tellwidth=false)
 
-    Label(g11[1, 1, Left()], "Calibration reefs", rotation=π / 2, padding=left_label_padding, fontsize=11pt,)
-    Label(g21[1, 1, Left()], "Test reefs", rotation=π / 2, padding=left_label_padding, fontsize=11pt,)
+    Label(g11[1, 1, Left()], "Calibration reefs", rotation=π / 2, padding=left_label_padding, fontsize=HEADER_LABEL_SIZE,)
+    Label(g21[1, 1, Left()], "Test reefs", rotation=π / 2, padding=left_label_padding, fontsize=HEADER_LABEL_SIZE,)
 
     # Marker-shape legend: star5 = value > 0, circle = value <= 0 (see plot_metric_map_ci!'s
     # high_mask/low_mask split above). Colour is irrelevant to this legend - it only conveys
@@ -322,12 +322,12 @@ metric_map_fig = begin
         MarkerElement(marker=:circle, color=:gray20, markersize=15, strokewidth=strokewidth, strokecolor=strokecolor),
     ]
     Legend(
-        fig[4, 1:2],
+        fig[2, 1:2],
         legend_elements,
         ["Value > 0", "Value ≤ 0"];
         orientation=:horizontal,
         framevisible=false,
-        labelsize=9pt,
+        labelsize=AXIS_LABEL_SIZE,
         tellheight=true,
         tellwidth=false,
     )
@@ -336,7 +336,8 @@ metric_map_fig = begin
     colgap!(g1, -60)
     colgap!(gr2, -60)
     rowgap!(fig.layout, 1, 0)
-    rowgap!(fig.layout, 2, -10)
+    rowgap!(fig.layout, 2, 0)
+    rowgap!(fig.layout, 3, -10)
 
     cb_srcc.vertical, cb_rmse.vertical = false, false
     cb_srcc.labelvisible, cb_rmse.labelvisible = false, false

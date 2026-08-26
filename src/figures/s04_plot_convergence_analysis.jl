@@ -85,16 +85,21 @@ function plot_convergence!(
                 axis_opts=Dict{Symbol,Any}(
                     :title => "",
                     :xscale => log10,
-                    :ylabel => ylabel
+                    :ylabel => ylabel,
+                    :titlesize => TITLE_SIZE,
+                    :xlabelsize => AXIS_LABEL_SIZE,
+                    :ylabelsize => AXIS_LABEL_SIZE,
+                    :xticklabelsize => TICK_LABEL_SIZE,
+                    :yticklabelsize => TICK_LABEL_SIZE,
                 )
             )
         end
     end
 
     for (idx, val) in enumerate(metric_by_dhw ? _dhw_labels : metric_labels)
-        Label(g[1, idx], val, fontsize=20, tellwidth=false)
+        Label(g[1, idx], val, fontsize=HEADER_LABEL_SIZE, tellwidth=false)
     end
-    Label(g[0, :], "Convergence analysis", fontsize=26)
+    Label(g[0, :], "Convergence analysis", fontsize=HEADER_LABEL_SIZE)
 
     return nothing
 end
@@ -139,6 +144,7 @@ function legend_convergence!(gp::GridPosition; opts=Dict(), legend_opts=Dict()):
         ["Shapley Effects cumulative sum", "Model cumulative variance"]
     )
     get!(legend_opts, :orientation, :horizontal)
+    get!(legend_opts, :labelsize, AXIS_LABEL_SIZE)
 
     Legend(gp, legend_elements, legend_labels; legend_opts...)
 

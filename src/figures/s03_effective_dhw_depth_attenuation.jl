@@ -10,8 +10,13 @@ ax = Axis(
     fig_eff_dhw[1, 1];
     title="Effective DHW vs surface DHW (η_base=$(round(κ_base; digits=3)), " *
         "η_mix=$(round(mixing_scale; digits=3)))",
+    titlesize=TITLE_SIZE,
     xlabel="Surface DHW",
     ylabel="Effective DHW at depth",
+    xlabelsize=AXIS_LABEL_SIZE,
+    ylabelsize=AXIS_LABEL_SIZE,
+    xticklabelsize=TICK_LABEL_SIZE,
+    yticklabelsize=TICK_LABEL_SIZE,
     xgridvisible=false,
     ygridvisible=false
 )
@@ -25,7 +30,7 @@ for depth in depths
     lines!(ax, dhw_surface, eff_dhw; linewidth=2.5, label="$(depth) m")
 end
 
-axislegend(ax; position=:lt)
+axislegend(ax; position=:lt, labelsize=AXIS_LABEL_SIZE)
 
 fig_eff_dhw
 

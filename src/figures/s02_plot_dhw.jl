@@ -19,9 +19,9 @@ for g in cb_calib_groups
         xminorticksvisible=true,
         xminorticks=(collect(1:1:15)),
         xlabelvisible=row == 3 ? true : false,
-        titlesize=9pt,
-        xticklabelsize=9pt,
-        yticklabelsize=9pt,
+        titlesize=TITLE_SIZE,
+        xticklabelsize=TICK_LABEL_SIZE,
+        yticklabelsize=TICK_LABEL_SIZE,
         yticklabelsvisible=col == 1 ? true : false,
         yticks=0:4:14,
         yminorticksvisible=true,
@@ -37,9 +37,9 @@ for g in cb_calib_groups
     # lines!.(ax, x_tsteps, eachcol(data))
     series!(ax, read(data'), solid_color=(:orange, 0.05))
 end
-Label(fig_dhw[0, :], "Observed maximum DHW values per reef group", fontsize=12pt)
-Label(fig_dhw[4, :], "Year", fontsize=10pt)
-Label(fig_dhw[1:3, 0], "DHW", fontsize=10pt, rotation=π / 2)
+Label(fig_dhw[0, :], "Observed maximum DHW values per reef group", fontsize=HEADER_LABEL_SIZE)
+Label(fig_dhw[4, :], "Year", fontsize=AXIS_LABEL_SIZE)
+Label(fig_dhw[1:3, 0], "DHW", fontsize=AXIS_LABEL_SIZE, rotation=π / 2)
 fig_dhw
 
 save(fig_path * "/S02_dhw_per_reef_group.png", fig_dhw; px_per_unit=(300 / inch))
