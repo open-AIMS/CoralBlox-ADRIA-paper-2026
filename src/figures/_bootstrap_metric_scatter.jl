@@ -1,3 +1,5 @@
+isdefined(Main, :fig_path) || include(joinpath(@__DIR__, "..", "common.jl"))
+
 """
     plot_bootstrap_metric_scatter(estimate, ci_lo, ci_hi, block_eligible, median_val,
                                    median_lo, median_hi, reef_ids; title_main, title_sub,

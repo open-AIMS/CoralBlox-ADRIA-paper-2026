@@ -1,3 +1,5 @@
+isdefined(Main, :fig_path) || include(joinpath(@__DIR__, "..", "common.jl"))
+
 # Figure 6: normalized Shapley effects for driving factors, per metric and DHW range.
 # Reads the committed outputs/sensitivity_analysis_shapley_effects.parq (already collapsed
 # via 02_aggregate_results.jl's group_factors) and writes figures/06_sensitivity_analysis.png.

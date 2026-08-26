@@ -1,3 +1,6 @@
+isdefined(Main, :fig_path) || include(joinpath(@__DIR__, "..", "common.jl"))
+ensure_domain_context!()
+
 # Two worst and two best test reefs by ΔRMSE (benchmark - model): low/negative ΔRMSE means
 # the model underperforms the naive benchmark, high ΔRMSE means it substantially beats it.
 plot_locs = vcat(reefs_sorted_by_rmse_diff[1:2], reefs_sorted_by_rmse_diff[end-1:end])

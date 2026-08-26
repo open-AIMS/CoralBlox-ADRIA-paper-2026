@@ -1,3 +1,6 @@
+isdefined(Main, :fig_path) || include(joinpath(@__DIR__, "..", "common.jl"))
+ensure_domain_context!()
+
 calib_params_ds = open_dataset(CALIB_PARAMS_FN)
 κ_base = calib_params_ds.depth_attenuation[1]
 mixing_scale = calib_params_ds.depth_attenuation[2]

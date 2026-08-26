@@ -1,3 +1,6 @@
+isdefined(Main, :fig_path) || include(joinpath(@__DIR__, "..", "common.jl"))
+ensure_domain_context!()
+
 # * Reef groups scale
 # * Spatial Grouping
 spatial_groups = unique(domain_gpkg.CB_CALIB_GROUPS)

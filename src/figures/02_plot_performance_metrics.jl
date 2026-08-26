@@ -1,3 +1,6 @@
+isdefined(Main, :fig_path) || include(joinpath(@__DIR__, "..", "common.jl"))
+ensure_domain_context!()
+
 """
     plot_metric_map_ci!(g, metric, significant, geometries, lon_valid, lat_valid; axis_opts, opts)
 

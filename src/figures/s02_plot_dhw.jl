@@ -1,3 +1,6 @@
+isdefined(Main, :fig_path) || include(joinpath(@__DIR__, "..", "common.jl"))
+ensure_domain_context!()
+
 dom_gpkg = dom.loc_data
 cb_calib_groups = sort(unique(dom_gpkg.CB_CALIB_GROUPS))
 

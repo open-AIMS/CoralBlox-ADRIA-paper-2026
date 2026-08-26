@@ -1,3 +1,7 @@
+isdefined(Main, :fig_path) || include(joinpath(@__DIR__, "..", "common.jl"))
+ensure_domain_context!()
+isdefined(Main, :plot_bootstrap_metric_scatter) || include(joinpath(@__DIR__, "_bootstrap_metric_scatter.jl"))
+
 fig_srcc_calibration = plot_bootstrap_metric_scatter(
     c_corr_stats.corr, c_corr_stats.ci_lo, c_corr_stats.ci_hi, c_corr_stats.block_eligible,
     c_corr_stats.median, c_corr_stats.median_lo, c_corr_stats.median_hi, c_reef_ids;

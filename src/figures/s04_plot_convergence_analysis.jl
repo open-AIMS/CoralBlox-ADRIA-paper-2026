@@ -1,3 +1,5 @@
+isdefined(Main, :fig_path) || include(joinpath(@__DIR__, "..", "common.jl"))
+
 # Figure S4: convergence analysis (Shapley effect cumulative sum vs model cumulative
 # variance) for each DHW range and metric. Reads the committed
 # outputs/sensitivity_analysis_convergence.parq and writes figures/S04_convergence_analysis.png.
