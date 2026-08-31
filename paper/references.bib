@@ -104,12 +104,13 @@
 @misc{greatbarrierreefmarineparkauthoritygbrmpaGreatBarrierReef2025,
 	title = {Great {Barrier} {Reef} {Features}},
 	copyright = {CC BY 4.0},
-	url = {https://reef-geohub-ext-geohubgbrmpa.hub.arcgis.com/datasets/816f4d747cd94d84acfd924b27f581d8_64/about},
+	url = {https://catalogue.eatlas.org.au/geonetwork/srv/api/records/ac8e8e4f-fc0e-4a01-9c3d-f27e4a8fac3c},
 	urldate = {2025-02-17},
-	publisher = {Reef Geohub},
+	publisher = {eAtlas},
 	author = {{Great Barrier Reef Marine Park Authority (GBRMPA)}},
 	month = may,
 	year = {2025},
+	note = {\copyright{} Great Barrier Reef Marine Park Authority 2014; eAtlas metadata record ac8e8e4f-fc0e-4a01-9c3d-f27e4a8fac3c},
 }
 
 @article{mulaRestorationCannotBe2025,
@@ -330,34 +331,52 @@
 }
 
 @misc{ribeirodealmeidaCoralBloxjl2024,
-	title = {{CoralBlox}.jl},
+	title = {{CoralBlox}.jl: {A} computationally efficient coral growth and mortality model},
 	copyright = {MIT License},
-	url = {https://zenodo.org/doi/10.5281/zenodo.13251118},
-	doi = {10.5281/zenodo.13251118},
+	url = {https://doi.org/10.25845/7GZ3-C373},
+	doi = {10.25845/7GZ3-C373},
 	abstract = {CoralBlox is a coral growth and mortality model. It allows the simulation of distinct coral functional groups indirectly competing for a limited space over time. The model does not consider disturbances such as deaths cause by cyclone, COTS or heat stress. It also does not have a direct mechanism to contemplate human interference such as coral seeding or cloud brighten. Despite that, one can leverage CoralBlox to include coral growth and mortality to a broader model.
 
  
 
 We acknowledge the Traditional Owners of Australia’s coastal marine ecosystems. We pay our respects to their Elders past, present, and emerging and recognise their continuing spiritual connection to Country. This work was funded in part by the Reef Restoration and Adaptation Program, a partnership between the Australian Government’s Reef Trust and the Great Barrier Reef Foundation.},
-	urldate = {2025-08-08},
-	publisher = {Zenodo},
+	publisher = {Australian Institute of Marine Science},
 	author = {Ribeiro de Almeida, Pedro and Iwanaga, Takuya and Tan, Daniel},
-	month = aug,
-	year = {2024},
+	year = {2026},
 }
 
-@misc{iwanagaOpenAIMSADRIAjlV0502023,
-	title = {open-{AIMS}/{ADRIA}.jl: v0.5.0},
-	copyright = {MIT License, Open Access},
-	shorttitle = {open-{AIMS}/{ADRIA}.jl},
-	url = {https://zenodo.org/record/7879785},
-	doi = {10.5281/ZENODO.7879785},
-	abstract = {ADRIA v0.5.0 Diff since v0.4.5 {\textless}strong{\textgreater}Closed issues:{\textless}/strong{\textgreater} Juvenile metric: investigate small values (\#92) Update result set to derive spatial data from stored geopackage (\#124) Adjust MCDA functions to be more generic (\#177) Standardize to NamedDimsArray + AxisKeys (\#200) Adjust scenario input IDs for clarity (\#205) Use NamedDims+AxisKeys instead of matrix for MCDA decision matrices (\#221) Add human-readable name to Parameter types (\#230) Use Haversine instead of Euclidean distance (\#236) Adjust definition or sampling of dist\_thresh so that the value representing 'don't use distance sorting' is as likely as values representing using distance sorting (\#238) Register package (\#245) Change reference to {\textless}code{\textgreater}Input Set{\textless}/code{\textgreater} to {\textless}code{\textgreater}Domain{\textless}/code{\textgreater} to align with interface functions (\#246) Update growth rates for size class 6 (\#268) Release v0.4.5 (\#272) Possible bug in {\textless}code{\textgreater}site\_selection{\textless}/code{\textgreater} (\#284) Bug in site selection example (\#285) Scenario juvenile metric returning implausible values (?) and values \&gt; 1 (\#292) Create function which returns just the set of criteria values needed for MCDA (\#296) {\textless}code{\textgreater}map\_to\_discrete(){\textless}/code{\textgreater} erroring due to type mismatch (\#304) {\textless}code{\textgreater}run\_site\_selection(){\textless}/code{\textgreater} errors out (\#308) [Viz/Analysis] Scenario outcomes (\#311) [Viz/Analysis] sensitivity analysis (bar/heatmap) (\#312) [Viz/Analysis] temporal sensitivity analysis (\#313) [Viz/Analysis] Regional Sensitivity Analysis (\#314) [Viz/Analysis] Outcome-based factor mapping (\#315) {\textless}strong{\textgreater}Merged pull requests:{\textless}/strong{\textgreater} Add parameter name and description to model specification (\#273) (@ConnectedSystems) Adjust coral growth rate for size class 6 (\#274) (@ConnectedSystems) Remove references to Input Set (\#275) (@ConnectedSystems) Fix: calculate distance between sites (\#276) (@ConnectedSystems) Simplify display of model spec (\#278) (@ConnectedSystems) Parametric ResultSet (\#279) (@ConnectedSystems) Consolidate normalize (\#280) (@ConnectedSystems) Changes to site selection functions (\#282) (@Rosejoycrocker) Changes to address bug in site\_selection example (addresses issue \#285 ) (\#286) (@Rosejoycrocker) Consolidate Named array types to use NamedDims+AxisKeys (\#287) (@ConnectedSystems) Reduce allocations in {\textless}code{\textgreater}load\_domain(){\textless}/code{\textgreater} (\#288) (@ConnectedSystems) Add criteria parameter which indicates whether distance sorting is used. (\#290) (@Rosejoycrocker) Add function {\textless}code{\textgreater}n\_locations(){\textless}/code{\textgreater} to determine number of sites/reefs/clusters (\#291) (@ConnectedSystems) Miscellaneous cleanup (\#293) (@ConnectedSystems) Fix bug causing implausible juvenile indicator values (\#294) (@ConnectedSystems) Adjust samples when use of distance thresholds is turned off (\#295) (@ConnectedSystems) CompatHelper: add new compat entry for AxisKeys at version 0.2, (keep existing compat) (\#297) (@github-actions[bot]) Additional safety checks for sampling (\#298) (@ConnectedSystems) Adds sampler which can sample only parameters needed for site selection (\#299) (@Rosejoycrocker) Adds function which calculates sites selection frequency for a set of provided samples (\#301) (@Rosejoycrocker) Fix error mapping continous samples to discrete values (\#305) (@ConnectedSystems) Adjust shelter volume to remove hardcoded index and leverage NamedDimsArray (\#306) (@ConnectedSystems) Fix initial slice potentially not including lowest value (\#307) (@ConnectedSystems) Clean up Project.toml + Precompile (\#309) (@ConnectedSystems) Correct issue with size of NamedDims array for storing ranks in {\textless}code{\textgreater}run\_site\_selection(){\textless}/code{\textgreater} (\#310) (@Rosejoycrocker) Initial indicative visualization (\#318) (@ConnectedSystems) Fix function extension issues (\#319) (@ConnectedSystems) Better check for constancy in RSA (\#320) (@ConnectedSystems) Update exploration tool to latest ADRIA API (\#321) (@ConnectedSystems) Additional docs for Domain/ResultSets (\#322) (@ConnectedSystems) Add capability to fix factors in place (\#325) (@ConnectedSystems) Initial ReefMod interface and functionality (\#326) (@ConnectedSystems)},
-	urldate = {2023-04-30},
-	publisher = {Zenodo},
-	author = {Iwanaga, Takuya and Crocker, Rose and Anthony, Ken},
-	month = apr,
-	year = {2023},
+@misc{iwanagaADRIAjl2026,
+	title = {{ADRIA}.jl: {Adaptive} {Dynamic} {Reef} {Intervention} {Algorithms}},
+	copyright = {MIT License},
+	shorttitle = {{ADRIA}.jl},
+	url = {https://doi.org/10.25845/E9VT-4G35},
+	doi = {10.25845/E9VT-4G35},
+	abstract = {ADRIA (Adaptive Dynamic Reef Intervention Algorithms) is a decision-support platform that couples a dynamic multi-criteria decision analysis with a coral ecosystem model to explore the regional implications of reef management decisions under a wide range of plausible future conditions.},
+	publisher = {Australian Institute of Marine Science},
+	author = {Iwanaga, Takuya and Crocker, Rose J. and Ribeiro de Almeida, Pedro and Tan, Daniel and Ani, Chinenye J. and Anthony, Ken},
+	year = {2026},
+}
+
+@misc{ribeirodealmeidaCoralBloxParamsCalibration2026,
+	title = {{CoralBlox}-params-calibration: {Calibration} of {CoralBlox}/{ADRIA} coral parameters against {GBR} long-term monitoring data},
+	copyright = {MIT License},
+	url = {https://github.com/open-AIMS/CoralBlox-params-calibration/releases/tag/v0.5.1},
+	doi = {},
+	note = {Version v0.5.1. DOI to be assigned.},
+	publisher = {Australian Institute of Marine Science},
+	author = {Ribeiro de Almeida, Pedro and Crocker, Rose J. and Tan, Daniel and Bairos-Novak, Kenneth R. and Iwanaga, Takuya},
+	year = {2026},
+}
+
+@misc{ribeirodealmeidaCoralBloxADRIAPaper2026,
+	title = {{CoralBlox}: {A} computationally efficient coral model for decision support---manuscript and analysis code},
+	copyright = {MIT License},
+	url = {https://github.com/open-AIMS/CoralBlox-ADRIA-paper-2026},
+	doi = {},
+	note = {DOI to be assigned.},
+	publisher = {Australian Institute of Marine Science},
+	author = {Ribeiro de Almeida, Pedro and Crocker, Rose J. and Tan, Daniel and Bairos-Novak, Kenneth R. and Iwanaga, Takuya},
+	year = {2026},
 }
 
 @article{razaviFutureSensitivityAnalysis2021,
