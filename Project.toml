@@ -31,5 +31,7 @@ Typst_jll = "eb4b1da6-20f6-5c66-9826-fdb8ad410d0e"
 YAXArrays = "c21b50f5-aa40-41ea-b809-c0f5e47bfa5c"
 
 [compat]
+ADRIA = "0.17.2"
+CoralBlox = "1.1.11"
 HTTP = "1"
 YAXArrays = "0.6"
