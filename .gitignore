@@ -6,3 +6,6 @@ config.toml
 paper/paper.docx
 paper/variable_list.docx
 paper/*.pdf
+
+# make-style-reference.py scratch file
+paper/style/*.base.docx

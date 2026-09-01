@@ -2,7 +2,7 @@
 title: "CoralBlox Variables/Parameters/Indexes List"
 format:
   docx:
-    reference-doc: reference.docx
+    reference-doc: style/style-reference.docx
 ---
 
 # Variables/Parameters/Indexes List

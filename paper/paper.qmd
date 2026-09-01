@@ -65,7 +65,7 @@ filters:
 format:
   docx:
     number-sections: true
-    reference-doc: reference.docx
+    reference-doc: style/style-reference.docx
 
 bibliography: references.bib
 csl: science-advances.csl

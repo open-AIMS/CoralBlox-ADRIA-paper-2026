@@ -50,17 +50,18 @@ quarto preview paper/paper.qmd
 
 ### Word styling
 
-Output styling comes from `paper/reference.docx` (`reference-doc:` in `paper.qmd`), which sets
-Times New Roman 12 pt, Science Advances page margins, and continuous line numbering. It is
-generated — regenerate it with:
+Output styling comes from `paper/style/style-reference.docx` (`reference-doc:` in `paper.qmd`
+and `variable_list.qmd`), which sets Times New Roman 12 pt, Science Advances page margins, and
+continuous line numbering. It is generated — regenerate it with:
 
 ```shell
-python paper/make-reference-doc.py
+python paper/style/make-style-reference.py
 ```
 
 The journal's own `.docx` templates cannot be used directly here: they define none of the style
 names Pandoc writes to (`Title`, `Author`, `Heading 1`, ...), so the script patches Pandoc's
-default template instead. Edit `make-reference-doc.py`, not the `.docx`.
+default template instead. Edit `make-style-reference.py`, not the `.docx`. See
+`paper/style/README.md` for how the `reference-doc` mechanism works.
 
 ### References
 
