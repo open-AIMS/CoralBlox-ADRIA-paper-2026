@@ -1,3 +1,8 @@
 meta/
 ~$*.docx
 config.toml
+
+# Rendered manuscript outputs (regenerate with `quarto render`)
+paper/paper.docx
+paper/variable_list.docx
+paper/*.pdf
