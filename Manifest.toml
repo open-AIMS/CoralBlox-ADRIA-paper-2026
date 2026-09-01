@@ -2,12 +2,11 @@
 
 julia_version = "1.11.9"
 manifest_format = "2.0"
-project_hash = "d773748521965452d8d7f0514475433721c78259"
+project_hash = "3272f50891e0cb483698806de36df6e5de05457a"
 
 [[deps.ADRIA]]
 deps = ["ADRIAIndicators", "ArchGDAL", "Bootstrap", "CSV", "Clustering", "Combinatorics", "CoralBlox", "CpuId", "DataFrames", "DataStructures", "Dates", "DimensionalData", "Distances", "Distributed", "Distributions", "FileIO", "Flatten", "GDAL_jll", "GeoDataFrames", "GeoFormatTypes", "GeoInterface", "Glob", "Graphs", "ImageIO", "Interpolations", "JMcDM", "JSON", "LERC_jll", "LinearAlgebra", "Logging", "ModelParameters", "NetCDF", "OnlineStats", "OrderedCollections", "Pkg", "PkgVersion", "PrecompileTools", "Printf", "ProgressMeter", "QuasiMonteCarlo", "Random", "Reexport", "RelocatableFolders", "Serialization", "Setfield", "SimpleWeightedGraphs", "SparseArrays", "SpecialFunctions", "StaticArrays", "Statistics", "StatsBase", "StatsFuns", "TOML", "YAXArrays", "Zarr"]
 git-tree-sha1 = "53d8004c890af597550e35804d71ba20563f3e99"
-pinned = true
 uuid = "7dc409a7-fbe5-4c9d-b3e2-b0c19a6ba600"
 version = "0.17.2"
 weakdeps = ["BlackBoxOptim"]
@@ -573,7 +572,6 @@ version = "0.6.4"
 [[deps.CoralBlox]]
 deps = ["DataStructures", "StaticArrays"]
 git-tree-sha1 = "ed4fd5160579e2663663a5673a0e0f9e27880db1"
-pinned = true
 uuid = "f00a6e10-004a-11ef-3676-67ec635bc1a2"
 version = "1.1.11"
 weakdeps = ["Makie"]
@@ -584,7 +582,6 @@ weakdeps = ["Makie"]
 [[deps.CoralBloxCalib]]
 deps = ["ADRIA", "BlackBoxOptim", "Bootstrap", "CSV", "CairoMakie", "ColorSchemes", "CoralBlox", "DataFrames", "DataStructures", "Dates", "DiskArrays", "GeoDataFrames", "GeoMakie", "GeometryBasics", "GraphMakie", "HDF5_jll", "Infiltrator", "MAT", "NetCDF", "ProgressMeter", "Random", "ReefMonitoring", "Revise", "Serialization", "Statistics", "StatsBase", "TOML", "TimeZones", "Typst_jll", "YAXArrays"]
 git-tree-sha1 = "1a812ff721628596091801944d2af83f440e4e37"
-pinned = true
 repo-rev = "v0.5.1"
 repo-url = "https://github.com/open-AIMS/CoralBlox-params-calibration"
 uuid = "1b083494-4cef-49eb-9786-fb478ff29e4a"
@@ -797,7 +794,6 @@ version = "0.4.22"
 [[deps.Distances]]
 deps = ["LinearAlgebra", "Statistics", "StatsAPI"]
 git-tree-sha1 = "c7e3a542b999843086e2f29dac96a618c105be1d"
-pinned = true
 uuid = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
 version = "0.10.12"
 weakdeps = ["ChainRulesCore", "SparseArrays"]
@@ -2300,7 +2296,6 @@ version = "1.3.4"
 [[deps.ReefMonitoring]]
 deps = ["ArchGDAL", "CSV", "DataFrames", "Dates", "GeoDataFrames", "HTTP", "JSON", "NetCDF", "ProgressMeter", "StringDistances", "YAXArrays"]
 git-tree-sha1 = "f3639fb0b8d07e5e3bf1671d71072c4ecee610d8"
-pinned = true
 repo-rev = "v0.1.1"
 repo-url = "https://github.com/open-AIMS/ReefMonitoring-DataClient"
 uuid = "a3af5ec7-7e43-4bf4-9531-3ce64fba4f24"
