@@ -530,7 +530,7 @@ CoralBlox and ADRIA are implemented in the Julia programming language. The sourc
 
 AIMS Long-Term Monitoring Program (LTMP) data, served through the Reef Monitoring dashboard (<https://apps.aims.gov.au/reef-monitoring/>), was used to calibrate a subset of CoralBlox parameters [@emslieDecadesMonitoringHave2020]. LTMP manta tow observations were the target for modelled total coral cover outputs and LTMP fixed point photogrammetry community composition data was used as the target for modelled community composition during calibration and testing. These data are licensed under CC-BY 4.0 (<https://www.aims.gov.au/cc-attribution>); the products used here are based on data supplied by the Australian Institute of Marine Science.
 
-To run the model, we used data from the ReefMod-GBR model [@bozecRapidlyClosingWindow2025], freely and openly available at <https://github.com/ymbozec/REEFMOD.7.2_GBR>. This data is available upon request; please send enquiries to y.bozec@uq.edu.au. Further details are available in the calibration code repository referenced above.
+To run the model, we used data from the ReefMod-GBR model [@bozecRapidlyClosingWindow2025], freely and openly available at <https://github.com/ymbozec/REEFMOD.7.2_GBR>. The data as used in this paper is available upon request; please send enquiries for ReefMod Engine to y.bozec@uq.edu.au. Further details are available in the CoralBlox calibration repository referenced above.
 
 Mortality rates accounting for mortalities caused by cyclones and/or COTS that are used in the calibration were derived from the AIMS LTMP disturbance data.
 
