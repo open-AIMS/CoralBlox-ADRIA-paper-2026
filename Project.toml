@@ -31,5 +31,12 @@ Typst_jll = "eb4b1da6-20f6-5c66-9826-fdb8ad410d0e"
 YAXArrays = "c21b50f5-aa40-41ea-b809-c0f5e47bfa5c"
 
 [compat]
+julia = "~1.11.9"
+ADRIA = "=0.17.2"
+ADRIAanalysis = "=0.2.0"
+CoralBlox = "=1.1.11"
+CoralBloxCalib = "=0.5.1"
+ReefMonitoring = "0.1.0"
+SAShE = "=0.3.0"
 HTTP = "1"
 YAXArrays = "0.6"

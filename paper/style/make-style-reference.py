@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-"""Generate reference.docx: Pandoc's default Word styles, restyled for Science Advances.
+"""Generate style-reference.docx: Pandoc's default Word styles, restyled for Science Advances.
 
-Pandoc's built-in template renders the title in Aptos Display 28pt. The journal
-templates cannot be used directly as `reference-doc` because they define none of the
-style names Pandoc writes to (Title, Author, Heading 1, Body Text, ...), so we patch
-Pandoc's own template instead.
+This is the `reference-doc` for paper.qmd and variable_list.qmd (named to avoid confusion
+with references.bib, which is unrelated). Pandoc's built-in template renders the title in
+Aptos Display 28pt. The journal templates cannot be used directly as `reference-doc`
+because they define none of the style names Pandoc writes to (Title, Author, Heading 1,
+Body Text, ...), so we patch Pandoc's own template instead.
 
-Usage:  python paper/make-reference-doc.py
+Usage:  python paper/style/make-style-reference.py
 """
 
 import re
@@ -15,7 +16,7 @@ import subprocess
 import zipfile
 from pathlib import Path
 
-OUT = Path(__file__).parent / "reference.docx"
+OUT = Path(__file__).parent / "style-reference.docx"
 
 FONT = "Times New Roman"
 PT = 2  # Word stores font sizes in half-points
@@ -238,6 +239,7 @@ PATCHES = {
 def main() -> None:
     base = OUT.with_suffix(".base.docx")
     with base.open("wb") as fh:
+        # "reference.docx" here is Pandoc's own bundled data file, not our output.
         subprocess.run(
             ["quarto", "pandoc", "--print-default-data-file", "reference.docx"],
             stdout=fh,

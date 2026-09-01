@@ -1,0 +1,27 @@
+# Copy to config.toml (git-ignored) and set the paths for your machine.
+# Sections through [calibration.products] are needed to render the paper / run src/main.jl.
+# [sensitivity_analysis] is only needed to regenerate the SA (src/sensitivity_analysis/01-02).
+
+[operation]
+threshold = 1e-6  # ADRIA convergence threshold
+rng_seed = 1      # run seed shared by ADRIA and BlackBoxOptim
+
+[calibration.initialisation]  # optional overrides: init_cover_filepath, init_guess_filepath
+
+[calibration.domains]
+rme_domain = "path/to/ADRIA DataPackages/rme_ml_YYYY_MM_DD"  # ReefMod Engine data package (RRAP M&DS, on request)
+
+[calibration.geospatial]
+canonical_path = "path/to/rrap_canonical_YYYY-MM-DD.gpkg"  # canonical GBR reef geopackage (gbrrestoration/canonical-reefs)
+
+[calibration.outputs]
+out_dir = "path/to/calib_results"  # where the calibration run writes results.dat and params/
+
+[calibration.products]
+calib_params = "path/to/calib_results/params/calibrated_params.nc"  # calibrated params from the calibration run
+init_cover = "path/to/calib_results/params/historic_init_cover.nc"  # historic initial cover from the calibration run
+
+[sensitivity_analysis]
+n_samples = 1000                       # ADRIA runs per DHW range = n_samples * (n_factors + 1)
+n_cores = 6                            # optional (default 1); Distributed workers = n_cores - 1
+raw_data_dir = "path/to/external/sa_raw_results"  # EXTERNAL, multi-GB, git-ignored; created if missing
